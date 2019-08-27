@@ -361,7 +361,14 @@
           "/content"
         ],
         "summary": "Get content",
-        "description": "Returns all content in a Confluence instance.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).\nOnly content that the user has permission to view will be returned.",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.summary"
+            ]
+          }
+        ],
+        "description": "Returns all content in a Confluence instance.\n\nBy default, the following objects are expanded: `space`, `history`, `version`.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).\nOnly content that the user has permission to view will be returned.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentResource.getContent_get",
         "parameters": [
           {
@@ -426,48 +433,7 @@
             }
           },
           {
-            "name": "expand",
-            "in": "query",
-            "description": "A multi-value parameter indicating which properties of the content to expand.\nBy default, the following objects are expanded: `space`, `history`, `version`.\n\n- `childTypes.all` returns whether the content has attachments, comments, or child pages.\nUse this if you only need to check whether the content has children of a particular type.\n- `childTypes.attachment` returns whether the content has attachments.\n- `childTypes.comment` returns whether the content has comments.\n- `childTypes.page` returns whether the content has child pages.\n- `container` returns the space that the content is in. This is the same as the information\nreturned by [Get space](#api-space-spaceKey-get).\n- `metadata.currentuser` returns information about the current user in relation to the content,\nlike when they last viewed it, modified it, contributed to it, or added it as a favourite.\n- `metadata.properties` returns content properties that have been set via the Confluence REST API.\n- `metadata.labels` returns the labels that have been added to the content.\n- `metadata.frontend` (this property is only used by Atlassian)\n- `operations` returns the operations for the content, which are used when setting permissions.\n- `children.page` returns pages that are descendants at the level immediately below the content.\n- `children.attachment` returns all attachments for the content.\n- `children.comment` returns all comments on the content.\n- `restrictions.read.restrictions.user` returns the users that have permission to read the content.\n- `restrictions.read.restrictions.group` returns the groups that have permission to read the content.\n- `restrictions.update.restrictions.user` returns the users that have permission to update the content.\n- `restrictions.update.restrictions.group` returns the groups that have permission to update the content.\n- `history` returns the history of the content, including the date it was created.\n- `history.lastUpdated` returns information about the most recent update of the content, including\nwho updated it and when it was updated.\n- `history.previousVersion` returns information about the update prior to the current content update.\n- `history.contributors` returns all of the users who have contributed to the content.\n- `history.nextVersion` returns information about the update after to the current content update.\n- `ancestors` returns the parent page, if the content is a page.\n- `body` returns the body of the content in different formats, including the editor format,\nview format, and export format.\n- `version` returns information about the most recent update of the content, including who updated it\nand when it was updated.\n- `descendants.page` returns pages that are descendants at any level below the content.\n- `descendants.attachment` returns all attachments for the content, same as `children.attachment`.\n- `descendants.comment` returns all comments on the content, same as `children.comment`.\n- `space` returns the space that the content is in. This is the same as the information returned by\n[Get space](#api-space-spaceKey-get).",
-            "required": false,
-            "style": "form",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "childTypes.all",
-                  "childTypes.attachment",
-                  "childTypes.comment",
-                  "childTypes.page",
-                  "container",
-                  "metadata.currentuser",
-                  "metadata.properties",
-                  "metadata.labels",
-                  "metadata.frontend",
-                  "operations",
-                  "children.page",
-                  "children.attachment",
-                  "children.comment",
-                  "restrictions.read.restrictions.user",
-                  "restrictions.read.restrictions.group",
-                  "restrictions.update.restrictions.user",
-                  "restrictions.update.restrictions.group",
-                  "history",
-                  "history.lastUpdated",
-                  "history.previousVersion",
-                  "history.contributors",
-                  "history.nextVersion",
-                  "ancestors",
-                  "body",
-                  "version",
-                  "descendants.page",
-                  "descendants.attachment",
-                  "descendants.comment",
-                  "space"
-                ]
-              }
-            }
+            "$ref": "#/components/parameters/contentExpand"
           },
           {
             "name": "trigger",
@@ -540,7 +506,14 @@
           "/content"
         ],
         "summary": "Create content",
-        "description": "Creates a new piece of content or publishes an existing draft.\n\nTo publish a draft, add the `id` and `status` properties to the body of the request.\nSet the `id` to the ID of the draft and set the `status` to 'current'. When the\nrequest is sent, a new piece of content will be created and the metadata from the\ndraft will be transferred into it.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**: 'Add' permission for the\nspace that the content will be created in, and permission to view the draft if publishing a draft.",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-content"
+            ]
+          }
+        ],
+        "description": "Creates a new piece of content or publishes an existing draft.\n\nTo publish a draft, add the `id` and `status` properties to the body of the request.\nSet the `id` to the ID of the draft and set the `status` to 'current'. When the\nrequest is sent, a new piece of content will be created and the metadata from the\ndraft will be transferred into it.\n\nBy default, the following objects are expanded: `space`, `history`, `version`.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**: 'Add' permission for the\nspace that the content will be created in, and permission to view the draft if publishing a draft.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentResource.createContent_post",
         "parameters": [
           {
@@ -554,48 +527,7 @@
             }
           },
           {
-            "name": "expand",
-            "in": "query",
-            "description": "A multi-value parameter indicating which properties of the new content to expand.\nBy default, the following objects are expanded: `space`, `history`, `version`.\n\n- `childTypes.all` returns whether the content has attachments, comments, or child pages.\nUse this if you only need to check whether the content has children of a particular type.\n- `childTypes.attachment` returns whether the content has attachments.\n- `childTypes.comment` returns whether the content has comments.\n- `childTypes.page` returns whether the content has child pages.\n- `container` returns the space that the content is in. This is the same as the information\nreturned by [Get space](#api-space-spaceKey-get).\n- `metadata.currentuser` returns information about the current user in relation to the content,\nlike when they last viewed it, modified it, contributed to it, or added it as a favourite.\n- `metadata.properties` returns content properties that have been set via the Confluence REST API.\n- `metadata.labels` returns the labels that have been added to the content.\n- `metadata.frontend` (this property is only used by Atlassian)\n- `operations` returns the operations for the content, which are used when setting permissions.\n- `children.page` returns pages that are descendants at the level immediately below the content.\n- `children.attachment` returns all attachments for the content.\n- `children.comment` returns all comments on the content.\n- `restrictions.read.restrictions.user` returns the users that have permission to read the content.\n- `restrictions.read.restrictions.group` returns the groups that have permission to read the content.\n- `restrictions.update.restrictions.user` returns the users that have permission to update the content.\n- `restrictions.update.restrictions.group` returns the groups that have permission to update the content.\n- `history` returns the history of the content, including the date it was created.\n- `history.lastUpdated` returns information about the most recent update of the content, including\nwho updated it and when it was updated.\n- `history.previousVersion` returns information about the update prior to the current content update.\n- `history.contributors` returns all of the users who have contributed to the content.\n- `history.nextVersion` returns information about the update after to the current content update.\n- `ancestors` returns the parent page, if the content is a page.\n- `body` returns the body of the content in different formats, including the editor format,\nview format, and export format.\n- `version` returns information about the most recent update of the content, including who updated it\nand when it was updated.\n- `descendants.page` returns pages that are descendants at any level below the content.\n- `descendants.attachment` returns all attachments for the content, same as `children.attachment`.\n- `descendants.comment` returns all comments on the content, same as `children.comment`.\n- `space` returns the space that the content is in. This is the same as the information returned by\n[Get space](#api-space-spaceKey-get).",
-            "required": false,
-            "style": "form",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "childTypes.all",
-                  "childTypes.attachment",
-                  "childTypes.comment",
-                  "childTypes.page",
-                  "container",
-                  "metadata.currentuser",
-                  "metadata.properties",
-                  "metadata.labels",
-                  "metadata.frontend",
-                  "operations",
-                  "children.page",
-                  "children.attachment",
-                  "children.comment",
-                  "restrictions.read.restrictions.user",
-                  "restrictions.read.restrictions.group",
-                  "restrictions.update.restrictions.user",
-                  "restrictions.update.restrictions.group",
-                  "history",
-                  "history.lastUpdated",
-                  "history.previousVersion",
-                  "history.contributors",
-                  "history.nextVersion",
-                  "ancestors",
-                  "body",
-                  "version",
-                  "descendants.page",
-                  "descendants.attachment",
-                  "descendants.comment",
-                  "space"
-                ]
-              }
-            }
+            "$ref": "#/components/parameters/contentExpand"
           }
         ],
         "responses": {
@@ -636,7 +568,14 @@
           "/content/blueprint"
         ],
         "summary": "Publish legacy draft",
-        "description": "Publishes a legacy draft of a page created from a blueprint. Legacy drafts\nwill eventually be removed in favor of shared drafts. For now, this method\nworks the same as [Publish shared draft](#api-content-blueprint-instance-draftId-put).\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to view the draft and 'Add' permission for the space that\nthe content will be created in.",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-content"
+            ]
+          }
+        ],
+        "description": "Publishes a legacy draft of a page created from a blueprint. Legacy drafts\nwill eventually be removed in favor of shared drafts. For now, this method\nworks the same as [Publish shared draft](#api-content-blueprint-instance-draftId-put).\n\nBy default, the following objects are expanded: `body.storage`, `history`, `space`, `version`, `ancestors`.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to view the draft and 'Add' permission for the space that\nthe content will be created in.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentBlueprintResource.publishLegacyDraft_post",
         "parameters": [
           {
@@ -659,48 +598,7 @@
             }
           },
           {
-            "name": "expand",
-            "in": "query",
-            "description": "A multi-value parameter indicating which properties of the new content\nto expand when returned. By default, the following objects are expanded:\n`body.storage`,`history`,`space`,`version`,`ancestors`\n\n- `childTypes.all` returns whether the content has attachments, comments, or child pages.\nUse this if you only need to check whether the content has children of a particular type.\n- `childTypes.attachment` returns whether the content has attachments.\n- `childTypes.comment` returns whether the content has comments.\n- `childTypes.page` returns whether the content has child pages.\n- `container` returns the space that the content is in. This is the same as the information\nreturned by [Get space](#api-space-spaceKey-get).\n- `metadata.currentuser` returns information about the current user in relation to the content,\nlike when they last viewed it, modified it, contributed to it, or added it as a favourite.\n- `metadata.properties` returns content properties that have been set via the Confluence REST API.\n- `metadata.labels` returns the labels that have been added to the content.\n- `metadata.frontend` (this property is only used by Atlassian)\n- `operations` returns the operations for the content, which are used when setting permissions.\n- `children.page` returns pages that are descendants at the level immediately below the content.\n- `children.attachment` returns all attachments for the content.\n- `children.comment` returns all comments on the content.\n- `restrictions.read.restrictions.user` returns the users that have permission to read the content.\n- `restrictions.read.restrictions.group` returns the groups that have permission to read the content.\n- `restrictions.update.restrictions.user` returns the users that have permission to update the content.\n- `restrictions.update.restrictions.group` returns the groups that have permission to update the content.\n- `history` returns the history of the content, including the date it was created.\n- `history.lastUpdated` returns information about the most recent update of the content, including\nwho updated it and when it was updated.\n- `history.previousVersion` returns information about the update prior to the current content update.\n- `history.contributors` returns all of the users who have contributed to the content.\n- `history.nextVersion` returns information about the update after to the current content update.\n- `ancestors` returns the parent page, if the content is a page.\n- `body` returns the body of the content in different formats, including the editor format,\nview format, and export format.\n- `version` returns information about the most recent update of the content, including who updated it\nand when it was updated.\n- `descendants.page` returns pages that are descendants at any level below the content.\n- `descendants.attachment` returns all attachments for the content, same as `children.attachment`.\n- `descendants.comment` returns all comments on the content, same as `children.comment`.\n- `space` returns the space that the content is in. This is the same as the information returned by\n[Get space](#api-space-spaceKey-get).",
-            "required": false,
-            "style": "form",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "childTypes.all",
-                  "childTypes.attachment",
-                  "childTypes.comment",
-                  "childTypes.page",
-                  "container",
-                  "metadata.currentuser",
-                  "metadata.properties",
-                  "metadata.labels",
-                  "metadata.frontend",
-                  "operations",
-                  "children.page",
-                  "children.attachment",
-                  "children.comment",
-                  "restrictions.read.restrictions.user",
-                  "restrictions.read.restrictions.group",
-                  "restrictions.update.restrictions.user",
-                  "restrictions.update.restrictions.group",
-                  "history",
-                  "history.lastUpdated",
-                  "history.previousVersion",
-                  "history.contributors",
-                  "history.nextVersion",
-                  "ancestors",
-                  "body",
-                  "version",
-                  "descendants.page",
-                  "descendants.attachment",
-                  "descendants.comment",
-                  "space"
-                ]
-              }
-            }
+            "$ref": "#/components/parameters/contentExpand"
           }
         ],
         "responses": {
@@ -731,7 +629,14 @@
           "/content/blueprint"
         ],
         "summary": "Publish shared draft",
-        "description": "Publishes a shared draft of a page created from a blueprint.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to view the draft and 'Add' permission for the space that\nthe content will be created in.",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-content"
+            ]
+          }
+        ],
+        "description": "Publishes a shared draft of a page created from a blueprint.\n\nBy default, the following objects are expanded: `body.storage`, `history`, `space`, `version`, `ancestors`.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to view the draft and 'Add' permission for the space that\nthe content will be created in.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentBlueprintResource.publishSharedDraft_put",
         "parameters": [
           {
@@ -754,48 +659,7 @@
             }
           },
           {
-            "name": "expand",
-            "in": "query",
-            "description": "A multi-value parameter indicating which properties of the new content\nto expand when returned. By default, the following objects are expanded:\n`body.storage`,`history`,`space`,`version`,`ancestors`\n\n- `childTypes.all` returns whether the content has attachments, comments, or child pages.\nUse this if you only need to check whether the content has children of a particular type.\n- `childTypes.attachment` returns whether the content has attachments.\n- `childTypes.comment` returns whether the content has comments.\n- `childTypes.page` returns whether the content has child pages.\n- `container` returns the space that the content is in. This is the same as the information\nreturned by [Get space](#api-space-spaceKey-get).\n- `metadata.currentuser` returns information about the current user in relation to the content,\nlike when they last viewed it, modified it, contributed to it, or added it as a favourite.\n- `metadata.properties` returns content properties that have been set via the Confluence REST API.\n- `metadata.labels` returns the labels that have been added to the content.\n- `metadata.frontend` (this property is only used by Atlassian)\n- `operations` returns the operations for the content, which are used when setting permissions.\n- `children.page` returns pages that are descendants at the level immediately below the content.\n- `children.attachment` returns all attachments for the content.\n- `children.comment` returns all comments on the content.\n- `restrictions.read.restrictions.user` returns the users that have permission to read the content.\n- `restrictions.read.restrictions.group` returns the groups that have permission to read the content.\n- `restrictions.update.restrictions.user` returns the users that have permission to update the content.\n- `restrictions.update.restrictions.group` returns the groups that have permission to update the content.\n- `history` returns the history of the content, including the date it was created.\n- `history.lastUpdated` returns information about the most recent update of the content, including\nwho updated it and when it was updated.\n- `history.previousVersion` returns information about the update prior to the current content update.\n- `history.contributors` returns all of the users who have contributed to the content.\n- `history.nextVersion` returns information about the update after to the current content update.\n- `ancestors` returns the parent page, if the content is a page.\n- `body` returns the body of the content in different formats, including the editor format,\nview format, and export format.\n- `version` returns information about the most recent update of the content, including who updated it\nand when it was updated.\n- `descendants.page` returns pages that are descendants at any level below the content.\n- `descendants.attachment` returns all attachments for the content, same as `children.attachment`.\n- `descendants.comment` returns all comments on the content, same as `children.comment`.\n- `space` returns the space that the content is in. This is the same as the information returned by\n[Get space](#api-space-spaceKey-get).",
-            "required": false,
-            "style": "form",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "childTypes.all",
-                  "childTypes.attachment",
-                  "childTypes.comment",
-                  "childTypes.page",
-                  "container",
-                  "metadata.currentuser",
-                  "metadata.properties",
-                  "metadata.labels",
-                  "metadata.frontend",
-                  "operations",
-                  "children.page",
-                  "children.attachment",
-                  "children.comment",
-                  "restrictions.read.restrictions.user",
-                  "restrictions.read.restrictions.group",
-                  "restrictions.update.restrictions.user",
-                  "restrictions.update.restrictions.group",
-                  "history",
-                  "history.lastUpdated",
-                  "history.previousVersion",
-                  "history.contributors",
-                  "history.nextVersion",
-                  "ancestors",
-                  "body",
-                  "version",
-                  "descendants.page",
-                  "descendants.attachment",
-                  "descendants.comment",
-                  "space"
-                ]
-              }
-            }
+            "$ref": "#/components/parameters/contentExpand"
           }
         ],
         "responses": {
@@ -828,6 +692,13 @@
           "/content"
         ],
         "summary": "Search content by CQL",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "search:confluence"
+            ]
+          }
+        ],
         "description": "Returns the list of content that matches a Confluence Query Language\n(CQL) query. For information on CQL, see:\n[Advanced searching using CQL](https://developer.atlassian.com/cloud/confluence/advanced-searching-using-cql/).\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).\nOnly content that the user has permission to view will be returned.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentResource.searchContentByCQL_get",
         "parameters": [
@@ -850,48 +721,7 @@
             }
           },
           {
-            "name": "expand",
-            "in": "query",
-            "description": "A multi-value parameter indicating which properties of the content to expand.\n\n- `childTypes.all` returns whether the content has attachments, comments,\nor child pages. Use this if you only need to check whether the content\nhas children of a particular type.\n- `childTypes.attachment` returns whether the content has attachments.\n- `childTypes.comment` returns whether the content has comments.\n- `childTypes.page` returns whether the content has child pages.\n- `container` returns the space that the content is in. This is the same\nas the information returned by [Get space](#api-space-spaceKey-get).\n- `metadata.currentuser` returns information about the current user in\nrelation to the content, like when they last viewed it, modified it,\ncontributed to it, or added it as a favourite.\n- `metadata.properties` returns content properties that have been set\nvia the Confluence REST API.\n- `metadata.labels` returns the labels that have been added to the content.\n- `metadata.frontend` (this property is only used by Atlassian)\n- `operations` returns the operations for the content, which are used\nwhen setting permissions.\n- `children.page` returns pages that are descendants at the level\nimmediately below the content.\n- `children.attachment` returns all attachments for the content.\n- `children.comment` returns all comments on the content.\n- `restrictions.read.restrictions.user` returns the users that have\npermission to read the content.\n- `restrictions.read.restrictions.group` returns the groups that have\npermission to read the content.\n- `restrictions.update.restrictions.user` returns the users that have\npermission to update the content.\n- `restrictions.update.restrictions.group` returns the groups that have\npermission to update the content.\n- `history` returns the history of the content, including the date it was created.\n- `history.lastUpdated` returns information about the most recent update\nof the content, including who updated it and when it was updated.\n- `history.previousVersion` returns information about the update prior to\nthe current content update.\n- `history.contributors` returns all of the users who have contributed to\nthe content.\n- `history.nextVersion` returns information about the update after to the\ncurrent content update.\n- `ancestors` returns the parent page, if the content is a page.\n- `body` returns the body of the content in different formats, including the\neditor format, view format, and export format.\n- `version` returns information about the most recent update of the content,\nincluding who updated it and when it was updated.\n- `descendants.page` returns pages that are descendants at any level below the\ncontent.\n- `descendants.attachment` returns all attachments for the content, same as\n`children.attachment`.\n- `descendants.comment` returns all comments on the content, same as\n`children.comment`.\n- `space` returns the space that the content is in. This is the same as the\ninformation returned by [Get space](#api-space-spaceKey-get).",
-            "required": false,
-            "style": "form",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "childTypes.all",
-                  "childTypes.attachment",
-                  "childTypes.comment",
-                  "childTypes.page",
-                  "container",
-                  "metadata.currentuser",
-                  "metadata.properties",
-                  "metadata.labels",
-                  "metadata.frontend",
-                  "operations",
-                  "children.page",
-                  "children.attachment",
-                  "children.comment",
-                  "restrictions.read.restrictions.user",
-                  "restrictions.read.restrictions.group",
-                  "restrictions.update.restrictions.user",
-                  "restrictions.update.restrictions.group",
-                  "history",
-                  "history.lastUpdated",
-                  "history.previousVersion",
-                  "history.contributors",
-                  "history.nextVersion",
-                  "ancestors",
-                  "body",
-                  "version",
-                  "descendants.page",
-                  "descendants.attachment",
-                  "descendants.comment",
-                  "space"
-                ]
-              }
-            }
+            "$ref": "#/components/parameters/contentExpand"
           },
           {
             "name": "start",
@@ -939,77 +769,20 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/search/user": {
-      "get": {
-        "tags": [
-          "/search/user"
-        ],
-        "summary": "Search",
-        "description": "Searches for users using user-specific queries from the\n[Confluence Query Language (CQL)](https://developer.atlassian.com/cloud/confluence/advanced-searching-using-cql/).\n\nNote that some user fields may be set to null depending on the user's privacy settings.\nThese are: email, profilePicture, and displayName.",
-        "operationId": "com.atlassian.confluence.plugins.restapi.resources.SearchResource.search_user_get",
-        "parameters": [
-          {
-            "name": "cql",
-            "in": "query",
-            "description": "The CQL query to be used for the search. See\n[Advanced Searching using CQL](https://developer.atlassian.com/cloud/confluence/advanced-searching-using-cql/)\nfor instructions on how to build a CQL query.\n\nExample queries:\n          cql=type=user will return all users\n          cql=user=“1234” will return user with accountId “1234”\n          You can also use IN, NOT IN, != operators\n          cql=user IN (“12”, “34\") will return users with accountids “12” and “34”\n          cql=user.fullname~jo will return users with nickname/full name starting with “jo”\n          cql=user.accountid=“123” will return user with accountId “123”",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "start",
-            "in": "query",
-            "description": "The starting index of the returned users.",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "minimum": 0,
-              "default": 0
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The maximum number of user objects to return per page.\nNote, this may be restricted by fixed system limits.",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "minimum": 0,
-              "default": 25
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Returned if the requested results are returned.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SearchPageResponseSearchResult"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Returned if the CQL query cannot be parsed."
-          },
-          "403": {
-            "description": "Returned if the calling user does not have permission to access\nConfluence."
-          }
-        },
-        "x-atlassian-connect-scope": "READ"
-      }
-    },
     "/content/{id}": {
       "get": {
         "tags": [
           "/content"
         ],
         "summary": "Get content by ID",
-        "description": "Returns a single piece of content, like a page or a blog post.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to view the content. If the content is a blog post, 'View' permission\nfor the space is required.",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.summary"
+            ]
+          }
+        ],
+        "description": "Returns a single piece of content, like a page or a blog post.\n\nBy default, the following objects are expanded: `space`, `history`, `version`.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to view the content. If the content is a blog post, 'View' permission\nfor the space is required.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentResource.getContentById_get",
         "parameters": [
           {
@@ -1066,49 +839,7 @@
             }
           },
           {
-            "name": "expand",
-            "in": "query",
-            "description": "A multi-value parameter indicating which properties of the content to expand.\nBy default, the following objects are expanded: `space`, `history`, `version`.\n\n- `childTypes.all` returns whether the content has attachments, comments, or child pages.\nUse this if you only need to check whether the content has children of a particular type.\n- `childTypes.attachment` returns whether the content has attachments.\n- `childTypes.comment` returns whether the content has comments.\n- `childTypes.page` returns whether the content has child pages.\n- `container` returns the space that the content is in. This is the same as the information\nreturned by [Get space](#api-space-spaceKey-get).\n- `metadata.currentuser` returns information about the current user in relation to the content,\nlike when they last viewed it, modified it, contributed to it, or added it as a favourite.\n- `metadata.properties` returns content properties that have been set via the Confluence REST API.\n- `metadata.labels` returns the labels that have been added to the content.\n- `metadata.frontend` (this property is only used by Atlassian)\n- `operations` returns the operations for the content, which are used when setting permissions.\n- `children.page` returns pages that are descendants at the level immediately below the content.\n- `children.attachment` returns all attachments for the content.\n- `children.comment` returns all comments on the content.\n- `restrictions.read.restrictions.user` returns the users that have permission to read the content.\n- `restrictions.read.restrictions.group` returns the groups that have permission to read the content.\n- `restrictions.update.restrictions.user` returns the users that have permission to update the content.\n- `restrictions.update.restrictions.group` returns the groups that have permission to update the content.\n- `history` returns the history of the content, including the date it was created.\n- `history.lastUpdated` returns information about the most recent update of the content, including\nwho updated it and when it was updated.\n- `history.previousVersion` returns information about the update prior to the current content update.\n- `history.contributors` returns all of the users who have contributed to the content.\n- `history.nextVersion` returns information about the update after to the current content update.\n- `ancestors` returns the parent page, if the content is a page.\n- `body` returns the body of the content in different formats, including the editor format, view format,\nand export format.\n- `version` returns information about the most recent update of the content, including who updated it\nand when it was updated.\n- `descendants.page` returns pages that are descendants at any level below the content.\n- `descendants.attachment` returns all attachments for the content, same as `children.attachment`.\n- `descendants.comment` returns all comments on the content, same as `children.comment`.\n- `space` returns the space that the content is in. This is the same as the information returned by\n[Get space](#api-space-spaceKey-get).",
-            "required": false,
-            "style": "form",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "childTypes.all",
-                  "childTypes.attachment",
-                  "childTypes.comment",
-                  "childTypes.page",
-                  "container",
-                  "metadata.currentuser",
-                  "metadata.properties",
-                  "metadata.labels",
-                  "metadata.frontend",
-                  "operations",
-                  "children.page",
-                  "children.attachment",
-                  "children.comment",
-                  "restrictions.read.restrictions.user",
-                  "restrictions.read.restrictions.group",
-                  "restrictions.update.restrictions.user",
-                  "restrictions.update.restrictions.group",
-                  "history",
-                  "history.lastUpdated",
-                  "history.previousVersion",
-                  "history.contributors",
-                  "history.nextVersion",
-                  "ancestors",
-                  "macroRenderedOutput",
-                  "body",
-                  "version",
-                  "descendants.page",
-                  "descendants.attachment",
-                  "descendants.comment",
-                  "space"
-                ]
-              }
-            }
+            "$ref": "#/components/parameters/contentExpand"
           },
           {
             "name": "trigger",
@@ -1148,6 +879,13 @@
           "/content"
         ],
         "summary": "Update content",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-content"
+            ]
+          }
+        ],
         "description": "Updates a piece of content. Use this method to update the title or body\nof a piece of content, change the status, change the parent page, and more.\n\nNote, updating draft content is currently not supported.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to update the content.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentResource.updateContent_put",
         "parameters": [
@@ -1232,6 +970,13 @@
           "/content"
         ],
         "summary": "Delete content",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-content"
+            ]
+          }
+        ],
         "description": "Moves a piece of content to the space's trash or purges it from the trash,\ndepending on the content's type and status:\n\n- If the content's type is `page` or `blogpost` and its status is `current`,\nit will be trashed.\n- If the content's type is `page` or `blogpost` and its status is `trashed`,\nthe content will be purged from the trash and deleted permanently. Note,\nyou must also set the `status` query parameter to `trashed` in your request.\n- If the content's type is `comment` or `attachment`, it will be deleted\npermanently without being trashed.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Delete' permission for the space that the content is in, and permission to edit the content.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentResource.deleteContent_delete",
         "parameters": [
@@ -1274,6 +1019,13 @@
           "/content/{id}/child"
         ],
         "summary": "Get content children",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.summary"
+            ]
+          }
+        ],
         "description": "Returns a map of the direct children of a piece of content. A piece of content\nhas different types of child content, depending on its type. These are\nthe default parent-child content type relationships:\n\n- `page`: child content is `page`, `comment`, `attachment`\n- `blogpost`: child content is `comment`, `attachment`\n- `attachment`: child content is `comment`\n- `comment`: child content is `attachment`\n\nApps can override these default relationships. Apps can also introduce\nnew content types that create new parent-child content relationships.\n\nNote, the map will always include all child content types that are valid\nfor the content. However, if the content has no instances of a child content\ntype, the map will contain an empty array for that child content type.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**: 'View' permission for the space,\nand permission to view the content if it is a page.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ChildContentResource.getContentChildren_get",
         "parameters": [
@@ -1340,7 +1092,14 @@
           "/content/{id}/child"
         ],
         "summary": "Get attachments",
-        "description": "Returns the attachments for a piece of content.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to view the content. If the content is a blog post, 'View' permission\nfor the space is required.",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.summary"
+            ]
+          }
+        ],
+        "description": "Returns the attachments for a piece of content.\n\nBy default, the following objects are expanded: `metadata`.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to view the content. If the content is a blog post, 'View' permission\nfor the space is required.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.AttachmentResource.getAttachments_get",
         "parameters": [
           {
@@ -1353,48 +1112,7 @@
             }
           },
           {
-            "name": "expand",
-            "in": "query",
-            "description": "A multi-value parameter indicating which properties of the\nattachments to expand. By default, the following objects are expanded:\n`metadata`.\n\n- `childTypes.all` returns whether the content has attachments, comments, or child pages.\nUse this if you only need to check whether the content has children of a particular type.\n- `childTypes.attachment` returns whether the content has attachments.\n- `childTypes.comment` returns whether the content has comments.\n- `childTypes.page` returns whether the content has child pages.\n- `container` returns the space that the content is in. This is the same as the information\nreturned by [Get space](#api-space-spaceKey-get).\n- `metadata.currentuser` returns information about the current user in relation to the content,\nlike when they last viewed it, modified it, contributed to it, or added it as a favourite.\n- `metadata.properties` returns content properties that have been set via the Confluence REST API.\n- `metadata.labels` returns the labels that have been added to the content.\n- `metadata.frontend` (this property is only used by Atlassian)\n- `operations` returns the operations for the content, which are used when setting permissions.\n- `children.page` returns pages that are descendants at the level immediately below the content.\n- `children.attachment` returns all attachments for the content.\n- `children.comment` returns all comments on the content.\n- `restrictions.read.restrictions.user` returns the users that have permission to read the content.\n- `restrictions.read.restrictions.group` returns the groups that have permission to read the content.\n- `restrictions.update.restrictions.user` returns the users that have permission to update the content.\n- `restrictions.update.restrictions.group` returns the groups that have permission to update the content.\n- `history` returns the history of the content, including the date it was created.\n- `history.lastUpdated` returns information about the most recent update of the content, including\nwho updated it and when it was updated.\n- `history.previousVersion` returns information about the update prior to the current content update.\n- `history.contributors` returns all of the users who have contributed to the content.\n- `history.nextVersion` returns information about the update after to the current content update.\n- `ancestors` returns the parent page, if the content is a page.\n- `body` returns the body of the content in different formats, including the editor format,\nview format, and export format.\n- `version` returns information about the most recent update of the content, including who updated it\nand when it was updated.\n- `descendants.page` returns pages that are descendants at any level below the content.\n- `descendants.attachment` returns all attachments for the content, same as `children.attachment`.\n- `descendants.comment` returns all comments on the content, same as `children.comment`.\n- `space` returns the space that the content is in. This is the same as the information returned by\n[Get space](#api-space-spaceKey-get).",
-            "required": false,
-            "style": "form",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "childTypes.all",
-                  "childTypes.attachment",
-                  "childTypes.comment",
-                  "childTypes.page",
-                  "container",
-                  "metadata.currentuser",
-                  "metadata.properties",
-                  "metadata.labels",
-                  "metadata.frontend",
-                  "operations",
-                  "children.page",
-                  "children.attachment",
-                  "children.comment",
-                  "restrictions.read.restrictions.user",
-                  "restrictions.read.restrictions.group",
-                  "restrictions.update.restrictions.user",
-                  "restrictions.update.restrictions.group",
-                  "history",
-                  "history.lastUpdated",
-                  "history.previousVersion",
-                  "history.contributors",
-                  "history.nextVersion",
-                  "ancestors",
-                  "body",
-                  "version",
-                  "descendants.page",
-                  "descendants.attachment",
-                  "descendants.comment",
-                  "space"
-                ]
-              }
-            }
+            "$ref": "#/components/parameters/contentExpand"
           },
           {
             "name": "start",
@@ -1459,6 +1177,13 @@
           "/content/{id}/child/attachment"
         ],
         "summary": "Create attachment",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-file"
+            ]
+          }
+        ],
         "description": "Adds an attachment to a piece of content. This method only adds a new\nattachment. If you want to update an existing attachment, use\n[Create or update attachments](#api-content-id-child-attachment-put).\n\nNote, you must set a `X-Atlassian-Token: nocheck` header on the request\nfor this method, otherwise it will be blocked. This protects against XSRF\nattacks, which is necessary as this method accepts multipart/form-data.\n\nThe media type 'multipart/form-data' is defined in [RFC 1867](https://www.ietf.org/rfc/rfc1867.txt).\nMost client libraries have classes that make it easier to implement\nmultipart posts, like the [MultiPartEntity](http://hc.apache.org/httpcomponents-client-ga/httpmime/apidocs/org/apache/http/entity/mime/MultipartEntity.html)\nJava class provided by Apache HTTP Components.\n\nExample: This curl command attaches a file ('example.txt') to a container\n(id='123') with a comment and `minorEdits`=true.\n\n``` bash\ncurl -D- \\\n  -u admin:admin \\\n  -X POST \\\n  -H \"X-Atlassian-Token: nocheck\" \\\n  -F \"file=@example.txt\" \\\n  -F \"minorEdit=true\" \\\n  -F \"comment=Example attachment comment\" \\\n  http://myhost/rest/api/content/123/child/attachment\n```\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to update the content.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.AttachmentResource.createAttachments_post",
         "parameters": [
@@ -1517,6 +1242,13 @@
           "/content/{id}/child/attachment"
         ],
         "summary": "Create or update attachment",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-file"
+            ]
+          }
+        ],
         "description": "Adds an attachment to a piece of content. If the attachment already exists\nfor the content, then the attachment is updated (i.e. a new version of the\nattachment is created).\n\nNote, you must set a `X-Atlassian-Token: nocheck` header on the request\nfor this method, otherwise it will be blocked. This protects against XSRF\nattacks, which is necessary as this method accepts multipart/form-data.\n\nThe media type 'multipart/form-data' is defined in [RFC 1867](https://www.ietf.org/rfc/rfc1867.txt).\nMost client libraries have classes that make it easier to implement\nmultipart posts, like the [MultiPartEntity](http://hc.apache.org/httpcomponents-client-ga/httpmime/apidocs/org/apache/http/entity/mime/MultipartEntity.html)\nJava class provided by Apache HTTP Components.\n\nExample: This curl command attaches a file ('example.txt') to a piece of\ncontent (id='123') with a comment and `minorEdits`=true. If the 'example.txt'\nfile already exists, it will update it with a new version of the attachment.\n\n``` bash\ncurl -D- \\\n  -u admin:admin \\\n  -X PUT \\\n  -H \"X-Atlassian-Token: nocheck\" \\\n  -F \"file=@example.txt\" \\\n  -F \"minorEdit=true\" \\\n  -F \"comment=Example attachment comment\" \\\n  http://myhost/rest/api/content/123/child/attachment\n```\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to update the content.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.AttachmentResource.createOrUpdateAttachments_put",
         "parameters": [
@@ -1574,6 +1306,14 @@
           "/content/{id}/child/attachment"
         ],
         "summary": "Update attachment properties",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-file",
+              "write:confluence-props"
+            ]
+          }
+        ],
         "description": "Updates the attachment properties, i.e. the non-binary data of an attachment\nlike the filename, media-type, comment, and parent container.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to update the content.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.AttachmentResource.updateAttachmentProperties_put",
         "parameters": [
@@ -1640,6 +1380,13 @@
           "/content/{id}/child/attachment"
         ],
         "summary": "Update attachment data",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-file"
+            ]
+          }
+        ],
         "description": "Updates the binary data of an attachment, given the attachment ID, and\noptionally the comment and the minor edit field.\n\nThis method is essentially the same as [Create or update attachments](#api-content-id-child-attachment-put),\nexcept that it matches the attachment ID rather than the name.\n\nNote, you must set a `X-Atlassian-Token: nocheck` header on the request\nfor this method, otherwise it will be blocked. This protects against XSRF\nattacks, which is necessary as this method accepts multipart/form-data.\n\nThe media type 'multipart/form-data' is defined in [RFC 1867](https://www.ietf.org/rfc/rfc1867.txt).\nMost client libraries have classes that make it easier to implement\nmultipart posts, like the [MultiPartEntity](http://hc.apache.org/httpcomponents-client-ga/httpmime/apidocs/org/apache/http/entity/mime/MultipartEntity.html)\nJava class provided by Apache HTTP Components.\n\nExample: This curl command updates an attachment (id='att456') that is attached\nto a piece of content (id='123') with a comment and `minorEdits`=true.\n\n``` bash\ncurl -D- \\\n  -u admin:admin \\\n  -X POST \\\n  -H \"X-Atlassian-Token: nocheck\" \\\n  -F \"file=@example.txt\" \\\n  -F \"minorEdit=true\" \\\n  -F \"comment=Example attachment comment\" \\\n  http://myhost/rest/api/content/123/child/attachment/att456/data\n```\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to update the content.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.AttachmentResource.updateAttachmentData_post",
         "parameters": [
@@ -1692,6 +1439,13 @@
           "/content/{id}/child"
         ],
         "summary": "Get content comments",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.summary"
+            ]
+          }
+        ],
         "description": "Returns the comments on a piece of content.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**: 'View' permission for the space,\nand permission to view the content if it is a page.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ChildContentResource.getContentComments_get",
         "parameters": [
@@ -1705,50 +1459,7 @@
             }
           },
           {
-            "name": "expand",
-            "in": "query",
-            "description": "A multi-value parameter indicating which properties of the\nattachments to expand.\n\n- `childTypes.all` returns whether the content has attachments, comments, or child pages.\nUse this if you only need to check whether the content has children of a particular type.\n- `childTypes.attachment` returns whether the content has attachments.\n- `childTypes.comment` returns whether the content has comments.\n- `childTypes.page` returns whether the content has child pages.\n- `container` returns the space that the content is in. This is the same as the information\nreturned by [Get space](#api-space-spaceKey-get).\n- `metadata.currentuser` returns information about the current user in relation to the content,\nlike when they last viewed it, modified it, contributed to it, or added it as a favourite.\n- `metadata.properties` returns content properties that have been set via the Confluence REST API.\n- `metadata.labels` returns the labels that have been added to the content.\n- `metadata.frontend` (this property is only used by Atlassian)\n- `operations` returns the operations for the content, which are used when setting permissions.\n- `children.page` returns pages that are descendants at the level immediately below the content.\n- `children.attachment` returns all attachments for the content.\n- `children.comment` returns all comments on the content.\n- `restrictions.read.restrictions.user` returns the users that have permission to read the content.\n- `restrictions.read.restrictions.group` returns the groups that have permission to read the content.\n- `restrictions.update.restrictions.user` returns the users that have permission to update the content.\n- `restrictions.update.restrictions.group` returns the groups that have permission to update the content.\n- `history` returns the history of the content, including the date it was created.\n- `history.lastUpdated` returns information about the most recent update of the content, including\nwho updated it and when it was updated.\n- `history.previousVersion` returns information about the update prior to the current content update.\n- `history.contributors` returns all of the users who have contributed to the content.\n- `history.nextVersion` returns information about the update after to the current content update.\n- `ancestors` returns the parent page, if the content is a page.\n- `body` returns the body of the content in different formats, including the editor format,\nview format, and export format.\n- `version` returns information about the most recent update of the content, including who updated it\nand when it was updated.\n- `descendants.page` returns pages that are descendants at any level below the content.\n- `descendants.attachment` returns all attachments for the content, same as `children.attachment`.\n- `descendants.comment` returns all comments on the content, same as `children.comment`.\n- `space` returns the space that the content is in. This is the same as the information returned by\n[Get space](#api-space-spaceKey-get).\n\nIn addition, the following comment-specific expansions can be used:\n\n- `extensions.inlineProperties` returns inline comment-specific properties.\n- `extensions.resolution` returns the resolution status of each comment.",
-            "required": false,
-            "style": "form",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "childTypes.all",
-                  "childTypes.attachment",
-                  "childTypes.comment",
-                  "childTypes.page",
-                  "container",
-                  "metadata.currentuser",
-                  "metadata.properties",
-                  "metadata.labels",
-                  "metadata.frontend",
-                  "operations",
-                  "children.page",
-                  "children.attachment",
-                  "children.comment",
-                  "restrictions.read.restrictions.user",
-                  "restrictions.read.restrictions.group",
-                  "restrictions.update.restrictions.user",
-                  "restrictions.update.restrictions.group",
-                  "history",
-                  "history.lastUpdated",
-                  "history.previousVersion",
-                  "history.contributors",
-                  "history.nextVersion",
-                  "ancestors",
-                  "body",
-                  "version",
-                  "descendants.page",
-                  "descendants.attachment",
-                  "descendants.comment",
-                  "space",
-                  "extensions.inlineProperties",
-                  "extensions.resolution"
-                ]
-              }
-            }
+            "$ref": "#/components/parameters/contentExpand"
           },
           {
             "name": "parentVersion",
@@ -1831,6 +1542,13 @@
           "/content/{id}/child"
         ],
         "summary": "Get content children by type",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.summary"
+            ]
+          }
+        ],
         "description": "Returns all children of a given type, for a piece of content.\nA piece of content has different types of child content, depending on its type:\n\n- `page`: child content is `page`, `comment`, `attachment`\n- `blogpost`: child content is `comment`, `attachment`\n- `attachment`: child content is `comment`\n- `comment`: child content is `attachment`\n\nCustom content types that are provided by apps can also be returned.\n\nNote, this method only returns direct children. To return children at all\nlevels, use [Get descendants by type](#api-content-id-descendant-type-get).\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**: 'View' permission for the space,\nand permission to view the content if it is a page.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ChildContentResource.getContentChildrenByType_get",
         "parameters": [
@@ -1858,48 +1576,7 @@
             }
           },
           {
-            "name": "expand",
-            "in": "query",
-            "description": "A multi-value parameter indicating which properties of the new content to expand.\n\n- `childTypes.all` returns whether the content has attachments, comments, or child pages.\nUse this if you only need to check whether the content has children of a particular type.\n- `childTypes.attachment` returns whether the content has attachments.\n- `childTypes.comment` returns whether the content has comments.\n- `childTypes.page` returns whether the content has child pages.\n- `container` returns the space that the content is in. This is the same as the information\nreturned by [Get space](#api-space-spaceKey-get).\n- `metadata.currentuser` returns information about the current user in relation to the content,\nlike when they last viewed it, modified it, contributed to it, or added it as a favourite.\n- `metadata.properties` returns content properties that have been set via the Confluence REST API.\n- `metadata.labels` returns the labels that have been added to the content.\n- `metadata.frontend` (this property is only used by Atlassian)\n- `operations` returns the operations for the content, which are used when setting permissions.\n- `children.page` returns pages that are descendants at the level immediately below the content.\n- `children.attachment` returns all attachments for the content.\n- `children.comment` returns all comments on the content.\n- `restrictions.read.restrictions.user` returns the users that have permission to read the content.\n- `restrictions.read.restrictions.group` returns the groups that have permission to read the content.\n- `restrictions.update.restrictions.user` returns the users that have permission to update the content.\n- `restrictions.update.restrictions.group` returns the groups that have permission to update the content.\n- `history` returns the history of the content, including the date it was created.\n- `history.lastUpdated` returns information about the most recent update of the content, including\nwho updated it and when it was updated.\n- `history.previousVersion` returns information about the update prior to the current content update.\n- `history.contributors` returns all of the users who have contributed to the content.\n- `history.nextVersion` returns information about the update after to the current content update.\n- `ancestors` returns the parent page, if the content is a page.\n- `body` returns the body of the content in different formats, including the editor format,\nview format, and export format.\n- `version` returns information about the most recent update of the content, including who updated it\nand when it was updated.\n- `descendants.page` returns pages that are descendants at any level below the content.\n- `descendants.attachment` returns all attachments for the content, same as `children.attachment`.\n- `descendants.comment` returns all comments on the content, same as `children.comment`.\n- `space` returns the space that the content is in. This is the same as the information returned by\n[Get space](#api-space-spaceKey-get).",
-            "required": false,
-            "style": "form",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "childTypes.all",
-                  "childTypes.attachment",
-                  "childTypes.comment",
-                  "childTypes.page",
-                  "container",
-                  "metadata.currentuser",
-                  "metadata.properties",
-                  "metadata.labels",
-                  "metadata.frontend",
-                  "operations",
-                  "children.page",
-                  "children.attachment",
-                  "children.comment",
-                  "restrictions.read.restrictions.user",
-                  "restrictions.read.restrictions.group",
-                  "restrictions.update.restrictions.user",
-                  "restrictions.update.restrictions.group",
-                  "history",
-                  "history.lastUpdated",
-                  "history.previousVersion",
-                  "history.contributors",
-                  "history.nextVersion",
-                  "ancestors",
-                  "body",
-                  "version",
-                  "descendants.page",
-                  "descendants.attachment",
-                  "descendants.comment",
-                  "space"
-                ]
-              }
-            }
+            "$ref": "#/components/parameters/contentExpand"
           },
           {
             "name": "parentVersion",
@@ -1958,6 +1635,13 @@
           "/content/{id}/descendant"
         ],
         "summary": "Get content descendants",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.summary"
+            ]
+          }
+        ],
         "description": "Returns a map of the descendants of a piece of content. This is similar\nto [Get content children](#api-content-id-child-get), except that this\nmethod returns child pages at all levels, rather than just the direct\nchild pages.\n\nA piece of content has different types of descendants, depending on its type:\n\n- `page`: descendant is `page`, `comment`, `attachment`\n- `blogpost`: descendant is `comment`, `attachment`\n- `attachment`: descendant is `comment`\n- `comment`: descendant is `attachment`\n\nThe map will always include all descendant types that are valid for the content.\nHowever, if the content has no instances of a descendant type, the map will\ncontain an empty array for that descendant type.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'View' permission for the space, and permission to view the content if it\nis a page.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.DescendantContentResource.getContentDescendants_get",
         "parameters": [
@@ -2013,6 +1697,13 @@
           "/content/{id}/descendant"
         ],
         "summary": "Get content descendants by type",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.summary"
+            ]
+          }
+        ],
         "description": "Returns all descendants of a given type, for a piece of content. This is\nsimilar to [Get content children by type](#api-content-id-child-type-get),\nexcept that this method returns child pages at all levels, rather than just\nthe direct child pages.\n\nA piece of content has different types of descendants, depending on its type:\n\n- `page`: descendant is `page`, `comment`, `attachment`\n- `blogpost`: descendant is `comment`, `attachment`\n- `attachment`: descendant is `comment`\n- `comment`: descendant is `attachment`\n\nCustom content types that are provided by apps can also be returned.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'View' permission for the space, and permission to view the content if it\nis a page.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.DescendantContentResource.descendantsOfType_get",
         "parameters": [
@@ -2040,48 +1731,7 @@
             }
           },
           {
-            "name": "expand",
-            "in": "query",
-            "description": "A multi-value parameter indicating which properties of the new content to expand.\n\n- `childTypes.all` returns whether the content has attachments, comments, or child pages.\nUse this if you only need to check whether the content has children of a particular type.\n- `childTypes.attachment` returns whether the content has attachments.\n- `childTypes.comment` returns whether the content has comments.\n- `childTypes.page` returns whether the content has child pages.\n- `container` returns the space that the content is in. This is the same as the information\nreturned by [Get space](#api-space-spaceKey-get).\n- `metadata.currentuser` returns information about the current user in relation to the content,\nlike when they last viewed it, modified it, contributed to it, or added it as a favourite.\n- `metadata.properties` returns content properties that have been set via the Confluence REST API.\n- `metadata.labels` returns the labels that have been added to the content.\n- `metadata.frontend` (this property is only used by Atlassian)\n- `operations` returns the operations for the content, which are used when setting permissions.\n- `children.page` returns pages that are descendants at the level immediately below the content.\n- `children.attachment` returns all attachments for the content.\n- `children.comment` returns all comments on the content.\n- `restrictions.read.restrictions.user` returns the users that have permission to read the content.\n- `restrictions.read.restrictions.group` returns the groups that have permission to read the content.\n- `restrictions.update.restrictions.user` returns the users that have permission to update the content.\n- `restrictions.update.restrictions.group` returns the groups that have permission to update the content.\n- `history` returns the history of the content, including the date it was created.\n- `history.lastUpdated` returns information about the most recent update of the content, including\nwho updated it and when it was updated.\n- `history.previousVersion` returns information about the update prior to the current content update.\n- `history.contributors` returns all of the users who have contributed to the content.\n- `history.nextVersion` returns information about the update after to the current content update.\n- `ancestors` returns the parent page, if the content is a page.\n- `body` returns the body of the content in different formats, including the editor format,\nview format, and export format.\n- `version` returns information about the most recent update of the content, including who updated it\nand when it was updated.\n- `descendants.page` returns pages that are descendants at any level below the content.\n- `descendants.attachment` returns all attachments for the content, same as `children.attachment`.\n- `descendants.comment` returns all comments on the content, same as `children.comment`.\n- `space` returns the space that the content is in. This is the same as the information returned by\n[Get space](#api-space-spaceKey-get).",
-            "required": false,
-            "style": "form",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "childTypes.all",
-                  "childTypes.attachment",
-                  "childTypes.comment",
-                  "childTypes.page",
-                  "container",
-                  "metadata.currentuser",
-                  "metadata.properties",
-                  "metadata.labels",
-                  "metadata.frontend",
-                  "operations",
-                  "children.page",
-                  "children.attachment",
-                  "children.comment",
-                  "restrictions.read.restrictions.user",
-                  "restrictions.read.restrictions.group",
-                  "restrictions.update.restrictions.user",
-                  "restrictions.update.restrictions.group",
-                  "history",
-                  "history.lastUpdated",
-                  "history.previousVersion",
-                  "history.contributors",
-                  "history.nextVersion",
-                  "ancestors",
-                  "body",
-                  "version",
-                  "descendants.page",
-                  "descendants.attachment",
-                  "descendants.comment",
-                  "space"
-                ]
-              }
-            }
+            "$ref": "#/components/parameters/contentExpand"
           },
           {
             "name": "start",
@@ -2130,6 +1780,13 @@
           "/content"
         ],
         "summary": "Get history for content",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.summary"
+            ]
+          }
+        ],
         "description": "Returns the most recent update for a piece of content.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**: Permission to view the content.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentResource.getHistoryForContent_get",
         "parameters": [
@@ -2189,6 +1846,13 @@
           "/content"
         ],
         "summary": "Get macro body by macro ID",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.all"
+            ]
+          }
+        ],
         "description": "Returns the body of a macro in storage format, for the given macro ID.\nThis includes information like the name of the macro, the body of the macro,\nand any macro parameters. This method is mainly used by Cloud apps.\n\nAbout the macro ID: When a macro is created in a new version of content,\nConfluence will generate a random ID for it, unless an ID is specified\n(by an app). The macro ID will look similar to this: '50884bd9-0cb8-41d5-98be-f80943c14f96'.\nThe ID is then persisted as new versions of content are created, and is\nonly modified by Confluence if there are conflicting IDs.\n\nNote, to preserve backwards compatibility this resource will also match on\nthe hash of the macro body, even if a macro ID is found. This check will\neventually become redundant, as macro IDs are generated for pages and\ntransparently propagate out to all instances.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to view the content that the macro is in.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentResource.getMacroBodyByMacroId_get",
         "parameters": [
@@ -2248,6 +1912,13 @@
           "/content/{id}/label"
         ],
         "summary": "Get labels for content",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.summary"
+            ]
+          }
+        ],
         "description": "Returns the labels on a piece of content.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'View' permission for the space and permission to view the content if it is a page.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentLabelsResource.getLabelsForContent_get",
         "parameters": [
@@ -2319,6 +1990,13 @@
           "/content/{id}/label"
         ],
         "summary": "Add labels to content",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-content"
+            ]
+          }
+        ],
         "description": "Adds labels to a piece of content. Does not modify the existing labels.\n\nNotes:\n\n- Labels can also be added when creating content ([Create content](#api-content-post)).\n- Labels can be updated when updating content ([Update content](#api-content-id-put)).\nThis will delete the existing labels and replace them with the labels in\nthe request.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to update the content.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentLabelsResource.addLabelsToContent_post",
         "parameters": [
@@ -2365,6 +2043,13 @@
           "/content/{id}/label"
         ],
         "summary": "Remove label from content using query parameter",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-content"
+            ]
+          }
+        ],
         "description": "Removes a label from a piece of content. This is similar to\n[Remove label from content](#api-content-id-label-label-delete)\nexcept that the label name is specified via a query parameter.\n\nUse this method if the label name has \"/\" characters, as\n[Remove label from content using query parameter](#api-content-id-label-delete)\ndoes not accept \"/\" characters for the label name.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to update the content.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentLabelsResource.removeLabelFromContentUsingQueryParameter_delete",
         "parameters": [
@@ -2407,6 +2092,13 @@
           "/content/{id}/label"
         ],
         "summary": "Remove label from content",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-content"
+            ]
+          }
+        ],
         "description": "Removes a label from a piece of content. This is similar to\n[Remove label from content using query parameter](#api-content-id-label-delete)\nexcept that the label name is specified via a path parameter.\n\nUse this method if the label name does not have \"/\" characters, as the path\nparameter does not accept \"/\" characters for security reasons. Otherwise,\nuse [Remove label from content using query parameter](#api-content-id-label-delete).\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to update the content.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentLabelsResource.removeLabelFromContent_delete",
         "parameters": [
@@ -2452,6 +2144,13 @@
           "/content/{id}/notification"
         ],
         "summary": "Get watches for page",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.summary"
+            ]
+          }
+        ],
         "description": "Returns the watches for a page. A user that watches a page will receive\nreceive notifications when the page is updated.\n\nIf you want to manage watches for a page, use the following `user` methods:\n\n- [Get content watch status for user](#api-user-watch-content-contentId-get)\n- [Add content watch](#api-user-watch-content-contentId-post)\n- [Remove content watch](#api-user-watch-content-contentId-delete)\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentNotificationsResource.getWatchesForPage_get",
         "parameters": [
@@ -2513,6 +2212,13 @@
           "/content/{id}/notification"
         ],
         "summary": "Get watches for space",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.summary"
+            ]
+          }
+        ],
         "description": "Returns all space watches for the space that the content is in. A user that\nwatches a space will receive receive notifications when any content in the\nspace is updated.\n\nIf you want to manage watches for a space, use the following `user` methods:\n\n- [Get space watch status for user](#api-user-watch-space-spaceKey-get)\n- [Add space watch](#api-user-watch-space-spaceKey-post)\n- [Remove space watch](#api-user-watch-space-spaceKey-delete)\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentNotificationsResource.getWatchesForSpace_get",
         "parameters": [
@@ -2571,6 +2277,13 @@
     "/content/{id}/pagehierarchy/copy": {
       "post": {
         "summary": "Copy page hierarchy",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-content"
+            ]
+          }
+        ],
         "description": "Copy page hierarchy allows the copying of an entire hierarchy of pages and their associated properties, permissions and attachments.\n The id path parameter refers to the content id of the page to copy, and the new parent of this copied page is defined using the destinationPageId in the request body.\n The titleOptions object defines the rules of renaming page titles during the copy;\n for example, search and replace can be used in conjunction to rewrite the copied page titles.\n\n Response example:\n <pre><code>\n {\n      \"id\" : \"1180606\",\n      \"links\" : {\n           \"status\" : \"/rest/api/longtask/1180606\"\n      }\n }\n </code></pre>\n Use the /longtask/<taskId> REST API to get the copy task status.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.PageHierarchyResource.copyPageHierarchy_post",
         "parameters": [
@@ -2614,6 +2327,13 @@
           "/content/{id}/property"
         ],
         "summary": "Get content properties",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-props"
+            ]
+          }
+        ],
         "description": "Returns the properties for a piece of content. For more information\nabout content properties, see [Content properties in the REST API](https://developer.atlassian.com/cloud/confluence/content-properties/).\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'View' permission for the space, and permission to view the content if it is a page.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentPropertyResource.getContentProperties_get",
         "parameters": [
@@ -2690,6 +2410,13 @@
           "/content/{id}/property"
         ],
         "summary": "Create content property",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-props"
+            ]
+          }
+        ],
         "description": "Creates a property for an existing piece of content. For more information\nabout content properties, see [Content properties in the REST API](https://developer.atlassian.com/cloud/confluence/content-properties/).\n\nThis is the same as [Create content property for key](#api-content-id-property-key-post)\nexcept that the key is specified in the request body instead of as a\npath parameter.\n\nContent properties can also be added when creating a new piece of content\nby including them in the `metadata.properties` of the request.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to update the content.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentPropertyResource.createContentProperty_post",
         "parameters": [
@@ -2744,6 +2471,13 @@
           "/content/{id}/property"
         ],
         "summary": "Get content property",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-props"
+            ]
+          }
+        ],
         "description": "Returns a content property for a piece of content. For more information, see\n[Content properties in the REST API](https://developer.atlassian.com/cloud/confluence/content-properties/).\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'View' permission for the space, and permission to view the content if it is a page.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentPropertyResource.getContentProperty_get",
         "parameters": [
@@ -2805,6 +2539,13 @@
           "/content/{id}/property"
         ],
         "summary": "Create content property for key",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-props"
+            ]
+          }
+        ],
         "description": "Creates a property for an existing piece of content. For more information\nabout content properties, see [Content properties in the REST API](https://developer.atlassian.com/cloud/confluence/content-properties/).\n\nThis is the same as [Create content property](#api-content-id-property-post)\nexcept that the key is specified as a path parameter instead of in the\nrequest body.\n\nContent properties can also be added when creating a new piece of content\nby including them in the `metadata.properties` of the request.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to update the content.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentPropertyResource.createContentPropertyForKey_post",
         "parameters": [
@@ -2866,6 +2607,13 @@
           "/content/{id}/property"
         ],
         "summary": "Update content property",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-props"
+            ]
+          }
+        ],
         "description": "Updates an existing content property. This method will also create a new\nproperty for a piece of content, if the property key does not exist and\nthe property version is 1. For more information about content properties, see\n[Content properties in the REST API](https://developer.atlassian.com/cloud/confluence/content-properties/).\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to update the content.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentPropertyResource.updateContentProperty_put",
         "parameters": [
@@ -2933,6 +2681,13 @@
           "/content/{id}/property"
         ],
         "summary": "Delete content property",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-props"
+            ]
+          }
+        ],
         "description": "Deletes a content property. For more information about content properties, see\n[Content properties in the REST API](https://developer.atlassian.com/cloud/confluence/content-properties/).\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to update the content.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentPropertyResource.deleteContentProperty_delete",
         "parameters": [
@@ -2972,6 +2727,13 @@
           "/content/{id}/restriction"
         ],
         "summary": "Get restrictions",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.all"
+            ]
+          }
+        ],
         "description": "Returns the restrictions on a piece of content.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to view the content.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentRestrictionResource.getRestrictions_get",
         "parameters": [
@@ -3049,6 +2811,13 @@
           "/content/{id}/restriction"
         ],
         "summary": "Add restrictions",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-content"
+            ]
+          }
+        ],
         "description": "Adds restrictions to a piece of content. Note, this does not change any\nexisting restrictions on the content.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to edit the content.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentRestrictionResource.addRestrictions_post",
         "parameters": [
@@ -3113,6 +2882,13 @@
           "/content/{id}/restriction"
         ],
         "summary": "Update restrictions",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-content"
+            ]
+          }
+        ],
         "description": "Updates restrictions for a piece of content. This removes the existing\nrestrictions and replaces them with the restrictions in the request.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to edit the content.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentRestrictionResource.updateRestrictions_put",
         "parameters": [
@@ -3177,6 +2953,13 @@
           "/content/{id}/restriction"
         ],
         "summary": "Delete restrictions",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-content"
+            ]
+          }
+        ],
         "description": "Removes all restrictions (read and update) on a piece of content.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to edit the content.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentRestrictionResource.deleteRestrictions_delete",
         "parameters": [
@@ -3238,6 +3021,13 @@
           "/content/{id}/restriction"
         ],
         "summary": "Get restrictions by operation",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.all"
+            ]
+          }
+        ],
         "description": "Returns restrictions on a piece of content by operation. This method is\nsimilar to [Get restrictions](#api-content-id-restriction-get) except that\nthe operations are properties of the return object, rather than items in\na results array.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to view the content.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentRestrictionResource.getRestrictionsByOperation_get",
         "parameters": [
@@ -3301,6 +3091,13 @@
           "/content/{id}/restriction"
         ],
         "summary": "Get restrictions for operation",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.all"
+            ]
+          }
+        ],
         "description": "Returns the restictions on a piece of content for a given operation (read\nor update).\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to view the content.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentRestrictionResource.getRestrictionsForOperation_get",
         "parameters": [
@@ -3390,7 +3187,14 @@
           "/content/{id}/restriction"
         ],
         "summary": "Get content restriction status for group",
-        "description": "Returns whether the specified content restriction applies to a group.\nFor example, if the 'admins' group has permission to read a page with an\nID of 123, then the following request will return true:\n\n`https://your-domain.atlassian.net/wiki/rest/api/content/123/restriction/byOperation/read/group/admins`\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to view the content.",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.all"
+            ]
+          }
+        ],
+        "description": "Returns whether the specified content restriction applies to a group.\nFor example, if a page with `id=123` has a `read` restriction for the `admins` group,\nthe following request will return `true`:\n\n`https://your-domain.atlassian.net/wiki/rest/api/content/123/restriction/byOperation/read/group/admins`\n\nNote that a response of `true` does not guarantee that the group can view the page, as it does not account for\naccount-inherited restrictions, space permissions, or even product access. For more\ninformation, see [Confluence permissions](https://confluence.atlassian.com/x/_AozKw).\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to view the content.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentRestrictionResource.getContentRestrictionStatusForGroup_get",
         "parameters": [
           {
@@ -3440,6 +3244,13 @@
           "/content/{id}/restriction"
         ],
         "summary": "Add group to content restriction",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-content"
+            ]
+          }
+        ],
         "description": "Adds a group to a content restriction. That is, grant read or update\npermission to the group for a piece of content.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to edit the content.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentRestrictionResource.addGroupToContentRestriction_put",
         "parameters": [
@@ -3490,6 +3301,13 @@
           "/content/{id}/restriction"
         ],
         "summary": "Remove group from content restriction",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-content"
+            ]
+          }
+        ],
         "description": "Removes a group from a content restriction. That is, remove read or update\npermission for the group for a piece of content.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to edit the content.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentRestrictionResource.removeGroupFromContentRestriction_delete",
         "parameters": [
@@ -3542,7 +3360,14 @@
           "/content/{id}/restriction"
         ],
         "summary": "Get content restriction status for user",
-        "description": "Returns whether the specified content restriction applies to a user.\nFor example, if a user with an account ID of `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`\nhas permission to read a page with an ID of `123`, then the following request will return true:\n\n`https://your-domain.atlassian.net/wiki/rest/api/content/123/restriction/byOperation/read/user?accountId=384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to view the content.",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.all"
+            ]
+          }
+        ],
+        "description": "Returns whether the specified content restriction applies to a user.\nFor example, if a page with `id=123` has a `read` restriction for a user with an account ID of\n`384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`, the following request will return `true`:\n\n`https://your-domain.atlassian.net/wiki/rest/api/content/123/restriction/byOperation/read/user?accountId=384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`\n\nNote that a response of `true` does not guarantee that the user can view the page, as it does not account for\naccount-inherited restrictions, space permissions, or even product access. For more\ninformation, see [Confluence permissions](https://confluence.atlassian.com/x/_AozKw).\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to view the content.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentRestrictionResource.getContentRestrictionStatusForUser_get",
         "parameters": [
           {
@@ -3606,6 +3431,13 @@
           "/content/{id}/restriction"
         ],
         "summary": "Add user to content restriction",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-content"
+            ]
+          }
+        ],
         "description": "Adds a user to a content restriction. That is, grant read or update\npermission to the user for a piece of content.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to edit the content.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentRestrictionResource.addUserToContentRestriction_put",
         "parameters": [
@@ -3670,6 +3502,13 @@
           "/content/{id}/restriction"
         ],
         "summary": "Remove user from content restriction",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-content"
+            ]
+          }
+        ],
         "description": "Removes a group from a content restriction. That is, remove read or update\npermission for the group for a piece of content.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to edit the content.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentRestrictionResource.removeUserFromContentRestriction_delete",
         "parameters": [
@@ -3740,6 +3579,13 @@
           "/content/{id}/version"
         ],
         "summary": "Get content versions",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.summary"
+            ]
+          }
+        ],
         "description": "Returns the versions for a piece of content in descending order.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to view the content. If the content is a blog post, 'View' permission\nfor the space is required.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentVersionResource.getContentVersions_get",
         "parameters": [
@@ -3816,6 +3662,13 @@
           "/content/{id}/version"
         ],
         "summary": "Restore content version",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-content"
+            ]
+          }
+        ],
         "description": "Restores a historical version to be the latest version. That is, a new version\nis created with the content of the historical version.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to update the content.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentVersionResource.restoreContentVersion_post",
         "parameters": [
@@ -3883,6 +3736,13 @@
           "/content/{id}/version"
         ],
         "summary": "Get content version",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.summary"
+            ]
+          }
+        ],
         "description": "Returns a version for a piece of content.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to view the content. If the content is a blog post, 'View' permission\nfor the space is required.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentVersionResource.getContentVersion_get",
         "parameters": [
@@ -3948,6 +3808,13 @@
           "/content/{id}/version"
         ],
         "summary": "Delete content version",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-content"
+            ]
+          }
+        ],
         "description": "Delete a historical version. This does not delete the changes made to the\ncontent in that version, rather the changes for the deleted version are\nrolled up into the next version. Note, you cannot delete the current version.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to update the content.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentVersionResource.deleteContentVersion_delete",
         "parameters": [
@@ -4004,48 +3871,7 @@
             }
           },
           {
-            "name": "expand",
-            "in": "query",
-            "description": "A multi-value parameter indicating which properties of the new content to expand.\n\n- `childTypes.all` returns whether the content has attachments, comments, or child pages.\nUse this if you only need to check whether the content has children of a particular type.\n- `childTypes.attachment` returns whether the content has attachments.\n- `childTypes.comment` returns whether the content has comments.\n- `childTypes.page` returns whether the content has child pages.\n- `container` returns the space that the content is in. This is the same as the information\nreturned by [Get space](#api-space-spaceKey-get).\n- `metadata.currentuser` returns information about the current user in relation to the content,\nlike when they last viewed it, modified it, contributed to it, or added it as a favourite.\n- `metadata.properties` returns content properties that have been set via the Confluence REST API.\n- `metadata.labels` returns the labels that have been added to the content.\n- `metadata.frontend` (this property is only used by Atlassian)\n- `operations` returns the operations for the content, which are used when setting permissions.\n- `children.page` returns pages that are descendants at the level immediately below the content.\n- `children.attachment` returns all attachments for the content.\n- `children.comment` returns all comments on the content.\n- `restrictions.read.restrictions.user` returns the users that have permission to read the content.\n- `restrictions.read.restrictions.group` returns the groups that have permission to read the content.\n- `restrictions.update.restrictions.user` returns the users that have permission to update the content.\n- `restrictions.update.restrictions.group` returns the groups that have permission to update the content.\n- `history` returns the history of the content, including the date it was created.\n- `history.lastUpdated` returns information about the most recent update of the content, including\nwho updated it and when it was updated.\n- `history.previousVersion` returns information about the update prior to the current content update.\n- `history.contributors` returns all of the users who have contributed to the content.\n- `history.nextVersion` returns information about the update after to the current content update.\n- `ancestors` returns the parent page, if the content is a page.\n- `body` returns the body of the content in different formats, including the editor format,\nview format, and export format.\n- `version` returns information about the most recent update of the content, including who updated it\nand when it was updated.\n- `descendants.page` returns pages that are descendants at any level below the content.\n- `descendants.attachment` returns all attachments for the content, same as `children.attachment`.\n- `descendants.comment` returns all comments on the content, same as `children.comment`.\n- `space` returns the space that the content is in. This is the same as the information returned by\n[Get space](#api-space-spaceKey-get).",
-            "required": false,
-            "style": "form",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "childTypes.all",
-                  "childTypes.attachment",
-                  "childTypes.comment",
-                  "childTypes.page",
-                  "container",
-                  "metadata.currentuser",
-                  "metadata.properties",
-                  "metadata.labels",
-                  "metadata.frontend",
-                  "operations",
-                  "children.page",
-                  "children.attachment",
-                  "children.comment",
-                  "restrictions.read.restrictions.user",
-                  "restrictions.read.restrictions.group",
-                  "restrictions.update.restrictions.user",
-                  "restrictions.update.restrictions.group",
-                  "history",
-                  "history.lastUpdated",
-                  "history.previousVersion",
-                  "history.contributors",
-                  "history.nextVersion",
-                  "ancestors",
-                  "body",
-                  "version",
-                  "descendants.page",
-                  "descendants.attachment",
-                  "descendants.comment",
-                  "space"
-                ]
-              }
-            }
+            "$ref": "#/components/parameters/contentExpand"
           },
           {
             "name": "spaceKeyContext",
@@ -4109,11 +3935,11 @@
     "/experimental/cql/pdcleaner": {
       "post": {
         "summary": "Convert user identifiers to account IDs in CQL queries",
-        "description": "Converts one or more CQL queries with user identifiers (username or user key) \nto equivalent CQL queries with account IDs.\n\nYou may wish to use this operation if your system stores CQL queries and you \nwant to make them GDPR-compliant. For more information about GDPR-related changes, \nsee the [migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/).\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**: None",
+        "description": "Converts one or more CQL queries with user identifiers (username or user key)\nto equivalent CQL queries with account IDs.\n\nYou may wish to use this operation if your system stores CQL queries and you\nwant to make them GDPR-compliant. For more information about GDPR-related changes,\nsee the [migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/).\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**: None",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ExperimentalCQLResource.cqlPDCleaner_post",
         "responses": {
           "200": {
-            "description": "Returned if the request is successful. The CQL queries are returned \nin the same order that they were passed. Note that if the user in a \nCQL query cannot be found, a `200` code is still returned but the username \nor key is converted to an empty string.",
+            "description": "Returned if the request is successful. The CQL queries are returned\nin the same order that they were passed. Note that if the user in a\nCQL query cannot be found, a `200` code is still returned but the username\nor key is converted to an empty string.",
             "content": {
               "application/json": {
                 "schema": {
@@ -4128,7 +3954,7 @@
             }
           },
           "400": {
-            "description": "Returned if: \n\n* At least one of the queries cannot be converted. For example, the \nCQL has invalid operators or invalid keywords.\n* More than 100 CQL queries are included in the request."
+            "description": "Returned if:\n\n* At least one of the queries cannot be converted. For example, the\nCQL has invalid operators or invalid keywords.\n* More than 100 CQL queries are included in the request."
           }
         },
         "requestBody": {
@@ -4393,6 +4219,13 @@
           "/relation"
         ],
         "summary": "Find target entities related to a source entity",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.summary"
+            ]
+          }
+        ],
         "description": "Returns all target entities that have a particular relationship to the\nsource entity. Note, relationships are one way.\n\nFor example, the following method finds all content that the current user\nhas an 'ignore' relationship with:\n`GET https://your-domain.atlassian.net/wiki/rest/api/relation/ignore/from/user/current/to/content`\nNote, 'ignore' is an example custom relationship type.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to view both the target entity and source entity.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.RelationResource.findTargetFromSource_get",
         "parameters": [
@@ -4550,6 +4383,13 @@
           "/relation"
         ],
         "summary": "Find relationship from source to target",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.summary"
+            ]
+          }
+        ],
         "description": "Find whether a particular type of relationship exists from a source\nentity to a target entity. Note, relationships are one way.\n\nFor example, you can use this method to find whether the current user has\nselected a particular page as a favorite (i.e. 'save for later'):\n`GET https://your-domain.atlassian.net/wiki/rest/api/relation/favourite/from/user/current/to/content/123`\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to view both the target entity and source entity.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.RelationResource.GetRelationship_get",
         "parameters": [
@@ -4690,6 +4530,13 @@
           "/relation"
         ],
         "summary": "Create relationship",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-content"
+            ]
+          }
+        ],
         "description": "Creates a relationship between two entities (user, space, content). The\n'favourite' relationship is supported by default, but you can use this method\nto create any type of relationship between two entities.\n\nFor example, the following method creates a 'sibling' relationship between\ntwo pieces of content:\n`GET https://your-domain.atlassian.net/wiki/rest/api/relation/sibling/from/content/123/to/content/456`\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.RelationResource.createRelationship_put",
         "parameters": [
@@ -4812,6 +4659,13 @@
           "/relation"
         ],
         "summary": "Delete",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-content"
+            ]
+          }
+        ],
         "description": "Deletes a relationship between two entities (user, space, content).\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).\nFor favourite relationships, the current user can only delete their own\nfavourite relationships. A space administrator can delete favourite\nrelationships for any user.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.RelationResource.delete_delete",
         "parameters": [
@@ -4929,6 +4783,13 @@
           "/relation"
         ],
         "summary": "Find target entities related to a source entity",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.summary"
+            ]
+          }
+        ],
         "description": "Returns all target entities that have a particular relationship to the\nsource entity. Note, relationships are one way.\n\nFor example, the following method finds all users that have a 'collaborator'\nrelationship to a piece of content with an ID of '1234':\n`GET https://your-domain.atlassian.net/wiki/rest/api/relation/collaborator/to/content/1234/from/user`\nNote, 'collaborator' is an example custom relationship type.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to view both the target entity and source entity.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.RelationResource.findSourcesForTarget_get",
         "parameters": [
@@ -5086,6 +4947,13 @@
           "/search"
         ],
         "summary": "Search",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "search:confluence"
+            ]
+          }
+        ],
         "description": "Searches for content using the\n[Confluence Query Language (CQL)](https://developer.atlassian.com/cloud/confluence/advanced-searching-using-cql/)\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to view the entities. Note, only entities that the user has\npermission to view will be returned.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.SearchResource.search_get",
         "parameters": [
@@ -5163,12 +5031,83 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
+    "/search/user": {
+      "get": {
+        "tags": [
+          "/search/user"
+        ],
+        "summary": "Search",
+        "description": "Searches for users using user-specific queries from the\n[Confluence Query Language (CQL)](https://developer.atlassian.com/cloud/confluence/advanced-searching-using-cql/).\n\nNote that some user fields may be set to null depending on the user's privacy settings.\nThese are: email, profilePicture, and displayName.",
+        "operationId": "com.atlassian.confluence.plugins.restapi.resources.SearchResource.search_user_get",
+        "parameters": [
+          {
+            "name": "cql",
+            "in": "query",
+            "description": "The CQL query to be used for the search. See\n[Advanced Searching using CQL](https://developer.atlassian.com/cloud/confluence/advanced-searching-using-cql/)\nfor instructions on how to build a CQL query.\n\nExample queries:\n          cql=type=user will return all users\n          cql=user=“1234” will return user with accountId “1234”\n          You can also use IN, NOT IN, != operators\n          cql=user IN (“12”, “34\") will return users with accountids “12” and “34”\n          cql=user.fullname~jo will return users with nickname/full name starting with “jo”\n          cql=user.accountid=“123” will return user with accountId “123”",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "The starting index of the returned users.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The maximum number of user objects to return per page.\nNote, this may be restricted by fixed system limits.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0,
+              "default": 25
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returned if the requested results are returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchPageResponseSearchResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Returned if the CQL query cannot be parsed."
+          },
+          "403": {
+            "description": "Returned if the calling user does not have permission to access\nConfluence."
+          }
+        },
+        "x-atlassian-connect-scope": "READ"
+      }
+    },
     "/settings/lookandfeel": {
       "get": {
         "tags": [
           "/settings/lookandfeel"
         ],
         "summary": "Get look and feel settings",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "manage:confluence-configuration"
+            ]
+          }
+        ],
         "description": "Returns the look and feel settings for the site or a single space. This\nincludes attributes such as the color scheme, padding, and border radius.\n\nThe look and feel settings for a space can be inherited from the global\nlook and feel settings or provided by a theme.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nNone",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.LookAndFeelResource.getLookAndFeelSettings_get",
         "parameters": [
@@ -5209,6 +5148,13 @@
           "/settings/lookandfeel"
         ],
         "summary": "Update look and feel settings",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "manage:confluence-configuration"
+            ]
+          }
+        ],
         "description": "Updates the look and feel settings for the site or for a single space.\nIf custom settings exist, they are updated. If no custom settings exist,\nthen a set of custom settings is created.\n\nNote, if a theme is selected for a space, the space look and feel settings\nare provided by the theme and cannot be overridden.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Admin' permission for the space.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.LookAndFeelResource.updateLookAndFeelSettings_post",
         "parameters": [
@@ -5261,6 +5207,13 @@
           "/settings/lookandfeel"
         ],
         "summary": "Reset look and feel settings",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "manage:confluence-configuration"
+            ]
+          }
+        ],
         "description": "Resets the custom look and feel settings for the site or a single space.\nThis changes the values of the custom settings to be the same as the\ndefault settings. It does not change which settings (default or custom)\nare selected. Note, the default space settings are inherited from the\ncurrent global settings.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Admin' permission for the space.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.LookAndFeelResource.resetLookAndFeelSettings_delete",
         "parameters": [
@@ -5297,6 +5250,13 @@
           "/settings/lookandfeel"
         ],
         "summary": "Set look and feel settings",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "manage:confluence-configuration"
+            ]
+          }
+        ],
         "description": "Sets the look and feel settings to either the default settings or the\ncustom settings, for the site or a single space. Note, the default\nspace settings are inherited from the current global settings.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Admin' permission for the space.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.LookAndFeelResource.setLookAndFeelSettings_put",
         "parameters": [
@@ -5351,6 +5311,13 @@
           "/settings"
         ],
         "summary": "Get system info",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "manage:confluence-configuration"
+            ]
+          }
+        ],
         "description": "Returns the system information for the Confluence Cloud tenant. This\ninformation is used by Atlassian.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.SystemInfoResource.getSystemInfo_get",
         "responses": {
@@ -5377,6 +5344,13 @@
           "/settings/theme"
         ],
         "summary": "Get themes",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "manage:confluence-configuration"
+            ]
+          }
+        ],
         "description": "Returns all themes, not including the default theme.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**: None",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ThemeResource.getThemes_get",
         "parameters": [
@@ -5426,6 +5400,13 @@
           "/settings/theme"
         ],
         "summary": "Get global theme",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "manage:confluence-configuration"
+            ]
+          }
+        ],
         "description": "Returns the globally assigned theme.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**: None",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ThemeResource.getGlobalTheme_get",
         "responses": {
@@ -5452,6 +5433,13 @@
           "/settings/theme"
         ],
         "summary": "Get theme",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "manage:confluence-configuration"
+            ]
+          }
+        ],
         "description": "Returns a theme. This includes information about the theme name,\ndescription, and icon.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**: None",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ThemeResource.getTheme_get",
         "parameters": [
@@ -5489,6 +5477,13 @@
           "/space"
         ],
         "summary": "Get spaces",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-space.summary"
+            ]
+          }
+        ],
         "description": "Returns all spaces. The returned spaces are ordered alphabetically in\nascending order by space key.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).\nNote, the returned list will only contain spaces that the current user\nhas permission to view.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.SpaceResource.getSpaces_get",
         "parameters": [
@@ -5563,29 +5558,7 @@
             }
           },
           {
-            "name": "expand",
-            "in": "query",
-            "description": "A multi-value parameter indicating which properties of the spaces to\nexpand, where:\n\n  - `settings` returns the settings for the space, similar to [Get space settings](#api-space-spaceKey-settings-get).\n  - `metadata.labels` returns the space labels, which are used to categorize the space.\n  - `operations` returns the operations for a space, which are used when setting permissions.\n  - `lookAndFeel` returns information about the look and feel of the space, like the color scheme.\n  - `permissions` returns the permissions for the space.\n  - `icon` returns information about space icon.\n  - `description.plain` returns the description of the space.\n  - `description.view` returns the description of the space.\n  - `theme` returns information about the space theme.\n  - `homepage` returns information about the space homepage.",
-            "required": false,
-            "style": "form",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "settings",
-                  "metadata.labels",
-                  "operations",
-                  "lookAndFeel",
-                  "permissions",
-                  "icon",
-                  "description.plain",
-                  "description.view",
-                  "theme",
-                  "homepage"
-                ]
-              }
-            }
+            "$ref": "#/components/parameters/spaceExpand"
           },
           {
             "name": "start",
@@ -5634,6 +5607,13 @@
           "/space"
         ],
         "summary": "Create space",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-space"
+            ]
+          }
+        ],
         "description": "Creates a new space. Note, currently you cannot set space labels when\ncreating a space.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Create Space(s)' global permission.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.SpaceResource.createSpace_post",
         "responses": {
@@ -5677,6 +5657,13 @@
           "/space"
         ],
         "summary": "Create private space",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-space"
+            ]
+          }
+        ],
         "description": "Creates a new space that is only visible to the creator. This method is\nthe same as the [Create space](#api-space-post) method with permissions\nset to the current user only. Note, currently you cannot set space\nlabels when creating a space.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Create Space(s)' global permission.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.SpaceResource.createPrivateSpace_post",
         "responses": {
@@ -5720,6 +5707,13 @@
           "/space"
         ],
         "summary": "Get space",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-space.summary"
+            ]
+          }
+        ],
         "description": "Returns a space. This includes information like the name, description,\nand permissions, but not the content in the space.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'View' permission for the space.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.SpaceResource.getSpace_get",
         "parameters": [
@@ -5733,29 +5727,7 @@
             }
           },
           {
-            "name": "expand",
-            "in": "query",
-            "description": "A multi-value parameter indicating which properties of the space to\nexpand, where:\n\n  - `settings` returns the settings for the space, similar to [Get space settings](#api-space-spaceKey-settings-get).\n  - `metadata.labels` returns the space labels, which are used to categorize the space.\n  - `operations` returns the operations for a space, which are used when setting permissions.\n  - `lookAndFeel` returns information about the look and feel of the space, like the color scheme.\n  - `permissions` returns the permissions for the space.\n  - `icon` returns information about space icon.\n  - `description.plain` returns the description of the space.\n  - `description.view` returns the description of the space.\n  - `theme` returns information about the space theme.\n  - `homepage` returns information about the space homepage.",
-            "required": false,
-            "style": "form",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "settings",
-                  "metadata.labels",
-                  "operations",
-                  "lookAndFeel",
-                  "permissions",
-                  "icon",
-                  "description.plain",
-                  "description.view",
-                  "theme",
-                  "homepage"
-                ]
-              }
-            }
+            "$ref": "#/components/parameters/spaceExpand"
           }
         ],
         "responses": {
@@ -5783,6 +5755,13 @@
           "/space"
         ],
         "summary": "Update space",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-space"
+            ]
+          }
+        ],
         "description": "Updates the name, description, or homepage of a space.\n\n-   For security reasons, permissions cannot be updated via the API and\nmust be changed via the user interface instead.\n-   Currently you cannot set space labels when updating a space.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Admin' permission for the space.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.SpaceResource.updateSpace_put",
         "parameters": [
@@ -5832,6 +5811,13 @@
           "/space"
         ],
         "summary": "Delete space",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-space"
+            ]
+          }
+        ],
         "description": "Deletes a space. Note, the space will be deleted in a long running task.\nTherefore, the space may not be deleted yet when this method has\nreturned. Clients should poll the status link that is returned in the\nresponse until the task completes.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Admin' permission for the space.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.SpaceResource.deleteSpace_delete",
         "parameters": [
@@ -5865,6 +5851,13 @@
           "/space"
         ],
         "summary": "Get content for space",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.summary"
+            ]
+          }
+        ],
         "description": "Returns all content in a space. The returned content is grouped by type\n(pages then blogposts), then ordered by content ID in ascending order.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'View' permission for the space. Note, the returned list will only\ncontain content that the current user has permission to view.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.SpaceResource.getContentForSpace_get",
         "parameters": [
@@ -5892,48 +5885,7 @@
             }
           },
           {
-            "name": "expand",
-            "in": "query",
-            "description": "A multi-value parameter indicating which properties of the content\nto expand, where:\n\n  - `childTypes.all` returns whether the content has attachments, comments, or child pages. Use this if you only need to check whether the content has children of a particular type.\n  - `childTypes.attachment` returns whether the content has attachments.\n  - `childTypes.comment` returns whether the content has comments.\n  - `childTypes.page` returns whether the content has child pages.\n  - `container` returns the space that the content is in. This is the same as the information returned by [Get space](#api-space-spaceKey-get).\n  - `metadata.currentuser` returns information about the current user in relation to the content, like when they last viewed it, modified it, contributed to it, or added it as a favourite.\n  - `metadata.properties` returns content properties that have been set via the Confluence REST API.\n  - `metadata.labels` returns the labels that have been added to the content.\n  - `metadata.frontend` (this property is only used by Atlassian)\n  - `operations` returns the operations for the content, which are used when setting permissions.\n  - `children.page` returns pages that are descendants at the level immediately below the content.\n  - `children.attachment` returns all attachments for the content.\n  - `children.comment` returns all comments on the content.\n  - `restrictions.read.restrictions.user` returns the users that have permission to read the content.\n  - `restrictions.read.restrictions.group` returns the groups that have permission to read the content.\n  - `restrictions.update.restrictions.user` returns the users that have permission to update the content.\n  - `restrictions.update.restrictions.group` returns the groups that have permission to update the content.\n  - `history` returns the history of the content, including the date it was created.\n  - `history.lastUpdated` returns information about the most recent update of the content, including who updated it and when it was updated.\n  - `history.previousVersion` returns information about the update prior to the current content update.\n  - `history.contributors` returns all of the users who have contributed to the content.\n  - `history.nextVersion` returns information about the update after to the current content update.\n  - `ancestors` returns the parent page, if the content is a page.\n  - `body` returns the body of the content in different formats, including the editor format, view format, and export format.\n  - `version` returns information about the most recent update of the content, including who updated it and when it was updated.\n  - `descendants.page` returns pages that are descendants at any level below the content.\n  - `descendants.attachment` returns all attachments for the content, same as `children.attachment`.\n  - `descendants.comment` returns all comments on the content, same as `children.comment`.\n  - `space` returns the space that the content is in. This is the same as the information returned by [Get space](#api-space-spaceKey-get).",
-            "required": false,
-            "style": "form",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "childTypes.all",
-                  "childTypes.attachment",
-                  "childTypes.comment",
-                  "childTypes.page",
-                  "container",
-                  "metadata.currentuser",
-                  "metadata.properties",
-                  "metadata.labels",
-                  "metadata.frontend",
-                  "operations",
-                  "children.page",
-                  "children.attachment",
-                  "children.comment",
-                  "restrictions.read.restrictions.user",
-                  "restrictions.read.restrictions.group",
-                  "restrictions.update.restrictions.user",
-                  "restrictions.update.restrictions.group",
-                  "history",
-                  "history.lastUpdated",
-                  "history.previousVersion",
-                  "history.contributors",
-                  "history.nextVersion",
-                  "ancestors",
-                  "body",
-                  "version",
-                  "descendants.page",
-                  "descendants.attachment",
-                  "descendants.comment",
-                  "space"
-                ]
-              }
-            }
+            "$ref": "#/components/parameters/contentExpand"
           },
           {
             "name": "start",
@@ -5987,6 +5939,13 @@
           "/space"
         ],
         "summary": "Get content by type for space",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.summary"
+            ]
+          }
+        ],
         "description": "Returns all content of a given type, in a space. The returned content is\nordered by content ID in ascending order.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'View' permission for the space. Note, the returned list will only\ncontain content that the current user has permission to view.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.SpaceResource.getContentByTypeForSpace_get",
         "parameters": [
@@ -6027,48 +5986,7 @@
             }
           },
           {
-            "name": "expand",
-            "in": "query",
-            "description": "A multi-value parameter indicating which properties of the content\nto expand, where:\n\n  - `childTypes.all` returns whether the content has attachments, comments, or child pages. Use this if you only need to check whether the content has children of a particular type.\n  - `childTypes.attachment` returns whether the content has attachments.\n  - `childTypes.comment` returns whether the content has comments.\n  - `childTypes.page` returns whether the content has child pages.\n  - `container` returns the space that the content is in. This is the same as the information returned by [Get space](#api-space-spaceKey-get).\n  - `metadata.currentuser` returns information about the current user in relation to the content, like when they last viewed it, modified it, contributed to it, or added it as a favourite.\n  - `metadata.properties` returns content properties that have been set via the Confluence REST API.\n  - `metadata.labels` returns the labels that have been added to the content.\n  - `metadata.frontend` (this property is only used by Atlassian)\n  - `operations` returns the operations for the content, which are used when setting permissions.\n  - `children.page` returns pages that are descendants at the level immediately below the content.\n  - `children.attachment` returns all attachments for the content.\n  - `children.comment` returns all comments on the content.\n  - `restrictions.read.restrictions.user` returns the users that have permission to read the content.\n  - `restrictions.read.restrictions.group` returns the groups that have permission to read the content.\n  - `restrictions.update.restrictions.user` returns the users that have permission to update the content.\n  - `restrictions.update.restrictions.group` returns the groups that have permission to update the content.\n  - `history` returns the history of the content, including the date it was created.\n  - `history.lastUpdated` returns information about the most recent update of the content, including who updated it and when it was updated.\n  - `history.previousVersion` returns information about the update prior to the current content update.\n  - `history.contributors` returns all of the users who have contributed to the content.\n  - `history.nextVersion` returns information about the update after to the current content update.\n  - `ancestors` returns the parent page, if the content is a page.\n  - `body` returns the body of the content in different formats, including the editor format, view format, and export format.\n  - `version` returns information about the most recent update of the content, including who updated it and when it was updated.\n  - `descendants.page` returns pages that are descendants at any level below the content.\n  - `descendants.attachment` returns all attachments for the content, same as `children.attachment`.\n  - `descendants.comment` returns all comments on the content, same as `children.comment`.\n  - `space` returns the space that the content is in. This is the same as the information returned by [Get space](#api-space-spaceKey-get).",
-            "required": false,
-            "style": "form",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "childTypes.all",
-                  "childTypes.attachment",
-                  "childTypes.comment",
-                  "childTypes.page",
-                  "container",
-                  "metadata.currentuser",
-                  "metadata.properties",
-                  "metadata.labels",
-                  "metadata.frontend",
-                  "operations",
-                  "children.page",
-                  "children.attachment",
-                  "children.comment",
-                  "restrictions.read.restrictions.user",
-                  "restrictions.read.restrictions.group",
-                  "restrictions.update.restrictions.user",
-                  "restrictions.update.restrictions.group",
-                  "history",
-                  "history.lastUpdated",
-                  "history.previousVersion",
-                  "history.contributors",
-                  "history.nextVersion",
-                  "ancestors",
-                  "body",
-                  "version",
-                  "descendants.page",
-                  "descendants.attachment",
-                  "descendants.comment",
-                  "space"
-                ]
-              }
-            }
+            "$ref": "#/components/parameters/contentExpand"
           },
           {
             "name": "start",
@@ -6122,6 +6040,13 @@
           "/space/{spaceKey}/property"
         ],
         "summary": "Get space properties",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-props"
+            ]
+          }
+        ],
         "description": "Returns all properties for the given space. Space properties are a key-value storage associated with a space.\n\n**[Permissions required](https://confluence.atlassian.com/x/_AozKw)**: ‘View’ permission for the space.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.SpacePropertyResource.getSpaceProperties_get",
         "parameters": [
@@ -6198,6 +6123,13 @@
           "/space/{spaceKey}/property"
         ],
         "summary": "Create space property",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-props"
+            ]
+          }
+        ],
         "description": "Creates a new space property.\n\n**[Permissions required](https://confluence.atlassian.com/x/_AozKw)**:\n‘Admin’ permission for the space.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.SpacePropertyResource.createSpaceProperty_post",
         "parameters": [
@@ -6252,6 +6184,13 @@
           "/space/{spaceKey}/property"
         ],
         "summary": "Get space property",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-props"
+            ]
+          }
+        ],
         "description": "Returns a space property.\n\n**[Permissions required](https://confluence.atlassian.com/x/_AozKw)**: ‘View’ permission for the space.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.SpacePropertyResource.getSpaceProperty_get",
         "parameters": [
@@ -6313,6 +6252,13 @@
           "/space/{spaceKey}/property"
         ],
         "summary": "Create space property for key",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-props"
+            ]
+          }
+        ],
         "description": "Creates a new space property. This is the same as `POST\n/space/{spaceKey}/property` but the key for the property is passed as a\npath parameter, rather than in the request body.\n\n**[Permissions required](https://confluence.atlassian.com/x/_AozKw)**:\n‘Admin’ permission for the space.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.SpacePropertyResource.createSpacePropertyForKey_post",
         "parameters": [
@@ -6374,6 +6320,13 @@
           "/space/{spaceKey}/property"
         ],
         "summary": "Update space property",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-props"
+            ]
+          }
+        ],
         "description": "Updates a space property. Note, you cannot update the key of a space\nproperty, only the value.\n\n**[Permissions required](https://confluence.atlassian.com/x/_AozKw)**:\n‘Admin’ permission for the space.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.SpacePropertyResource.updateSpaceProperty_put",
         "parameters": [
@@ -6441,6 +6394,13 @@
           "/space/{spaceKey}/property"
         ],
         "summary": "Delete space property",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-props"
+            ]
+          }
+        ],
         "description": "Deletes a space property.\n\n**[Permissions required](https://confluence.atlassian.com/x/_AozKw)**:\n‘Admin’ permission for the space.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.SpacePropertyResource.deleteSpaceProperty_delete",
         "parameters": [
@@ -6480,6 +6440,13 @@
           "/space"
         ],
         "summary": "Get space settings",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-space.summary"
+            ]
+          }
+        ],
         "description": "Returns the settings of a space. Currently only the\n`routeOverrideEnabled` setting can be returned.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'View' permission for the space.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.SpaceResource.getSpaceSettings_get",
         "parameters": [
@@ -6518,6 +6485,13 @@
           "/space"
         ],
         "summary": "Update space settings",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-space"
+            ]
+          }
+        ],
         "description": "Updates the settings for a space. Currently only the\n`routeOverrideEnabled` setting can be updated.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Admin' permission for the space.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.SpaceResource.updateSpaceSettings_put",
         "parameters": [
@@ -6569,6 +6543,13 @@
           "/space/{spaceKey}/theme"
         ],
         "summary": "Get space theme",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-space.summary"
+            ]
+          }
+        ],
         "description": "Returns the theme selected for a space, if one is set. If no space\ntheme is set, this means that the space is inheriting the global look\nand feel settings.\n\n**[Permissions required](https://confluence.atlassian.com/x/_AozKw)**: ‘View’ permission for the space.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.SpaceThemeResource.getSpaceTheme_get",
         "parameters": [
@@ -6604,6 +6585,13 @@
           "/space/{spaceKey}/theme"
         ],
         "summary": "Set space theme",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-space"
+            ]
+          }
+        ],
         "description": "Sets the theme for a space. Note, if you want to reset the space theme to\nthe default Confluence theme, use the 'Reset space theme' method instead\nof this method.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Admin' permission for the space.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.SpaceThemeResource.setSpaceTheme_put",
         "parameters": [
@@ -6652,6 +6640,13 @@
           "/space/{spaceKey}/theme"
         ],
         "summary": "Reset space theme",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-space"
+            ]
+          }
+        ],
         "description": "Resets the space theme. This means that the space will inherit the\nglobal look and feel settings\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Admin' permission for the space.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.SpaceThemeResource.resetSpaceTheme_delete",
         "parameters": [
@@ -6676,12 +6671,74 @@
         "x-atlassian-connect-scope": "DELETE"
       }
     },
+    "/space/{spaceKey}/watch": {
+      "get": {
+        "tags": [
+          "/space/{spaceKey}/watch"
+        ],
+        "summary": "Returns a list of watchers of a space",
+        "description": "Returns a list of watchers of a space",
+        "operationId": "com.atlassian.confluence.plugins.restapi.resources.SpaceResource.getWatchersForSpace_get",
+        "parameters": [
+          {
+            "name": "spaceKey",
+            "in": "path",
+            "description": "The key of the space to get watchers.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "The start point of the collection to return.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The limit of the number of items to return, this may be restricted by fixed system limits.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returned if watchers list is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpaceWatchArray"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned if there is no space with the given key"
+          }
+        },
+        "x-atlassian-connect-scope": "READ"
+      }
+    },
     "/template": {
       "post": {
         "tags": [
           "/template"
         ],
         "summary": "Create content template",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-content"
+            ]
+          }
+        ],
         "description": "Creates a new content template. Note, blueprint templates cannot be created via the REST API.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Admin' permission for the space to create a space template or 'Confluence Administrator'\nglobal permission to create a global template.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.TemplateResource.createContentTemplate_post",
         "responses": {
@@ -6717,6 +6774,13 @@
           "/template"
         ],
         "summary": "Update content template",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-content"
+            ]
+          }
+        ],
         "description": "Updates a content template. Note, blueprint templates cannot be updated\nvia the REST API.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Admin' permission for the space to create a space template or 'Confluence Administrator'\nglobal permission to create a global template.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.TemplateResource.updateContentTemplate_put",
         "responses": {
@@ -6754,6 +6818,13 @@
           "/template"
         ],
         "summary": "Get blueprint templates",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.summary"
+            ]
+          }
+        ],
         "description": "Returns all templates provided by blueprints. Use this method to retrieve\nall global blueprint templates or all blueprint templates in a space.\n\nNote, all global blueprints are inherited by each space. Space blueprints\ncan be customised without affecting the global blueprints.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.TemplateResource.getBlueprintTemplates_get",
         "parameters": [
@@ -6831,6 +6902,13 @@
           "/template"
         ],
         "summary": "Get content templates",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.summary"
+            ]
+          }
+        ],
         "description": "Returns all content templates. Use this method to retrieve all global\ncontent templates or all content templates in a space.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Admin' permission for the space to view space templates and 'Confluence\nAdministrator' global permission to view global templates.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.TemplateResource.getContentTemplates_get",
         "parameters": [
@@ -6908,6 +6986,13 @@
           "/template"
         ],
         "summary": "Get content template",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.summary"
+            ]
+          }
+        ],
         "description": "Returns a content template. This includes information about template,\nlike the name, the space or blueprint that the template is in, the body\nof the template, and more.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Admin' permission for the space to view space templates and 'Confluence\nAdministrator' global permission to view global templates.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.TemplateResource.getContentTemplate_get",
         "parameters": [
@@ -6943,6 +7028,13 @@
           "/template"
         ],
         "summary": "Remove template",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-content"
+            ]
+          }
+        ],
         "description": "Deletes a template. This results in different actions depending on the\ntype of template:\n\n- If the template is a content template, it is deleted.\n- If the template is a modified space-level blueprint template, it reverts\nto the template inherited from the global-level blueprint template.\n- If the template is a modified global-level blueprint template, it reverts\nto the default global-level blueprint template.\n\n Note, unmodified blueprint templates cannot be deleted.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.TemplateResource.removeTemplate_delete",
         "parameters": [
@@ -7214,12 +7306,87 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
+    "/user/bulk": {
+      "get": {
+        "tags": [
+          "/user"
+        ],
+        "summary": "Get multiple users using ids",
+        "description": "Returns user details for the ids provided in request.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
+        "operationId": "com.atlassian.confluence.plugins.restapi.resources.UserResource.getBulkUserLookup",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "query",
+            "description": "A list of accountId's of users to be returned.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "A multi-value parameter indicating which properties of the user to\nexpand.\n\n  - `operations` returns the operations that the user is allowed to do.\n  - `details.personal` returns the 'Personal' details in the user's profile, like the 'Email' and 'Phone'.\n  Note that these fields have been deprecated due to privacy changes. See the\n  [migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\n  for details.\n  - `details.business` returns the 'Company' details in the user's profile, like the 'Position' and 'Department'.\n  Note that these fields have been deprecated due to privacy changes. See the\n  [migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\n  for details.\n  - personalSpace returns the user's personal space, if it exists.",
+            "required": false,
+            "style": "form",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "operations",
+                  "details.personal",
+                  "details.business",
+                  "personalSpace"
+                ]
+              }
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The maximum number of results returned.\nCurrently API returns 200 results max.\nIf more that 200 ids are passed first 200 will be returned.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returned if, the list of users is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkUserLookupArray"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned if the calling user does not have permission to use\nConfluence."
+          }
+        },
+        "x-atlassian-connect-scope": "INACCESSIBLE"
+      }
+    },
     "/user/watch/content/{contentId}": {
       "get": {
         "tags": [
           "/user"
         ],
         "summary": "Get content watch status",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.summary"
+            ]
+          }
+        ],
         "description": "Returns whether a user is watching a piece of content. Choose the user by\ndoing one of the following:\n\n- Specify a user via a query parameter: Use the `username`, `key`, or `accountId` to identify the user.\nNote that `username` and `key` have been deprecated in favor of `accountId`. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n- Do not specify a user: The currently logged-in user will be used.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission if specifying a user, otherwise\npermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.UserWatchResource.getContentWatchStatus_get",
         "parameters": [
@@ -7285,6 +7452,13 @@
           "/user"
         ],
         "summary": "Add content watcher",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-content"
+            ]
+          }
+        ],
         "description": "Adds a user as a watcher to a piece of content. Choose the user by doing\none of the following:\n\n- Specify a user via a query parameter: Use the `username`, `key`, or `accountId` to identify the user.\nNote that `username` and `key` have been deprecated in favor of `accountId`. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n- Do not specify a user: The currently logged-in user will be used.\n\nNote, you must add the `X-Atlassian-Token: no-check` header when making a\nrequest, as this operation has XSRF protection.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission if specifying a user, otherwise\npermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.UserWatchResource.addContentWatcher_post",
         "parameters": [
@@ -7343,6 +7517,13 @@
           "/user"
         ],
         "summary": "Remove content watcher",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-content"
+            ]
+          }
+        ],
         "description": "Removes a user as a watcher from a piece of content. Choose the user by\ndoing one of the following:\n\n- Specify a user via a query parameter: Use the `username`, `key`, or `accountId` to identify the user.\nNote that `username` and `key` have been deprecated in favor of `accountId`. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n- Do not specify a user: The currently logged-in user will be used.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission if specifying a user, otherwise\npermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.UserWatchResource.removeContentWatcher_delete",
         "parameters": [
@@ -7403,6 +7584,13 @@
           "/user"
         ],
         "summary": "Get label watch status",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.summary"
+            ]
+          }
+        ],
         "description": "Returns whether a user is watching a label. Choose the user by doing one\nof the following:\n\n- Specify a user via a query parameter: Use the `username`, `key`, or `accountId` to identify the user.\nNote that `username` and `key` have been deprecated in favor of `accountId`. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n- Do not specify a user: The currently logged-in user will be used.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission if specifying a user, otherwise\npermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.UserWatchResource.isWatchingLabel_get",
         "parameters": [
@@ -7468,6 +7656,13 @@
           "/user"
         ],
         "summary": "Add label watcher",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-content"
+            ]
+          }
+        ],
         "description": "Adds a user as a watcher to a label. Choose the user by doing one of the\nfollowing:\n\n- Specify a user via a query parameter: Use the `username`, `key`, or `accountId` to identify the user.\nNote that `username` and `key` have been deprecated in favor of `accountId`. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n- Do not specify a user: The currently logged-in user will be used.\n\nNote, you must add the `X-Atlassian-Token: no-check` header when making a\nrequest, as this operation has XSRF protection.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission if specifying a user, otherwise\npermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.UserWatchResource.addLabelWatcher_post",
         "parameters": [
@@ -7526,6 +7721,13 @@
           "/user"
         ],
         "summary": "Remove label watcher",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-content"
+            ]
+          }
+        ],
         "description": "Removes a user as a watcher from a label. Choose the user by doing one of\nthe following:\n\n- Specify a user via a query parameter: Use the `username`, `key`, or `accountId` to identify the user.\nNote that `username` and `key` have been deprecated in favor of `accountId`. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n- Do not specify a user: The currently logged-in user will be used.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission if specifying a user, otherwise\npermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.UserWatchResource.removeLabelWatcher_delete",
         "parameters": [
@@ -7586,6 +7788,13 @@
           "/user"
         ],
         "summary": "Get space watch status",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.summary"
+            ]
+          }
+        ],
         "description": "Returns whether a user is watching a space. Choose the user by\ndoing one of the following:\n\n- Specify a user via a query parameter: Use the `username`, `key`, or `accountId` to identify the user.\nNote that `username` and `key` have been deprecated in favor of `accountId`. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n- Do not specify a user: The currently logged-in user will be used.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission if specifying a user, otherwise\npermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.UserWatchResource.isWatchingSpace_get",
         "parameters": [
@@ -7651,6 +7860,13 @@
           "/user"
         ],
         "summary": "Add space watcher",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-content"
+            ]
+          }
+        ],
         "description": "Adds a user as a watcher to a space. Choose the user by doing one of the\nfollowing:\n\n- Specify a user via a query parameter: Use the `username`, `key`, or `accountId` to identify the user.\nNote that `username` and `key` have been deprecated in favor of `accountId`. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n- Do not specify a user: The currently logged-in user will be used.\n\nNote, you must add the `X-Atlassian-Token: no-check` header when making a\nrequest, as this operation has XSRF protection.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission if specifying a user, otherwise\npermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.UserWatchResource.addSpaceWatcher_post",
         "parameters": [
@@ -7709,6 +7925,13 @@
           "/user"
         ],
         "summary": "Remove space watch",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-content"
+            ]
+          }
+        ],
         "description": "Removes a user as a watcher from a space. Choose the user by doing one of\nthe following:\n\n- Specify a user via a query parameter: Use the `username`, `key`, or `accountId` to identify the user.\nNote that `username` and `key` have been deprecated in favor of `accountId`. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n- Do not specify a user: The currently logged-in user will be used.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission if specifying a user, otherwise\npermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.UserWatchResource.removeSpaceWatch_delete",
         "parameters": [
@@ -7974,6 +8197,77 @@
     }
   ],
   "components": {
+    "parameters": {
+      "contentExpand": {
+        "name": "expand",
+        "in": "query",
+        "description": "A multi-value parameter indicating which properties of the content to expand.\n\n- `childTypes.all` returns whether the content has attachments, comments, or child pages.\nUse this if you only need to check whether the content has children of a particular type.\n- `childTypes.attachment` returns whether the content has attachments.\n- `childTypes.comment` returns whether the content has comments.\n- `childTypes.page` returns whether the content has child pages.\n- `container` returns the space that the content is in. This is the same as the information\nreturned by [Get space](#api-space-spaceKey-get).\n- `metadata.currentuser` returns information about the current user in relation to the content,\nincluding when they last viewed it, modified it, contributed to it, or added it as a favourite.\n- `metadata.properties` returns content properties that have been set via the Confluence REST API.\n- `metadata.labels` returns the labels that have been added to the content.\n- `metadata.frontend` (this property is only used by Atlassian)\n- `operations` returns the operations for the content, which are used when setting permissions.\n- `children.page` returns pages that are descendants at the level immediately below the content.\n- `children.attachment` returns all attachments for the content.\n- `children.comment` returns all comments on the content.\n- `restrictions.read.restrictions.user` returns the users that have permission to read the content.\n- `restrictions.read.restrictions.group` returns the groups that have permission to read the content. Note that\nthis may return deleted groups, because deleting a group doesn't remove associated restrictions.\n- `restrictions.update.restrictions.user` returns the users that have permission to update the content.\n- `restrictions.update.restrictions.group` returns the groups that have permission to update the content. Note that\nthis may return deleted groups, because deleting a group doesn't remove associated restrictions.\n- `history` returns the history of the content, including the date it was created.\n- `history.lastUpdated` returns information about the most recent update of the content, including\nwho updated it and when it was updated.\n- `history.previousVersion` returns information about the update prior to the current content update.\n- `history.contributors` returns all of the users who have contributed to the content.\n- `history.nextVersion` returns information about the update after to the current content update.\n- `ancestors` returns the parent page, if the content is a page.\n- `body` returns the body of the content in different formats, including the editor format,\nview format, and export format.\n- `version` returns information about the most recent update of the content, including who updated it\nand when it was updated.\n- `descendants.page` returns pages that are descendants at any level below the content.\n- `descendants.attachment` returns all attachments for the content, same as `children.attachment`.\n- `descendants.comment` returns all comments on the content, same as `children.comment`.\n- `space` returns the space that the content is in. This is the same as the information returned by\n[Get space](#api-space-spaceKey-get).\n\nIn addition, the following comment-specific expansions can be used:\n- `extensions.inlineProperties` returns inline comment-specific properties.\n- `extensions.resolution` returns the resolution status of each comment.",
+        "required": false,
+        "style": "form",
+        "schema": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "childTypes.all",
+              "childTypes.attachment",
+              "childTypes.comment",
+              "childTypes.page",
+              "container",
+              "metadata.currentuser",
+              "metadata.properties",
+              "metadata.labels",
+              "metadata.frontend",
+              "operations",
+              "children.page",
+              "children.attachment",
+              "children.comment",
+              "restrictions.read.restrictions.user",
+              "restrictions.read.restrictions.group",
+              "restrictions.update.restrictions.user",
+              "restrictions.update.restrictions.group",
+              "history",
+              "history.lastUpdated",
+              "history.previousVersion",
+              "history.contributors",
+              "history.nextVersion",
+              "ancestors",
+              "body",
+              "version",
+              "descendants.page",
+              "descendants.attachment",
+              "descendants.comment",
+              "space"
+            ]
+          }
+        }
+      },
+      "spaceExpand": {
+        "name": "expand",
+        "in": "query",
+        "description": "A multi-value parameter indicating which properties of the spaces to\nexpand, where:\n\n  - `settings` returns the settings for the space, similar to [Get space settings](#api-space-spaceKey-settings-get).\n  - `metadata.labels` returns the space labels, which are used to categorize the space.\n  - `operations` returns the operations for a space, which are used when setting permissions.\n  - `lookAndFeel` returns information about the look and feel of the space, including the color scheme.\n  - `permissions` returns the permissions for the space. Note that this may return permissions for deleted groups,\n  because deleting a group doesn't remove associated space permissions.\n  - `icon` returns information about space icon.\n  - `description.plain` returns the description of the space.\n  - `description.view` returns the description of the space.\n  - `theme` returns information about the space theme.\n  - `homepage` returns information about the space homepage.",
+        "required": false,
+        "style": "form",
+        "schema": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "settings",
+              "metadata.labels",
+              "operations",
+              "lookAndFeel",
+              "permissions",
+              "icon",
+              "description.plain",
+              "description.view",
+              "theme",
+              "homepage"
+            ]
+          }
+        }
+      }
+    },
     "requestBodies": {
       "com.atlassian.confluence.plugins.restapi.resources.AttachmentResource.createAttachments_post": {
         "content": {
@@ -8014,6 +8308,30 @@
           }
         },
         "required": true
+      }
+    },
+    "securitySchemes": {
+      "oAuthDefinitions": {
+        "type": "oauth2",
+        "description": "This API uses OAuth 2 with the authorizationCode grant flow.",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "https://auth.atlassian.com/authorize",
+            "tokenUrl": "https://auth.atlassian.com/oauth/token",
+            "scopes": {
+              "read:confluence-content.all": "Read all content, including content body (expansions permitted). Note, APIs using this scope may also return data allowed by read:confluence-space.summary. However, this scope is not a substitute for read:confluence-space.summary.",
+              "read:confluence-content.summary": "Read a summary of the content, which is the content without expansions. Note, APIs using this scope may also return data allowed by read:confluence-space.summary. However, this scope is not a substitute for read:confluence-space.summary.",
+              "write:confluence-content": "Permits the creation of pages, blogs, comments and questions.",
+              "read:confluence-space.summary": "Read a summary of space information without expansions.",
+              "write:confluence-space": "Create, update and delete space information.",
+              "write:confluence-file": "Upload attachments.",
+              "read:confluence-props": "Read content properties.",
+              "write:confluence-props": "Write content properties.",
+              "search:confluence": "Search Confluence. Note, APIs using this scope may also return data allowed by read:confluence-space.summary and read:confluence-content.summary. However, this scope is not a substitute for read:confluence-space.summary or read:confluence-content.summary.",
+              "manage:confluence-configuration": "Manage global settings."
+            }
+          }
+        }
       }
     },
     "schemas": {
@@ -10157,7 +10475,7 @@
         "properties": {
           "queryStrings": {
             "type": "array",
-            "description": "The list of converted CQL query strings with account IDs in \nplace of user identifiers.",
+            "description": "The list of converted CQL query strings with account IDs in\nplace of user identifiers.",
             "items": {
               "type": "string"
             }
@@ -10750,6 +11068,128 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/MigratedUser"
+            }
+          },
+          "start": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/GenericLinks"
+          }
+        }
+      },
+      "BulkUserLookup": {
+        "type": "object",
+        "required": [
+          "type",
+          "username",
+          "userKey",
+          "accountId",
+          "accountType",
+          "email",
+          "publicName",
+          "profilePicture",
+          "displayName",
+          "_expandable",
+          "_links"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "known",
+              "unknown",
+              "anonymous",
+              "user"
+            ]
+          },
+          "username": {
+            "type": "string",
+            "description": "This property has been deprecated in favor of `accountId`, due to privacy changes. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe username of the user. For example, _admin_."
+          },
+          "userKey": {
+            "type": "string",
+            "description": "This property has been deprecated in favor of `accountId`, due to privacy changes. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe user key of the user."
+          },
+          "accountId": {
+            "type": "string",
+            "description": "The account ID of the user, which uniquely identifies the user across all Atlassian products.\nFor example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`."
+          },
+          "accountType": {
+            "type": "string",
+            "description": "The account type of the user, may return empty string if unavailable."
+          },
+          "email": {
+            "type": "string",
+            "description": "The email address of the user. Depending on the user's privacy setting, this may return an empty string."
+          },
+          "publicName": {
+            "type": "string",
+            "description": "The public name or nickname of the user. Will always contain a value."
+          },
+          "profilePicture": {
+            "$ref": "#/components/schemas/Icon"
+          },
+          "displayName": {
+            "type": "string",
+            "description": "The display name of the user. Depending on the user's privacy setting, this may be the same as publicName."
+          },
+          "operations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OperationCheckResult"
+            }
+          },
+          "details": {
+            "$ref": "#/components/schemas/UserDetails"
+          },
+          "personalSpace": {
+            "$ref": "#/components/schemas/Space"
+          },
+          "_expandable": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "operations": {
+                "type": "string"
+              },
+              "details": {
+                "type": "string"
+              },
+              "personalSpace": {
+                "type": "string"
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/GenericLinks"
+          }
+        }
+      },
+      "BulkUserLookupArray": {
+        "type": "object",
+        "required": [
+          "results",
+          "start",
+          "limit",
+          "size",
+          "_links"
+        ],
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BulkUserLookup"
             }
           },
           "start": {
@@ -11710,6 +12150,117 @@
           }
         }
       },
+      "SpaceWatch": {
+        "type": "object",
+        "required": [
+          "type",
+          "watcher",
+          "spaceKey"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "watcher": {
+            "$ref": "#/components/schemas/SpaceWatchUser"
+          },
+          "contentId": {
+            "type": "string"
+          },
+          "spaceKey": {
+            "type": "string"
+          }
+        }
+      },
+      "SpaceWatchArray": {
+        "type": "object",
+        "required": [
+          "results",
+          "start",
+          "limit",
+          "size"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SpaceWatch"
+            }
+          },
+          "start": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/GenericLinks"
+          }
+        }
+      },
+      "SpaceWatchUser": {
+        "type": "object",
+        "description": "This essentially the same as the `User` object, but no `_links` property and\nno `_expandable` property (therefore, different required fields).",
+        "required": [
+          "type",
+          "profilePicture",
+          "displayName",
+          "accountId",
+          "accountType",
+          "email",
+          "publicName"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string",
+            "description": "This property has been deprecated in favor of `accountId`. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe username of the user. For example, _admin_."
+          },
+          "userKey": {
+            "type": "string",
+            "description": "This property has been deprecated in favor of `accountId`. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe user key of the user."
+          },
+          "accountId": {
+            "type": "string",
+            "description": "The account ID of the user, which uniquely identifies the user across all Atlassian products.\nFor example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`."
+          },
+          "profilePicture": {
+            "$ref": "#/components/schemas/Icon"
+          },
+          "displayName": {
+            "type": "string"
+          },
+          "operations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OperationCheckResult"
+            }
+          },
+          "details": {
+            "$ref": "#/components/schemas/UserDetails"
+          },
+          "accountType": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "publicName": {
+            "type": "string"
+          }
+        }
+      },
       "SuperBatchWebResources": {
         "type": "object",
         "properties": {
@@ -11904,7 +12455,7 @@
           },
           "email": {
             "type": "string",
-            "description": "The email address of the user. Depending on the user’s privacy setting, this may return an empty string."
+            "description": "The email address of the user. Depending on the user's privacy setting, this may return an empty string."
           },
           "publicName": {
             "type": "string",
@@ -12403,18 +12954,6 @@
           }
         }
       }
-    },
-    "securitySchemes": {
-      "atlassianCloudBasicAuth": {
-        "scheme": "basic",
-        "type": "http",
-        "description": "You require basic auth to access this API."
-      }
     }
-  },
-  "security": [
-    {
-      "atlassianCloudBasicAuth": []
-    }
-  ]
+  }
 }
