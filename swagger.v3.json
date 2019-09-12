@@ -2334,7 +2334,7 @@
             ]
           }
         ],
-        "description": "Returns the properties for a piece of content. For more information\nabout content properties, see [Content properties in the REST API](https://developer.atlassian.com/cloud/confluence/content-properties/).\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'View' permission for the space, and permission to view the content if it is a page.",
+        "description": "Returns the properties for a piece of content. For more information\nabout content properties, see [Confluence entity properties](https://developer.atlassian.com/cloud/confluence/confluence-entity-properties/).\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'View' permission for the space, and permission to view the content if it is a page.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentPropertyResource.getContentProperties_get",
         "parameters": [
           {
@@ -2417,7 +2417,7 @@
             ]
           }
         ],
-        "description": "Creates a property for an existing piece of content. For more information\nabout content properties, see [Content properties in the REST API](https://developer.atlassian.com/cloud/confluence/content-properties/).\n\nThis is the same as [Create content property for key](#api-content-id-property-key-post)\nexcept that the key is specified in the request body instead of as a\npath parameter.\n\nContent properties can also be added when creating a new piece of content\nby including them in the `metadata.properties` of the request.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to update the content.",
+        "description": "Creates a property for an existing piece of content. For more information\nabout content properties, see [Confluence entity properties](https://developer.atlassian.com/cloud/confluence/confluence-entity-properties/).\n\nThis is the same as [Create content property for key](#api-content-id-property-key-post)\nexcept that the key is specified in the request body instead of as a\npath parameter.\n\nContent properties can also be added when creating a new piece of content\nby including them in the `metadata.properties` of the request.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to update the content.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentPropertyResource.createContentProperty_post",
         "parameters": [
           {
@@ -2478,7 +2478,7 @@
             ]
           }
         ],
-        "description": "Returns a content property for a piece of content. For more information, see\n[Content properties in the REST API](https://developer.atlassian.com/cloud/confluence/content-properties/).\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'View' permission for the space, and permission to view the content if it is a page.",
+        "description": "Returns a content property for a piece of content. For more information, see\n[Confluence entity properties](https://developer.atlassian.com/cloud/confluence/confluence-entity-properties/).\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'View' permission for the space, and permission to view the content if it is a page.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentPropertyResource.getContentProperty_get",
         "parameters": [
           {
@@ -2546,7 +2546,7 @@
             ]
           }
         ],
-        "description": "Creates a property for an existing piece of content. For more information\nabout content properties, see [Content properties in the REST API](https://developer.atlassian.com/cloud/confluence/content-properties/).\n\nThis is the same as [Create content property](#api-content-id-property-post)\nexcept that the key is specified as a path parameter instead of in the\nrequest body.\n\nContent properties can also be added when creating a new piece of content\nby including them in the `metadata.properties` of the request.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to update the content.",
+        "description": "Creates a property for an existing piece of content. For more information\nabout content properties, see [Confluence entity properties](https://developer.atlassian.com/cloud/confluence/confluence-entity-properties/).\n\nThis is the same as [Create content property](#api-content-id-property-post)\nexcept that the key is specified as a path parameter instead of in the\nrequest body.\n\nContent properties can also be added when creating a new piece of content\nby including them in the `metadata.properties` of the request.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to update the content.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentPropertyResource.createContentPropertyForKey_post",
         "parameters": [
           {
@@ -2614,7 +2614,7 @@
             ]
           }
         ],
-        "description": "Updates an existing content property. This method will also create a new\nproperty for a piece of content, if the property key does not exist and\nthe property version is 1. For more information about content properties, see\n[Content properties in the REST API](https://developer.atlassian.com/cloud/confluence/content-properties/).\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to update the content.",
+        "description": "Updates an existing content property. This method will also create a new\nproperty for a piece of content, if the property key does not exist and\nthe property version is 1. For more information about content properties, see\n[Confluence entity properties](https://developer.atlassian.com/cloud/confluence/confluence-entity-properties/).\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to update the content.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentPropertyResource.updateContentProperty_put",
         "parameters": [
           {
@@ -2688,7 +2688,7 @@
             ]
           }
         ],
-        "description": "Deletes a content property. For more information about content properties, see\n[Content properties in the REST API](https://developer.atlassian.com/cloud/confluence/content-properties/).\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to update the content.",
+        "description": "Deletes a content property. For more information about content properties, see\n[Confluence entity properties](https://developer.atlassian.com/cloud/confluence/confluence-entity-properties/).\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to update the content.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentPropertyResource.deleteContentProperty_delete",
         "parameters": [
           {
@@ -8187,7 +8187,7 @@
       {
         "title": "Capabilities",
         "anchor": "capabilities",
-        "body": "**Webhooks:** A webhook is a user-defined callback over HTTP. You can use Confluence webhooks to notify your app or web application when certain events occur in Confluence. For example, when a page is created or updated. To learn more, see [Webhooks](https://developer.atlassian.com/cloud/confluence/modules/webhook/).\n\n**Content properties:** Content properties are a key-value storage associated with a piece of Confluence content. If you are building an app, this is one form of persistence that you can use. You can use the Confluence REST API to get, update, and delete content properties. To learn more, see [Content properties in the REST API](https://developer.atlassian.com/cloud/confluence/content-properties/).\n\n**CQL:** The Confluence Query Language (CQL) allows you to perform complex searches for content using an SQL-like syntax in the `search` resource. To learn more, see [Advanced searching using CQL](https://developer.atlassian.com/cloud/confluence/advanced-searching-using-cql/)."
+        "body": "**Webhooks:** A webhook is a user-defined callback over HTTP. You can use Confluence webhooks to notify your app or web application when certain events occur in Confluence. For example, when a page is created or updated. To learn more, see [Webhooks](https://developer.atlassian.com/cloud/confluence/modules/webhook/).\n\n**Content properties:** Content properties are a key-value storage associated with a piece of Confluence content. If you are building an app, this is one form of persistence that you can use. You can use the Confluence REST API to get, update, and delete content properties. To learn more, see [Confluence entity properties](https://developer.atlassian.com/cloud/confluence/confluence-entity-properties/).\n\n**CQL:** The Confluence Query Language (CQL) allows you to perform complex searches for content using an SQL-like syntax in the `search` resource. To learn more, see [Advanced searching using CQL](https://developer.atlassian.com/cloud/confluence/advanced-searching-using-cql/)."
       }
     ]
   },
