@@ -6,11 +6,65 @@
     "title": "The Confluence Cloud REST API",
     "termsOfService": "http://atlassian.com/terms/"
   },
+  "tags": [
+    {
+      "name": "Audit",
+      "description": ""
+    },
+    {
+      "name": "Content",
+      "description": ""
+    },
+    {
+      "name": "Contentbody",
+      "description": ""
+    },
+    {
+      "name": "Experimental",
+      "description": ""
+    },
+    {
+      "name": "Group",
+      "description": ""
+    },
+    {
+      "name": "Longtask",
+      "description": ""
+    },
+    {
+      "name": "Relation",
+      "description": ""
+    },
+    {
+      "name": "Search",
+      "description": ""
+    },
+    {
+      "name": "Settings",
+      "description": ""
+    },
+    {
+      "name": "Space",
+      "description": ""
+    },
+    {
+      "name": "Template",
+      "description": ""
+    },
+    {
+      "name": "User",
+      "description": ""
+    },
+    {
+      "name": "Dynamic modules",
+      "description": ""
+    }
+  ],
   "paths": {
-    "/audit": {
+    "/api/audit": {
       "get": {
         "tags": [
-          "/audit"
+          "Audit"
         ],
         "summary": "Get audit records",
         "description": "Returns all records in the audit log, optionally for a certain date range.\nThis contains information about events like space exports, group membership\nchanges, app installations, etc. For more information, see\n[Audit log](https://confluence.atlassian.com/confcloud/audit-log-802164269.html)\nin the Confluence administrator's guide.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission.",
@@ -87,7 +141,7 @@
       },
       "post": {
         "tags": [
-          "/audit"
+          "Audit"
         ],
         "summary": "Create audit record",
         "description": "Creates a record in the audit log.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission.",
@@ -121,10 +175,10 @@
         "x-atlassian-connect-scope": "INACCESSIBLE"
       }
     },
-    "/audit/export": {
+    "/api/audit/export": {
       "get": {
         "tags": [
-          "/audit"
+          "Audit"
         ],
         "summary": "Export audit records",
         "description": "Exports audit records as a CSV file or ZIP file.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission.",
@@ -197,10 +251,10 @@
         "x-atlassian-connect-scope": "INACCESSIBLE"
       }
     },
-    "/audit/retention": {
+    "/api/audit/retention": {
       "get": {
         "tags": [
-          "/audit"
+          "Audit"
         ],
         "summary": "Get retention period",
         "description": "Returns the retention period for records in the audit log. The retention\nperiod is how long an audit record is kept for, from creation date until\nit is deleted.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission.",
@@ -224,7 +278,7 @@
       },
       "put": {
         "tags": [
-          "/audit"
+          "Audit"
         ],
         "summary": "Set retention period",
         "description": "Sets the retention period for records in the audit log. The retention period\ncan be set to a maximum of 20 years.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission.",
@@ -258,10 +312,10 @@
         "x-atlassian-connect-scope": "INACCESSIBLE"
       }
     },
-    "/audit/since": {
+    "/api/audit/since": {
       "get": {
         "tags": [
-          "/audit"
+          "Audit"
         ],
         "summary": "Get audit records for time period",
         "description": "Returns records from the audit log, for a time period back from the current\ndate. For example, you can use this method to get the last 3 months of records.\n\nThis contains information about events like space exports, group membership\nchanges, app installations, etc. For more information, see\n[Audit log](https://confluence.atlassian.com/confcloud/audit-log-802164269.html)\nin the Confluence administrator's guide.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission.",
@@ -355,10 +409,10 @@
         "x-atlassian-connect-scope": "INACCESSIBLE"
       }
     },
-    "/content": {
+    "/api/content": {
       "get": {
         "tags": [
-          "/content"
+          "Content"
         ],
         "summary": "Get content",
         "security": [
@@ -503,7 +557,7 @@
       },
       "post": {
         "tags": [
-          "/content"
+          "Content"
         ],
         "summary": "Create content",
         "security": [
@@ -556,16 +610,16 @@
               }
             }
           },
-          "description": "The new content to be created. Set the `representation` to the name of the body\nformat type. For example, if you use `storage` for the body format, set\n'`representation`=`storage`'.\n\nIf you are not sure how to generate the different formats, you can create a page in the\nConfluence application, retrieve the content using [Get content](#api-content-get),\nand expand the desired content format, e.g. `expand=body.storage`.",
+          "description": "The new content to be created. Set the `representation` to the name of the body\nformat type. For example, if you use `storage` for the body format, set\n'`representation`=`storage`'. See\n[Confluence storage format](https://confluence.atlassian.com/x/AJkiLw).\n\nIf you are not sure how to generate the different formats, you can create a page in the\nConfluence application, retrieve the content using [Get content](#api-content-get),\nand expand the desired content format, e.g. `expand=body.storage`.",
           "required": true
         },
         "x-atlassian-connect-scope": "WRITE"
       }
     },
-    "/content/blueprint/instance/{draftId}": {
+    "/api/content/blueprint/instance/{draftId}": {
       "post": {
         "tags": [
-          "/content/blueprint"
+          "Content"
         ],
         "summary": "Publish legacy draft",
         "security": [
@@ -626,7 +680,7 @@
       },
       "put": {
         "tags": [
-          "/content/blueprint"
+          "Content"
         ],
         "summary": "Publish shared draft",
         "security": [
@@ -686,10 +740,10 @@
         "x-atlassian-connect-scope": "WRITE"
       }
     },
-    "/content/search": {
+    "/api/content/search": {
       "get": {
         "tags": [
-          "/content"
+          "Content"
         ],
         "summary": "Search content by CQL",
         "security": [
@@ -769,10 +823,10 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/content/{id}": {
+    "/api/content/{id}": {
       "get": {
         "tags": [
-          "/content"
+          "Content"
         ],
         "summary": "Get content by ID",
         "security": [
@@ -876,7 +930,7 @@
       },
       "put": {
         "tags": [
-          "/content"
+          "Content"
         ],
         "summary": "Update content",
         "security": [
@@ -967,7 +1021,7 @@
       },
       "delete": {
         "tags": [
-          "/content"
+          "Content"
         ],
         "summary": "Delete content",
         "security": [
@@ -1013,10 +1067,10 @@
         "x-atlassian-connect-scope": "DELETE"
       }
     },
-    "/content/{id}/child": {
+    "/api/content/{id}/child": {
       "get": {
         "tags": [
-          "/content/{id}/child"
+          "Content"
         ],
         "summary": "Get content children",
         "security": [
@@ -1086,10 +1140,10 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/content/{id}/child/attachment": {
+    "/api/content/{id}/child/attachment": {
       "get": {
         "tags": [
-          "/content/{id}/child"
+          "Content"
         ],
         "summary": "Get attachments",
         "security": [
@@ -1174,7 +1228,7 @@
       },
       "post": {
         "tags": [
-          "/content/{id}/child/attachment"
+          "Content"
         ],
         "summary": "Create attachment",
         "security": [
@@ -1239,7 +1293,7 @@
       },
       "put": {
         "tags": [
-          "/content/{id}/child/attachment"
+          "Content"
         ],
         "summary": "Create or update attachment",
         "security": [
@@ -1300,10 +1354,10 @@
         "x-atlassian-connect-scope": "WRITE"
       }
     },
-    "/content/{id}/child/attachment/{attachmentId}": {
+    "/api/content/{id}/child/attachment/{attachmentId}": {
       "put": {
         "tags": [
-          "/content/{id}/child/attachment"
+          "Content"
         ],
         "summary": "Update attachment properties",
         "security": [
@@ -1374,10 +1428,10 @@
         "x-atlassian-connect-scope": "WRITE"
       }
     },
-    "/content/{id}/child/attachment/{attachmentId}/data": {
+    "/api/content/{id}/child/attachment/{attachmentId}/data": {
       "post": {
         "tags": [
-          "/content/{id}/child/attachment"
+          "Content"
         ],
         "summary": "Update attachment data",
         "security": [
@@ -1433,10 +1487,10 @@
         "x-atlassian-connect-scope": "WRITE"
       }
     },
-    "/content/{id}/child/comment": {
+    "/api/content/{id}/child/comment": {
       "get": {
         "tags": [
-          "/content/{id}/child"
+          "Content"
         ],
         "summary": "Get content comments",
         "security": [
@@ -1536,10 +1590,10 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/content/{id}/child/{type}": {
+    "/api/content/{id}/child/{type}": {
       "get": {
         "tags": [
-          "/content/{id}/child"
+          "Content"
         ],
         "summary": "Get content children by type",
         "security": [
@@ -1629,10 +1683,10 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/content/{id}/descendant": {
+    "/api/content/{id}/descendant": {
       "get": {
         "tags": [
-          "/content/{id}/descendant"
+          "Content"
         ],
         "summary": "Get content descendants",
         "security": [
@@ -1691,10 +1745,10 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/content/{id}/descendant/{type}": {
+    "/api/content/{id}/descendant/{type}": {
       "get": {
         "tags": [
-          "/content/{id}/descendant"
+          "Content"
         ],
         "summary": "Get content descendants by type",
         "security": [
@@ -1774,10 +1828,10 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/content/{id}/history": {
+    "/api/content/{id}/history": {
       "get": {
         "tags": [
-          "/content"
+          "Content"
         ],
         "summary": "Get history for content",
         "security": [
@@ -1840,10 +1894,10 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/content/{id}/history/{version}/macro/id/{macroId}": {
+    "/api/content/{id}/history/{version}/macro/id/{macroId}": {
       "get": {
         "tags": [
-          "/content"
+          "Content"
         ],
         "summary": "Get macro body by macro ID",
         "security": [
@@ -1906,10 +1960,10 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/content/{id}/label": {
+    "/api/content/{id}/label": {
       "get": {
         "tags": [
-          "/content/{id}/label"
+          "Content"
         ],
         "summary": "Get labels for content",
         "security": [
@@ -1987,7 +2041,7 @@
       },
       "post": {
         "tags": [
-          "/content/{id}/label"
+          "Content"
         ],
         "summary": "Add labels to content",
         "security": [
@@ -2040,7 +2094,7 @@
       },
       "delete": {
         "tags": [
-          "/content/{id}/label"
+          "Content"
         ],
         "summary": "Remove label from content using query parameter",
         "security": [
@@ -2086,10 +2140,10 @@
         "x-atlassian-connect-scope": "DELETE"
       }
     },
-    "/content/{id}/label/{label}": {
+    "/api/content/{id}/label/{label}": {
       "delete": {
         "tags": [
-          "/content/{id}/label"
+          "Content"
         ],
         "summary": "Remove label from content",
         "security": [
@@ -2138,10 +2192,10 @@
         "x-atlassian-connect-scope": "DELETE"
       }
     },
-    "/content/{id}/notification/child-created": {
+    "/api/content/{id}/notification/child-created": {
       "get": {
         "tags": [
-          "/content/{id}/notification"
+          "Content"
         ],
         "summary": "Get watches for page",
         "security": [
@@ -2206,10 +2260,10 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/content/{id}/notification/created": {
+    "/api/content/{id}/notification/created": {
       "get": {
         "tags": [
-          "/content/{id}/notification"
+          "Content"
         ],
         "summary": "Get watches for space",
         "security": [
@@ -2274,8 +2328,11 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/content/{id}/pagehierarchy/copy": {
+    "/api/content/{id}/pagehierarchy/copy": {
       "post": {
+        "tags": [
+          "Content"
+        ],
         "summary": "Copy page hierarchy",
         "security": [
           {
@@ -2321,10 +2378,10 @@
         "x-atlassian-connect-scope": "WRITE"
       }
     },
-    "/content/{id}/property": {
+    "/api/content/{id}/property": {
       "get": {
         "tags": [
-          "/content/{id}/property"
+          "Content"
         ],
         "summary": "Get content properties",
         "security": [
@@ -2407,7 +2464,7 @@
       },
       "post": {
         "tags": [
-          "/content/{id}/property"
+          "Content"
         ],
         "summary": "Create content property",
         "security": [
@@ -2465,10 +2522,10 @@
         "x-atlassian-connect-scope": "WRITE"
       }
     },
-    "/content/{id}/property/{key}": {
+    "/api/content/{id}/property/{key}": {
       "get": {
         "tags": [
-          "/content/{id}/property"
+          "Content"
         ],
         "summary": "Get content property",
         "security": [
@@ -2536,7 +2593,7 @@
       },
       "post": {
         "tags": [
-          "/content/{id}/property"
+          "Content"
         ],
         "summary": "Create content property for key",
         "security": [
@@ -2604,7 +2661,7 @@
       },
       "put": {
         "tags": [
-          "/content/{id}/property"
+          "Content"
         ],
         "summary": "Update content property",
         "security": [
@@ -2678,7 +2735,7 @@
       },
       "delete": {
         "tags": [
-          "/content/{id}/property"
+          "Content"
         ],
         "summary": "Delete content property",
         "security": [
@@ -2721,10 +2778,10 @@
         "x-atlassian-connect-scope": "DELETE"
       }
     },
-    "/content/{id}/restriction": {
+    "/api/content/{id}/restriction": {
       "get": {
         "tags": [
-          "/content/{id}/restriction"
+          "Content"
         ],
         "summary": "Get restrictions",
         "security": [
@@ -2808,7 +2865,7 @@
       },
       "post": {
         "tags": [
-          "/content/{id}/restriction"
+          "Content"
         ],
         "summary": "Add restrictions",
         "security": [
@@ -2879,7 +2936,7 @@
       },
       "put": {
         "tags": [
-          "/content/{id}/restriction"
+          "Content"
         ],
         "summary": "Update restrictions",
         "security": [
@@ -2950,7 +3007,7 @@
       },
       "delete": {
         "tags": [
-          "/content/{id}/restriction"
+          "Content"
         ],
         "summary": "Delete restrictions",
         "security": [
@@ -3015,10 +3072,10 @@
         "x-atlassian-connect-scope": "DELETE"
       }
     },
-    "/content/{id}/restriction/byOperation": {
+    "/api/content/{id}/restriction/byOperation": {
       "get": {
         "tags": [
-          "/content/{id}/restriction"
+          "Content"
         ],
         "summary": "Get restrictions by operation",
         "security": [
@@ -3085,10 +3142,10 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/content/{id}/restriction/byOperation/{operationKey}": {
+    "/api/content/{id}/restriction/byOperation/{operationKey}": {
       "get": {
         "tags": [
-          "/content/{id}/restriction"
+          "Content"
         ],
         "summary": "Get restrictions for operation",
         "security": [
@@ -3181,10 +3238,10 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/content/{id}/restriction/byOperation/{operationKey}/group/{groupName}": {
+    "/api/content/{id}/restriction/byOperation/{operationKey}/group/{groupName}": {
       "get": {
         "tags": [
-          "/content/{id}/restriction"
+          "Content"
         ],
         "summary": "Get content restriction status for group",
         "security": [
@@ -3241,7 +3298,7 @@
       },
       "put": {
         "tags": [
-          "/content/{id}/restriction"
+          "Content"
         ],
         "summary": "Add group to content restriction",
         "security": [
@@ -3298,7 +3355,7 @@
       },
       "delete": {
         "tags": [
-          "/content/{id}/restriction"
+          "Content"
         ],
         "summary": "Remove group from content restriction",
         "security": [
@@ -3354,10 +3411,10 @@
         "x-atlassian-connect-scope": "DELETE"
       }
     },
-    "/content/{id}/restriction/byOperation/{operationKey}/user": {
+    "/api/content/{id}/restriction/byOperation/{operationKey}/user": {
       "get": {
         "tags": [
-          "/content/{id}/restriction"
+          "Content"
         ],
         "summary": "Get content restriction status for user",
         "security": [
@@ -3391,7 +3448,7 @@
           {
             "name": "key",
             "in": "query",
-            "description": "This parameter has been deprecated due to privacy changes. Use `accountId` instead. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe key of the user to be queried for whether the content restriction applies to it.\nRequired, unless the `username` or `accountId` is specified.",
+            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
             "required": false,
             "schema": {
               "type": "string"
@@ -3400,7 +3457,7 @@
           {
             "name": "userName",
             "in": "query",
-            "description": "This parameter has been deprecated due to privacy changes. Use `accountId` instead. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe username of the user to be queried for whether the content restriction applies to it.\nRequired, unless the `key` or `accountId` is specified.",
+            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
             "required": false,
             "schema": {
               "type": "string"
@@ -3409,8 +3466,8 @@
           {
             "name": "accountId",
             "in": "query",
-            "description": "The account ID of the user to be queried for whether the content restriction applies to it. The accountId\nuniquely identifies the user across all Atlassian products. For example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.\nRequired, unless `username` or `userKey` is specified.",
-            "required": false,
+            "description": "The account ID of the user to be queried for whether the content restriction applies to it. The accountId\nuniquely identifies the user across all Atlassian products. For example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.",
+            "required": true,
             "schema": {
               "type": "string"
             }
@@ -3428,7 +3485,7 @@
       },
       "put": {
         "tags": [
-          "/content/{id}/restriction"
+          "Content"
         ],
         "summary": "Add user to content restriction",
         "security": [
@@ -3462,7 +3519,7 @@
           {
             "name": "key",
             "in": "query",
-            "description": "This parameter has been deprecated due to privacy changes. Use `accountId` instead. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe key of the user to add to the content restriction. Required, unless the `username` or `accountId` is specified.",
+            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
             "required": false,
             "schema": {
               "type": "string"
@@ -3471,7 +3528,7 @@
           {
             "name": "userName",
             "in": "query",
-            "description": "This parameter has been deprecated due to privacy changes. Use `accountId` instead. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe username of the user to add to the content restriction. Required, unless the `key` or `accountId` is specified.",
+            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
             "required": false,
             "schema": {
               "type": "string"
@@ -3480,8 +3537,8 @@
           {
             "name": "accountId",
             "in": "query",
-            "description": "The account ID of the user to add to the content restriction. The accountId uniquely identifies the user across\nall Atlassian products. For example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.\nRequired, unless `username` or `userKey` is specified.",
-            "required": false,
+            "description": "The account ID of the user to add to the content restriction. The accountId uniquely identifies the user across\nall Atlassian products. For example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.",
+            "required": true,
             "schema": {
               "type": "string"
             }
@@ -3499,7 +3556,7 @@
       },
       "delete": {
         "tags": [
-          "/content/{id}/restriction"
+          "Content"
         ],
         "summary": "Remove user from content restriction",
         "security": [
@@ -3537,7 +3594,7 @@
           {
             "name": "key",
             "in": "query",
-            "description": "This parameter has been deprecated due to privacy changes. Use `accountId` instead. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe key of the user to remove from the content restriction. Required, unless the `username` or `accountId` is specified.",
+            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
             "required": false,
             "schema": {
               "type": "string"
@@ -3546,7 +3603,7 @@
           {
             "name": "userName",
             "in": "query",
-            "description": "This parameter has been deprecated due to privacy changes. Use `accountId` instead. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe username of the user to remove from the content restriction. Required, unless the `key` or `accountId` is specified.",
+            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
             "required": false,
             "schema": {
               "type": "string"
@@ -3555,8 +3612,8 @@
           {
             "name": "accountId",
             "in": "query",
-            "description": "The account ID of the user to remove from the content restriction. The accountId uniquely identifies the user\nacross all Atlassian products. For example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.\nRequired, unless `username` or `userKey` is specified.",
-            "required": false,
+            "description": "The account ID of the user to remove from the content restriction. The accountId uniquely identifies the user\nacross all Atlassian products. For example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.",
+            "required": true,
             "schema": {
               "type": "string"
             }
@@ -3573,10 +3630,10 @@
         "x-atlassian-connect-scope": "DELETE"
       }
     },
-    "/content/{id}/version": {
+    "/api/content/{id}/version": {
       "get": {
         "tags": [
-          "/content/{id}/version"
+          "Content"
         ],
         "summary": "Get content versions",
         "security": [
@@ -3659,7 +3716,7 @@
       },
       "post": {
         "tags": [
-          "/content/{id}/version"
+          "Content"
         ],
         "summary": "Restore content version",
         "security": [
@@ -3730,10 +3787,10 @@
         "x-atlassian-connect-scope": "WRITE"
       }
     },
-    "/content/{id}/version/{versionNumber}": {
+    "/api/content/{id}/version/{versionNumber}": {
       "get": {
         "tags": [
-          "/content/{id}/version"
+          "Content"
         ],
         "summary": "Get content version",
         "security": [
@@ -3805,7 +3862,7 @@
       },
       "delete": {
         "tags": [
-          "/content/{id}/version"
+          "Content"
         ],
         "summary": "Delete content version",
         "security": [
@@ -3852,10 +3909,10 @@
         "x-atlassian-connect-scope": "DELETE"
       }
     },
-    "/contentbody/convert/{to}": {
+    "/api/contentbody/convert/{to}": {
       "post": {
         "tags": [
-          "/contentbody/convert/{to}"
+          "Contentbody"
         ],
         "summary": "Convert content body",
         "description": "Converts a content body from one format to another format.\n\nSupported conversions:\n\n- storage: view, export_view, styled_view, editor\n- editor: storage\n- view: none\n- export_view: none\n- styled_view: none\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nIf request specifies 'contentIdContext', 'View' permission for the space, and permission to view the content.",
@@ -3932,8 +3989,11 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/experimental/cql/pdcleaner": {
+    "/api/experimental/cql/pdcleaner": {
       "post": {
+        "tags": [
+          "Experimental"
+        ],
         "summary": "Convert user identifiers to account IDs in CQL queries",
         "description": "Converts one or more CQL queries with user identifiers (username or user key)\nto equivalent CQL queries with account IDs.\n\nYou may wish to use this operation if your system stores CQL queries and you\nwant to make them GDPR-compliant. For more information about GDPR-related changes,\nsee the [migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/).\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**: None",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ExperimentalCQLResource.cqlPDCleaner_post",
@@ -3971,10 +4031,10 @@
         "x-atlassian-connect-scope": "INACCESSIBLE"
       }
     },
-    "/group": {
+    "/api/group": {
       "get": {
         "tags": [
-          "/group"
+          "Group"
         ],
         "summary": "Get groups",
         "description": "Returns all user groups. The returned groups are ordered alphabetically in\nascending order by group name.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
@@ -4023,10 +4083,10 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/group/{groupName}": {
+    "/api/group/{groupName}": {
       "get": {
         "tags": [
-          "/group"
+          "Group"
         ],
         "summary": "Get group",
         "description": "Returns a user group for a given group name.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
@@ -4060,10 +4120,10 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/group/{groupName}/member": {
+    "/api/group/{groupName}/member": {
       "get": {
         "tags": [
-          "/group"
+          "Group"
         ],
         "summary": "Get group members",
         "description": "Returns the users that are members of a group.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
@@ -4121,10 +4181,10 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/longtask": {
+    "/api/longtask": {
       "get": {
         "tags": [
-          "/longtask"
+          "Longtask"
         ],
         "summary": "Get long-running tasks",
         "description": "Returns information about all active long-running tasks (e.g. space export),\nsuch as how long each task has been running and the percentage of each task\nthat has completed.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
@@ -4173,10 +4233,10 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/longtask/{id}": {
+    "/api/longtask/{id}": {
       "get": {
         "tags": [
-          "/longtask"
+          "Longtask"
         ],
         "summary": "Get long-running task",
         "description": "Returns information about an active long-running task (e.g. space export),\nsuch as how long it has been running and the percentage of the task that\nhas completed.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
@@ -4213,10 +4273,10 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/relation/{relationName}/from/{sourceType}/{sourceKey}/to/{targetType}": {
+    "/api/relation/{relationName}/from/{sourceType}/{sourceKey}/to/{targetType}": {
       "get": {
         "tags": [
-          "/relation"
+          "Relation"
         ],
         "summary": "Find target entities related to a source entity",
         "security": [
@@ -4377,10 +4437,10 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/relation/{relationName}/from/{sourceType}/{sourceKey}/to/{targetType}/{targetKey}": {
+    "/api/relation/{relationName}/from/{sourceType}/{sourceKey}/to/{targetType}/{targetKey}": {
       "get": {
         "tags": [
-          "/relation"
+          "Relation"
         ],
         "summary": "Find relationship from source to target",
         "security": [
@@ -4527,7 +4587,7 @@
       },
       "put": {
         "tags": [
-          "/relation"
+          "Relation"
         ],
         "summary": "Create relationship",
         "security": [
@@ -4656,7 +4716,7 @@
       },
       "delete": {
         "tags": [
-          "/relation"
+          "Relation"
         ],
         "summary": "Delete",
         "security": [
@@ -4777,10 +4837,10 @@
         "x-atlassian-connect-scope": "DELETE"
       }
     },
-    "/relation/{relationName}/to/{targetType}/{targetKey}/from/{sourceType}": {
+    "/api/relation/{relationName}/to/{targetType}/{targetKey}/from/{sourceType}": {
       "get": {
         "tags": [
-          "/relation"
+          "Relation"
         ],
         "summary": "Find target entities related to a source entity",
         "security": [
@@ -4941,10 +5001,10 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/search": {
+    "/api/search": {
       "get": {
         "tags": [
-          "/search"
+          "Search"
         ],
         "summary": "Search",
         "security": [
@@ -5031,10 +5091,10 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/search/user": {
+    "/api/search/user": {
       "get": {
         "tags": [
-          "/search/user"
+          "Search"
         ],
         "summary": "Search",
         "description": "Searches for users using user-specific queries from the\n[Confluence Query Language (CQL)](https://developer.atlassian.com/cloud/confluence/advanced-searching-using-cql/).\n\nNote that some user fields may be set to null depending on the user's privacy settings.\nThese are: email, profilePicture, and displayName.",
@@ -5095,10 +5155,10 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/settings/lookandfeel": {
+    "/api/settings/lookandfeel": {
       "get": {
         "tags": [
-          "/settings/lookandfeel"
+          "Settings"
         ],
         "summary": "Get look and feel settings",
         "security": [
@@ -5142,10 +5202,10 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/settings/lookandfeel/custom": {
+    "/api/settings/lookandfeel/custom": {
       "post": {
         "tags": [
-          "/settings/lookandfeel"
+          "Settings"
         ],
         "summary": "Update look and feel settings",
         "security": [
@@ -5204,7 +5264,7 @@
       },
       "delete": {
         "tags": [
-          "/settings/lookandfeel"
+          "Settings"
         ],
         "summary": "Reset look and feel settings",
         "security": [
@@ -5244,10 +5304,10 @@
         "x-atlassian-connect-scope": "DELETE"
       }
     },
-    "/settings/lookandfeel/selected": {
+    "/api/settings/lookandfeel/selected": {
       "put": {
         "tags": [
-          "/settings/lookandfeel"
+          "Settings"
         ],
         "summary": "Set look and feel settings",
         "security": [
@@ -5305,10 +5365,10 @@
         "x-atlassian-connect-scope": "WRITE"
       }
     },
-    "/settings/systemInfo": {
+    "/api/settings/systemInfo": {
       "get": {
         "tags": [
-          "/settings"
+          "Settings"
         ],
         "summary": "Get system info",
         "security": [
@@ -5338,10 +5398,10 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/settings/theme": {
+    "/api/settings/theme": {
       "get": {
         "tags": [
-          "/settings/theme"
+          "Settings"
         ],
         "summary": "Get themes",
         "security": [
@@ -5394,10 +5454,10 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/settings/theme/selected": {
+    "/api/settings/theme/selected": {
       "get": {
         "tags": [
-          "/settings/theme"
+          "Settings"
         ],
         "summary": "Get global theme",
         "security": [
@@ -5427,10 +5487,10 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/settings/theme/{themeKey}": {
+    "/api/settings/theme/{themeKey}": {
       "get": {
         "tags": [
-          "/settings/theme"
+          "Settings"
         ],
         "summary": "Get theme",
         "security": [
@@ -5471,10 +5531,10 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/space": {
+    "/api/space": {
       "get": {
         "tags": [
-          "/space"
+          "Space"
         ],
         "summary": "Get spaces",
         "security": [
@@ -5497,6 +5557,20 @@
               "type": "array",
               "items": {
                 "type": "string"
+              }
+            }
+          },
+          {
+            "name": "spaceId",
+            "in": "query",
+            "description": "The id of the space to be returned. To return multiple spaces,\nspecify this parameter multiple times with different values.",
+            "required": false,
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int64"
               }
             }
           },
@@ -5604,7 +5678,7 @@
       },
       "post": {
         "tags": [
-          "/space"
+          "Space"
         ],
         "summary": "Create space",
         "security": [
@@ -5651,10 +5725,10 @@
         "x-atlassian-connect-scope": "WRITE"
       }
     },
-    "/space/_private": {
+    "/api/space/_private": {
       "post": {
         "tags": [
-          "/space"
+          "Space"
         ],
         "summary": "Create private space",
         "security": [
@@ -5701,10 +5775,10 @@
         "x-atlassian-connect-scope": "WRITE"
       }
     },
-    "/space/{spaceKey}": {
+    "/api/space/{spaceKey}": {
       "get": {
         "tags": [
-          "/space"
+          "Space"
         ],
         "summary": "Get space",
         "security": [
@@ -5752,7 +5826,7 @@
       },
       "put": {
         "tags": [
-          "/space"
+          "Space"
         ],
         "summary": "Update space",
         "security": [
@@ -5808,7 +5882,7 @@
       },
       "delete": {
         "tags": [
-          "/space"
+          "Space"
         ],
         "summary": "Delete space",
         "security": [
@@ -5845,10 +5919,10 @@
         "x-atlassian-connect-scope": "DELETE"
       }
     },
-    "/space/{spaceKey}/content": {
+    "/api/space/{spaceKey}/content": {
       "get": {
         "tags": [
-          "/space"
+          "Space"
         ],
         "summary": "Get content for space",
         "security": [
@@ -5933,10 +6007,10 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/space/{spaceKey}/content/{type}": {
+    "/api/space/{spaceKey}/content/{type}": {
       "get": {
         "tags": [
-          "/space"
+          "Space"
         ],
         "summary": "Get content by type for space",
         "security": [
@@ -6034,10 +6108,10 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/space/{spaceKey}/property": {
+    "/api/space/{spaceKey}/property": {
       "get": {
         "tags": [
-          "/space/{spaceKey}/property"
+          "Space"
         ],
         "summary": "Get space properties",
         "security": [
@@ -6120,7 +6194,7 @@
       },
       "post": {
         "tags": [
-          "/space/{spaceKey}/property"
+          "Space"
         ],
         "summary": "Create space property",
         "security": [
@@ -6178,10 +6252,10 @@
         "x-atlassian-connect-scope": "WRITE"
       }
     },
-    "/space/{spaceKey}/property/{key}": {
+    "/api/space/{spaceKey}/property/{key}": {
       "get": {
         "tags": [
-          "/space/{spaceKey}/property"
+          "Space"
         ],
         "summary": "Get space property",
         "security": [
@@ -6249,7 +6323,7 @@
       },
       "post": {
         "tags": [
-          "/space/{spaceKey}/property"
+          "Space"
         ],
         "summary": "Create space property for key",
         "security": [
@@ -6259,7 +6333,7 @@
             ]
           }
         ],
-        "description": "Creates a new space property. This is the same as `POST\n/space/{spaceKey}/property` but the key for the property is passed as a\npath parameter, rather than in the request body.\n\n**[Permissions required](https://confluence.atlassian.com/x/_AozKw)**:\n‘Admin’ permission for the space.",
+        "description": "Creates a new space property. This is the same as `POST\n/api/space/{spaceKey}/property` but the key for the property is passed as a\npath parameter, rather than in the request body.\n\n**[Permissions required](https://confluence.atlassian.com/x/_AozKw)**:\n‘Admin’ permission for the space.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.SpacePropertyResource.createSpacePropertyForKey_post",
         "parameters": [
           {
@@ -6317,7 +6391,7 @@
       },
       "put": {
         "tags": [
-          "/space/{spaceKey}/property"
+          "Space"
         ],
         "summary": "Update space property",
         "security": [
@@ -6391,7 +6465,7 @@
       },
       "delete": {
         "tags": [
-          "/space/{spaceKey}/property"
+          "Space"
         ],
         "summary": "Delete space property",
         "security": [
@@ -6434,10 +6508,10 @@
         "x-atlassian-connect-scope": "DELETE"
       }
     },
-    "/space/{spaceKey}/settings": {
+    "/api/space/{spaceKey}/settings": {
       "get": {
         "tags": [
-          "/space"
+          "Space"
         ],
         "summary": "Get space settings",
         "security": [
@@ -6482,7 +6556,7 @@
       },
       "put": {
         "tags": [
-          "/space"
+          "Space"
         ],
         "summary": "Update space settings",
         "security": [
@@ -6537,10 +6611,10 @@
         "x-atlassian-connect-scope": "WRITE"
       }
     },
-    "/space/{spaceKey}/theme": {
+    "/api/space/{spaceKey}/theme": {
       "get": {
         "tags": [
-          "/space/{spaceKey}/theme"
+          "Space"
         ],
         "summary": "Get space theme",
         "security": [
@@ -6582,7 +6656,7 @@
       },
       "put": {
         "tags": [
-          "/space/{spaceKey}/theme"
+          "Space"
         ],
         "summary": "Set space theme",
         "security": [
@@ -6637,7 +6711,7 @@
       },
       "delete": {
         "tags": [
-          "/space/{spaceKey}/theme"
+          "Space"
         ],
         "summary": "Reset space theme",
         "security": [
@@ -6671,10 +6745,10 @@
         "x-atlassian-connect-scope": "DELETE"
       }
     },
-    "/space/{spaceKey}/watch": {
+    "/api/space/{spaceKey}/watch": {
       "get": {
         "tags": [
-          "/space/{spaceKey}/watch"
+          "Space"
         ],
         "summary": "Returns a list of watchers of a space",
         "description": "Returns a list of watchers of a space",
@@ -6726,10 +6800,10 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/template": {
+    "/api/template": {
       "post": {
         "tags": [
-          "/template"
+          "Template"
         ],
         "summary": "Create content template",
         "security": [
@@ -6771,7 +6845,7 @@
       },
       "put": {
         "tags": [
-          "/template"
+          "Template"
         ],
         "summary": "Update content template",
         "security": [
@@ -6812,10 +6886,10 @@
         "x-atlassian-connect-scope": "WRITE"
       }
     },
-    "/template/blueprint": {
+    "/api/template/blueprint": {
       "get": {
         "tags": [
-          "/template"
+          "Template"
         ],
         "summary": "Get blueprint templates",
         "security": [
@@ -6896,10 +6970,10 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/template/page": {
+    "/api/template/page": {
       "get": {
         "tags": [
-          "/template"
+          "Template"
         ],
         "summary": "Get content templates",
         "security": [
@@ -6980,10 +7054,10 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/template/{contentTemplateId}": {
+    "/api/template/{contentTemplateId}": {
       "get": {
         "tags": [
-          "/template"
+          "Template"
         ],
         "summary": "Get content template",
         "security": [
@@ -7025,7 +7099,7 @@
       },
       "delete": {
         "tags": [
-          "/template"
+          "Template"
         ],
         "summary": "Remove template",
         "security": [
@@ -7056,19 +7130,19 @@
         "x-atlassian-connect-scope": "DELETE"
       }
     },
-    "/user": {
+    "/api/user": {
       "get": {
         "tags": [
-          "/user"
+          "User"
         ],
         "summary": "Get user",
-        "description": "Returns a user. This includes information about the user, like the\ndisplay name, userKey, account ID, profile picture, and more.\n\nThe `username`, `key`, or `accountId` parameter must be specified, in\norder to identify the user.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
+        "description": "Returns a user. This includes information about the user, such as the\ndisplay name, account ID, profile picture, and more. The information returned may be\nrestricted by the user's profile visibility settings.\n\n**Note:** to add, edit, or delete users in your organization, see the\n[user management REST API](/cloud/admin/user-management/about/).\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.UserResource.getUser_get",
         "parameters": [
           {
             "name": "key",
             "in": "query",
-            "description": "This parameter has been deprecated due to privacy changes. Use `accountId` instead. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe userKey of the user to be returned. Required, unless the\n`username` or `accountId` is specified. The `key` uniquely identifies\na user in a Confluence instance and does not change.",
+            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
             "required": false,
             "schema": {
               "type": "string"
@@ -7077,7 +7151,7 @@
           {
             "name": "username",
             "in": "query",
-            "description": "This parameter has been deprecated due to privacy changes. Use `accountId` instead. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe username of the user to be returned. Required, unless the `key`\nor `accountId` is specified. The `username` uniquely identifies a\nuser in a Confluence instance but can change if the user is renamed.",
+            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
             "required": false,
             "schema": {
               "type": "string"
@@ -7086,8 +7160,8 @@
           {
             "name": "accountId",
             "in": "query",
-            "description": "The account ID of the user, which uniquely identifies the user across all Atlassian products.\nFor example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`. Required, unless `username` or `userKey` is specified.",
-            "required": false,
+            "description": "The account ID of the user, which uniquely identifies the user across all Atlassian products.\nFor example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.",
+            "required": true,
             "schema": {
               "type": "string"
             }
@@ -7130,16 +7204,16 @@
             "description": "Returned if the calling user does not have permission to view users."
           },
           "404": {
-            "description": "Returned if a user with the given username, userkey, or accountId\ndoes not exist."
+            "description": "Returned if a user with the given accountId does not exist."
           }
         },
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/user/anonymous": {
+    "/api/user/anonymous": {
       "get": {
         "tags": [
-          "/user"
+          "User"
         ],
         "summary": "Get anonymous user",
         "description": "Returns information about how anonymous users are represented, like the\nprofile picture and display name.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
@@ -7180,10 +7254,10 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/user/current": {
+    "/api/user/current": {
       "get": {
         "tags": [
-          "/user"
+          "User"
         ],
         "summary": "Get current user",
         "description": "Returns the currently logged-in user. This includes information about\nthe user, like the display name, userKey, account ID, profile picture,\nand more.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
@@ -7227,10 +7301,10 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/user/memberof": {
+    "/api/user/memberof": {
       "get": {
         "tags": [
-          "/user"
+          "User"
         ],
         "summary": "Get group memberships for user",
         "description": "Returns the groups that a user is a member of.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
@@ -7239,7 +7313,7 @@
           {
             "name": "key",
             "in": "query",
-            "description": "This parameter has been deprecated due to privacy changes. Use `accountId` instead. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe userKey of the user. Required, unless the `username` or `accountId` is specified. The `key` uniquely identifies\na user in a Confluence instance and does not change.",
+            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
             "required": false,
             "schema": {
               "type": "string"
@@ -7248,7 +7322,7 @@
           {
             "name": "username",
             "in": "query",
-            "description": "This parameter has been deprecated due to privacy changes. Use `accountId` instead. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe username of the user. Required, unless the `key` or `accountId` is specified. The `username` uniquely identifies a\nuser in a Confluence instance but can change if the user is renamed.",
+            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
             "required": false,
             "schema": {
               "type": "string"
@@ -7257,8 +7331,8 @@
           {
             "name": "accountId",
             "in": "query",
-            "description": "The account ID of the user, which uniquely identifies the user across all Atlassian products.\nFor example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`. Required, unless `username` or `userKey` is specified.",
-            "required": false,
+            "description": "The account ID of the user, which uniquely identifies the user across all Atlassian products.\nFor example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.",
+            "required": true,
             "schema": {
               "type": "string"
             }
@@ -7306,10 +7380,10 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/user/bulk": {
+    "/api/user/bulk": {
       "get": {
         "tags": [
-          "/user"
+          "User"
         ],
         "summary": "Get multiple users using ids",
         "description": "Returns user details for the ids provided in request.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
@@ -7374,10 +7448,10 @@
         "x-atlassian-connect-scope": "INACCESSIBLE"
       }
     },
-    "/user/watch/content/{contentId}": {
+    "/api/user/watch/content/{contentId}": {
       "get": {
         "tags": [
-          "/user"
+          "User"
         ],
         "summary": "Get content watch status",
         "security": [
@@ -7387,7 +7461,7 @@
             ]
           }
         ],
-        "description": "Returns whether a user is watching a piece of content. Choose the user by\ndoing one of the following:\n\n- Specify a user via a query parameter: Use the `username`, `key`, or `accountId` to identify the user.\nNote that `username` and `key` have been deprecated in favor of `accountId`. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n- Do not specify a user: The currently logged-in user will be used.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission if specifying a user, otherwise\npermission to access the Confluence site ('Can use' global permission).",
+        "description": "Returns whether a user is watching a piece of content. Choose the user by\ndoing one of the following:\n\n- Specify a user via a query parameter: Use the `accountId` to identify the user.\n- Do not specify a user: The currently logged-in user will be used.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission if specifying a user, otherwise\npermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.UserWatchResource.getContentWatchStatus_get",
         "parameters": [
           {
@@ -7402,7 +7476,7 @@
           {
             "name": "key",
             "in": "query",
-            "description": "This parameter has been deprecated due to privacy changes. Use `accountId` instead. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe `key` of the user to be queried for whether they are watching the\ncontent. Required, unless the `username` or `accountId` is specified.",
+            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
             "required": false,
             "schema": {
               "type": "string"
@@ -7411,7 +7485,7 @@
           {
             "name": "username",
             "in": "query",
-            "description": "This parameter has been deprecated due to privacy changes. Use `accountId` instead. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe `username` of the user to be queried for whether they are watching\nthe content. Required, unless the `key` or `accountId` is specified.",
+            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
             "required": false,
             "schema": {
               "type": "string"
@@ -7420,8 +7494,8 @@
           {
             "name": "accountId",
             "in": "query",
-            "description": "The `accountId` of the user to be queried for whether they are watching the content. The accountId uniquely\nidentifies the user across all Atlassian products. For example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.\nRequired, unless `username` or `userKey` is specified.",
-            "required": false,
+            "description": "The `accountId` of the user to be queried for whether they are watching the content. The accountId uniquely\nidentifies the user across all Atlassian products. For example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.",
+            "required": true,
             "schema": {
               "type": "string"
             }
@@ -7449,7 +7523,7 @@
       },
       "post": {
         "tags": [
-          "/user"
+          "User"
         ],
         "summary": "Add content watcher",
         "security": [
@@ -7459,7 +7533,7 @@
             ]
           }
         ],
-        "description": "Adds a user as a watcher to a piece of content. Choose the user by doing\none of the following:\n\n- Specify a user via a query parameter: Use the `username`, `key`, or `accountId` to identify the user.\nNote that `username` and `key` have been deprecated in favor of `accountId`. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n- Do not specify a user: The currently logged-in user will be used.\n\nNote, you must add the `X-Atlassian-Token: no-check` header when making a\nrequest, as this operation has XSRF protection.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission if specifying a user, otherwise\npermission to access the Confluence site ('Can use' global permission).",
+        "description": "Adds a user as a watcher to a piece of content. Choose the user by doing\none of the following:\n\n- Specify a user via a query parameter: Use the `accountId` to identify the user.\n- Do not specify a user: The currently logged-in user will be used.\n\nNote, you must add the `X-Atlassian-Token: no-check` header when making a\nrequest, as this operation has XSRF protection.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission if specifying a user, otherwise\npermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.UserWatchResource.addContentWatcher_post",
         "parameters": [
           {
@@ -7474,7 +7548,7 @@
           {
             "name": "key",
             "in": "query",
-            "description": "This parameter has been deprecated due to privacy changes. Use `accountId` instead. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe `key` of the user to be added as a watcher. Required, unless the `username` or `accountId` is specified.",
+            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
             "required": false,
             "schema": {
               "type": "string"
@@ -7483,7 +7557,7 @@
           {
             "name": "username",
             "in": "query",
-            "description": "This parameter has been deprecated due to privacy changes. Use `accountId` instead. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe `username` of the user to be added as a watcher. Required, unless the `key` or `accountId` is specified.",
+            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
             "required": false,
             "schema": {
               "type": "string"
@@ -7492,8 +7566,8 @@
           {
             "name": "accountId",
             "in": "query",
-            "description": "The `accountId` of the user to be added as a watcher. The accountId uniquely identifies the user across all Atlassian products.\nFor example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`. Required, unless `username` or `userKey` is specified.",
-            "required": false,
+            "description": "The `accountId` of the user to be added as a watcher. The accountId uniquely identifies the user across all Atlassian products.\nFor example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.",
+            "required": true,
             "schema": {
               "type": "string"
             }
@@ -7514,7 +7588,7 @@
       },
       "delete": {
         "tags": [
-          "/user"
+          "User"
         ],
         "summary": "Remove content watcher",
         "security": [
@@ -7524,7 +7598,7 @@
             ]
           }
         ],
-        "description": "Removes a user as a watcher from a piece of content. Choose the user by\ndoing one of the following:\n\n- Specify a user via a query parameter: Use the `username`, `key`, or `accountId` to identify the user.\nNote that `username` and `key` have been deprecated in favor of `accountId`. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n- Do not specify a user: The currently logged-in user will be used.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission if specifying a user, otherwise\npermission to access the Confluence site ('Can use' global permission).",
+        "description": "Removes a user as a watcher from a piece of content. Choose the user by\ndoing one of the following:\n\n- Specify a user via a query parameter: Use the `accountId` to identify the user.\n- Do not specify a user: The currently logged-in user will be used.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission if specifying a user, otherwise\npermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.UserWatchResource.removeContentWatcher_delete",
         "parameters": [
           {
@@ -7539,7 +7613,7 @@
           {
             "name": "key",
             "in": "query",
-            "description": "This parameter has been deprecated due to privacy changes. Use `accountId` instead. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe `key` of the user to be removed as a watcher. Required, unless the `username` or `accountId` is specified.",
+            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
             "required": false,
             "schema": {
               "type": "string"
@@ -7548,7 +7622,7 @@
           {
             "name": "username",
             "in": "query",
-            "description": "This parameter has been deprecated due to privacy changes. Use `accountId` instead. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe `username` of the user to be removed as a watcher. Required, unless the `key` or `accountId` is specified.",
+            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
             "required": false,
             "schema": {
               "type": "string"
@@ -7557,8 +7631,8 @@
           {
             "name": "accountId",
             "in": "query",
-            "description": "The `accountId` of the user to be removed as a watcher. The accountId uniquely identifies the user across all Atlassian products.\nFor example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`. Required, unless `username` or `userKey` is specified.",
-            "required": false,
+            "description": "The `accountId` of the user to be removed as a watcher. The accountId uniquely identifies the user across all Atlassian products.\nFor example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.",
+            "required": true,
             "schema": {
               "type": "string"
             }
@@ -7578,10 +7652,10 @@
         "x-atlassian-connect-scope": "DELETE"
       }
     },
-    "/user/watch/label/{labelName}": {
+    "/api/user/watch/label/{labelName}": {
       "get": {
         "tags": [
-          "/user"
+          "User"
         ],
         "summary": "Get label watch status",
         "security": [
@@ -7591,7 +7665,7 @@
             ]
           }
         ],
-        "description": "Returns whether a user is watching a label. Choose the user by doing one\nof the following:\n\n- Specify a user via a query parameter: Use the `username`, `key`, or `accountId` to identify the user.\nNote that `username` and `key` have been deprecated in favor of `accountId`. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n- Do not specify a user: The currently logged-in user will be used.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission if specifying a user, otherwise\npermission to access the Confluence site ('Can use' global permission).",
+        "description": "Returns whether a user is watching a label. Choose the user by doing one\nof the following:\n\n- Specify a user via a query parameter: Use the `accountId` to identify the user.\n- Do not specify a user: The currently logged-in user will be used.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission if specifying a user, otherwise\npermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.UserWatchResource.isWatchingLabel_get",
         "parameters": [
           {
@@ -7606,7 +7680,7 @@
           {
             "name": "key",
             "in": "query",
-            "description": "This parameter has been deprecated due to privacy changes. Use `accountId` instead. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe `key` of the user to be queried for whether they are watching the label. Required, unless the `username` or `accountId` is specified.",
+            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
             "required": false,
             "schema": {
               "type": "string"
@@ -7615,7 +7689,7 @@
           {
             "name": "username",
             "in": "query",
-            "description": "This parameter has been deprecated due to privacy changes. Use `accountId` instead. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe `username` of the user to be queried for whether they are watching the label. Required, unless the `key` or `accountId` is specified.",
+            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
             "required": false,
             "schema": {
               "type": "string"
@@ -7624,8 +7698,8 @@
           {
             "name": "accountId",
             "in": "query",
-            "description": "The `accountId` of the user to be queried for whether they are watching the label. The accountId uniquely identifies\nthe user across all Atlassian products. For example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.\nRequired, unless `username` or `userKey` is specified.",
-            "required": false,
+            "description": "The `accountId` of the user to be queried for whether they are watching the label. The accountId uniquely identifies\nthe user across all Atlassian products. For example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.",
+            "required": true,
             "schema": {
               "type": "string"
             }
@@ -7653,7 +7727,7 @@
       },
       "post": {
         "tags": [
-          "/user"
+          "User"
         ],
         "summary": "Add label watcher",
         "security": [
@@ -7663,7 +7737,7 @@
             ]
           }
         ],
-        "description": "Adds a user as a watcher to a label. Choose the user by doing one of the\nfollowing:\n\n- Specify a user via a query parameter: Use the `username`, `key`, or `accountId` to identify the user.\nNote that `username` and `key` have been deprecated in favor of `accountId`. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n- Do not specify a user: The currently logged-in user will be used.\n\nNote, you must add the `X-Atlassian-Token: no-check` header when making a\nrequest, as this operation has XSRF protection.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission if specifying a user, otherwise\npermission to access the Confluence site ('Can use' global permission).",
+        "description": "Adds a user as a watcher to a label. Choose the user by doing one of the\nfollowing:\n\n- Specify a user via a query parameter: Use the `accountId` to identify the user.\n- Do not specify a user: The currently logged-in user will be used.\n\nNote, you must add the `X-Atlassian-Token: no-check` header when making a\nrequest, as this operation has XSRF protection.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission if specifying a user, otherwise\npermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.UserWatchResource.addLabelWatcher_post",
         "parameters": [
           {
@@ -7678,7 +7752,7 @@
           {
             "name": "key",
             "in": "query",
-            "description": "This parameter has been deprecated due to privacy changes. Use `accountId` instead. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe `key` of the user to be added as a watcher. Required, unless the `username` or `accountId` is specified.",
+            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
             "required": false,
             "schema": {
               "type": "string"
@@ -7687,7 +7761,7 @@
           {
             "name": "username",
             "in": "query",
-            "description": "This parameter has been deprecated due to privacy changes. Use `accountId` instead. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe `username` of the user to be added as a watcher. Required, unless the `key` or `accountId` is specified.",
+            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
             "required": false,
             "schema": {
               "type": "string"
@@ -7696,8 +7770,8 @@
           {
             "name": "accountId",
             "in": "query",
-            "description": "The `accountId` of the user to be added as a watcher. The accountId uniquely identifies the user across all Atlassian products.\nFor example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`. Required, unless `username` or `userKey` is specified.",
-            "required": false,
+            "description": "The `accountId` of the user to be added as a watcher. The accountId uniquely identifies the user across all Atlassian products.\nFor example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.",
+            "required": true,
             "schema": {
               "type": "string"
             }
@@ -7718,7 +7792,7 @@
       },
       "delete": {
         "tags": [
-          "/user"
+          "User"
         ],
         "summary": "Remove label watcher",
         "security": [
@@ -7728,7 +7802,7 @@
             ]
           }
         ],
-        "description": "Removes a user as a watcher from a label. Choose the user by doing one of\nthe following:\n\n- Specify a user via a query parameter: Use the `username`, `key`, or `accountId` to identify the user.\nNote that `username` and `key` have been deprecated in favor of `accountId`. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n- Do not specify a user: The currently logged-in user will be used.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission if specifying a user, otherwise\npermission to access the Confluence site ('Can use' global permission).",
+        "description": "Removes a user as a watcher from a label. Choose the user by doing one of\nthe following:\n\n- Specify a user via a query parameter: Use the `accountId` to identify the user.\n- Do not specify a user: The currently logged-in user will be used.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission if specifying a user, otherwise\npermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.UserWatchResource.removeLabelWatcher_delete",
         "parameters": [
           {
@@ -7743,7 +7817,7 @@
           {
             "name": "key",
             "in": "query",
-            "description": "This parameter has been deprecated due to privacy changes. Use `accountId` instead. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe `key` of the user to be removed as a watcher. Required, unless the `username` or `accountId` is specified.",
+            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
             "required": false,
             "schema": {
               "type": "string"
@@ -7752,7 +7826,7 @@
           {
             "name": "username",
             "in": "query",
-            "description": "This parameter has been deprecated due to privacy changes. Use `accountId` instead. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe `username` of the user to be removed as a watcher. Required, unless the `key` or `accountId` is specified.",
+            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
             "required": false,
             "schema": {
               "type": "string"
@@ -7761,8 +7835,8 @@
           {
             "name": "accountId",
             "in": "query",
-            "description": "The `accountId` of the user to be removed as a watcher. The accountId uniquely identifies the user across all Atlassian products.\nFor example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`. Required, unless `username` or `userKey` is specified.",
-            "required": false,
+            "description": "The `accountId` of the user to be removed as a watcher. The accountId uniquely identifies the user across all Atlassian products.\nFor example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.",
+            "required": true,
             "schema": {
               "type": "string"
             }
@@ -7782,10 +7856,10 @@
         "x-atlassian-connect-scope": "DELETE"
       }
     },
-    "/user/watch/space/{spaceKey}": {
+    "/api/user/watch/space/{spaceKey}": {
       "get": {
         "tags": [
-          "/user"
+          "User"
         ],
         "summary": "Get space watch status",
         "security": [
@@ -7795,7 +7869,7 @@
             ]
           }
         ],
-        "description": "Returns whether a user is watching a space. Choose the user by\ndoing one of the following:\n\n- Specify a user via a query parameter: Use the `username`, `key`, or `accountId` to identify the user.\nNote that `username` and `key` have been deprecated in favor of `accountId`. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n- Do not specify a user: The currently logged-in user will be used.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission if specifying a user, otherwise\npermission to access the Confluence site ('Can use' global permission).",
+        "description": "Returns whether a user is watching a space. Choose the user by\ndoing one of the following:\n\n- Specify a user via a query parameter: Use the `accountId` to identify the user.\n- Do not specify a user: The currently logged-in user will be used.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission if specifying a user, otherwise\npermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.UserWatchResource.isWatchingSpace_get",
         "parameters": [
           {
@@ -7810,7 +7884,7 @@
           {
             "name": "key",
             "in": "query",
-            "description": "This parameter has been deprecated due to privacy changes. Use `accountId` instead. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe `key` of the user to be queried for whether they are watching the space. Required, unless the `username` or `accountId` is specified.",
+            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
             "required": false,
             "schema": {
               "type": "string"
@@ -7819,7 +7893,7 @@
           {
             "name": "username",
             "in": "query",
-            "description": "This parameter has been deprecated due to privacy changes. Use `accountId` instead. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe `username` of the user to be queried for whether they are watching the space. Required, unless the `key` or `accountId` is specified.",
+            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
             "required": false,
             "schema": {
               "type": "string"
@@ -7828,8 +7902,8 @@
           {
             "name": "accountId",
             "in": "query",
-            "description": "The `accountId` of the user to be queried for whether they are watching the space. The accountId uniquely identifies\nthe user across all Atlassian products. For example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.\nRequired, unless `username` or `userKey` is specified.",
-            "required": false,
+            "description": "The `accountId` of the user to be queried for whether they are watching the space. The accountId uniquely identifies\nthe user across all Atlassian products. For example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.",
+            "required": true,
             "schema": {
               "type": "string"
             }
@@ -7857,7 +7931,7 @@
       },
       "post": {
         "tags": [
-          "/user"
+          "User"
         ],
         "summary": "Add space watcher",
         "security": [
@@ -7867,7 +7941,7 @@
             ]
           }
         ],
-        "description": "Adds a user as a watcher to a space. Choose the user by doing one of the\nfollowing:\n\n- Specify a user via a query parameter: Use the `username`, `key`, or `accountId` to identify the user.\nNote that `username` and `key` have been deprecated in favor of `accountId`. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n- Do not specify a user: The currently logged-in user will be used.\n\nNote, you must add the `X-Atlassian-Token: no-check` header when making a\nrequest, as this operation has XSRF protection.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission if specifying a user, otherwise\npermission to access the Confluence site ('Can use' global permission).",
+        "description": "Adds a user as a watcher to a space. Choose the user by doing one of the\nfollowing:\n\n- Specify a user via a query parameter: Use the `accountId` to identify the user.\n- Do not specify a user: The currently logged-in user will be used.\n\nNote, you must add the `X-Atlassian-Token: no-check` header when making a\nrequest, as this operation has XSRF protection.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission if specifying a user, otherwise\npermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.UserWatchResource.addSpaceWatcher_post",
         "parameters": [
           {
@@ -7882,7 +7956,7 @@
           {
             "name": "key",
             "in": "query",
-            "description": "This parameter has been deprecated due to privacy changes. Use `accountId` instead. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe `key` of the user to be added as a watcher. Required, unless the `username` or `accountId` is specified.",
+            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
             "required": false,
             "schema": {
               "type": "string"
@@ -7891,7 +7965,7 @@
           {
             "name": "username",
             "in": "query",
-            "description": "This parameter has been deprecated due to privacy changes. Use `accountId` instead. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe `username` of the user to be added as a watcher. Required, unless the `key` or `accountId` is specified.",
+            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
             "required": false,
             "schema": {
               "type": "string"
@@ -7900,8 +7974,8 @@
           {
             "name": "accountId",
             "in": "query",
-            "description": "The `accountId` of the user to be added as a watcher. The accountId uniquely identifies the user across all\nAtlassian products. For example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.\nRequired, unless `username` or `userKey` is specified.",
-            "required": false,
+            "description": "The `accountId` of the user to be added as a watcher. The accountId uniquely identifies the user across all\nAtlassian products. For example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.",
+            "required": true,
             "schema": {
               "type": "string"
             }
@@ -7922,7 +7996,7 @@
       },
       "delete": {
         "tags": [
-          "/user"
+          "User"
         ],
         "summary": "Remove space watch",
         "security": [
@@ -7932,7 +8006,7 @@
             ]
           }
         ],
-        "description": "Removes a user as a watcher from a space. Choose the user by doing one of\nthe following:\n\n- Specify a user via a query parameter: Use the `username`, `key`, or `accountId` to identify the user.\nNote that `username` and `key` have been deprecated in favor of `accountId`. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n- Do not specify a user: The currently logged-in user will be used.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission if specifying a user, otherwise\npermission to access the Confluence site ('Can use' global permission).",
+        "description": "Removes a user as a watcher from a space. Choose the user by doing one of\nthe following:\n\n- Specify a user via a query parameter: Use the `accountId` to identify the user.\n- Do not specify a user: The currently logged-in user will be used.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission if specifying a user, otherwise\npermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.UserWatchResource.removeSpaceWatch_delete",
         "parameters": [
           {
@@ -7947,7 +8021,7 @@
           {
             "name": "key",
             "in": "query",
-            "description": "This parameter has been deprecated due to privacy changes. Use `accountId` instead. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe `key` of the user to be removed as a watcher. Required, unless the `username` or `accountId` is specified.",
+            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
             "required": false,
             "schema": {
               "type": "string"
@@ -7956,7 +8030,7 @@
           {
             "name": "username",
             "in": "query",
-            "description": "This parameter has been deprecated due to privacy changes. Use `accountId` instead. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe `username` of the user to be removed as a watcher. Required, unless the `key` or `accountId` is specified.",
+            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
             "required": false,
             "schema": {
               "type": "string"
@@ -7965,8 +8039,8 @@
           {
             "name": "accountId",
             "in": "query",
-            "description": "The `accountId` of the user to be removed as a watcher. The accountId uniquely identifies the user across all\nAtlassian products. For example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.\nRequired, unless `username` or `userKey` is specified.",
-            "required": false,
+            "description": "The `accountId` of the user to be removed as a watcher. The accountId uniquely identifies the user across all\nAtlassian products. For example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.",
+            "required": true,
             "schema": {
               "type": "string"
             }
@@ -7986,10 +8060,10 @@
         "x-atlassian-connect-scope": "DELETE"
       }
     },
-    "/user/email": {
+    "/api/user/email": {
       "get": {
         "tags": [
-          "/user/email"
+          "User"
         ],
         "summary": "Get a user's email",
         "description": "Returns a user's email address. This API is only available to apps approved by\nAtlassian, according to these [guidelines](https://community.developer.atlassian.com/t/guidelines-for-requesting-access-to-email-address/27603).\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
@@ -8032,10 +8106,10 @@
         "x-atlassian-connect-scope": "ACCESS_EMAIL_ADDRESSES"
       }
     },
-    "/user/email/bulk": {
+    "/api/user/email/bulk": {
       "get": {
         "tags": [
-          "/user/email/bulk"
+          "User"
         ],
         "summary": "Bulk fetch of users' email addresses",
         "description": "Returns user email addresses for a set of accountIds. This API is only available to apps approved by\nAtlassian, according to these [guidelines](https://community.developer.atlassian.com/t/guidelines-for-requesting-access-to-email-address/27603).\n\nAny accounts which are not available will not be included in the result.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
@@ -8078,10 +8152,10 @@
         "x-atlassian-connect-scope": "ACCESS_EMAIL_ADDRESSES"
       }
     },
-    "/user/bulk/migration": {
+    "/api/user/bulk/migration": {
       "get": {
         "tags": [
-          "/user"
+          "User"
         ],
         "summary": "Get accountIds for users",
         "description": "Returns the accountIds for the users specified in the key or username parameters. Note that multiple key and username parameters can be specified.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission if specifying a user, otherwise\npermission to access the Confluence site ('Can use' global permission).",
@@ -8156,6 +8230,155 @@
         },
         "x-atlassian-connect-scope": "READ"
       }
+    },
+    "/atlassian-connect/1/app/module/dynamic": {
+      "get": {
+        "tags": [
+          "Dynamic modules"
+        ],
+        "summary": "Get modules",
+        "description": "Returns all modules registered dynamically by the calling app.\n\n**[Permissions](#permissions) required:** Only Connect apps can make this request.",
+        "operationId": "DynamicModulesResource.getModules_get",
+        "responses": {
+          "200": {
+            "description": "Returned if the request is successful.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConnectModules"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned if the call is not from a Connect app.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/DynamicModulesErrorMessage"
+                }
+              },
+              "message": {
+                "examples": {
+                  "response": {
+                    "value": "The request is not from a Connect app."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-experimental": true,
+        "x-atlassian-connect-scope": "NONE"
+      },
+      "post": {
+        "tags": [
+          "Dynamic modules"
+        ],
+        "summary": "Register modules",
+        "description": "Registers a list of modules. For the list of modules that support dynamic registration, see [Dynamic modules](https://developer.atlassian.com/cloud/confluence/dynamic-modules/).\n\n**[Permissions](#permissions) required:** Only Connect apps can make this request.",
+        "operationId": "DynamicModulesResource.registerModules_post",
+        "responses": {
+          "200": {
+            "description": "Returned if the request is successful."
+          },
+          "400": {
+            "description": "Returned if:\n* any of the provided modules is invalid. For example, required properties are missing.\n* any of the modules conflict with registered dynamic modules or modules defined in the app descriptor. For example, there are duplicate keys.\n\nDetails of the issues encountered are included in the error message.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/DynamicModulesErrorMessage"
+                }
+              },
+              "message": {
+                "examples": {
+                  "response": {
+                    "value": "Installation failed. The app com.example.app.key has duplicate module keys: [module-key]. Please contact the app vendor."
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned if the call is not from a Connect app.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/DynamicModulesErrorMessage"
+                }
+              },
+              "message": {
+                "examples": {
+                  "response": {
+                    "value": "The request is not from a Connect app."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-experimental": true,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConnectModules"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-atlassian-connect-scope": "NONE"
+      },
+      "delete": {
+        "tags": [
+          "Dynamic modules"
+        ],
+        "summary": "Remove modules",
+        "description": "Remove all or a list of modules registered by the calling app.\n\n**[Permissions](#permissions) required:** Only Connect apps can make this request.",
+        "operationId": "DynamicModulesResource.removeModules_delete",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "moduleKey",
+            "description": "The key of the module to remove. To include multiple module keys, provide multiple copies of this parameter.\nFor example, `moduleKey=dynamic-attachment-entity-property&moduleKey=dynamic-select-field`.\nNonexistent keys are ignored.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Returned if the request is successful."
+          },
+          "401": {
+            "description": "Returned if the call is not from a Connect app.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/DynamicModulesErrorMessage"
+                }
+              },
+              "message": {
+                "examples": {
+                  "response": {
+                    "value": "The request is not from a Connect app."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-experimental": true,
+        "x-atlassian-connect-scope": "NONE"
+      }
     }
   },
   "externalDocs": {
@@ -8167,7 +8390,7 @@
       {
         "title": "About",
         "anchor": "about",
-        "body": "This is the reference for the Confluence Cloud REST API. This API is the primary way to get and modify data in Confluence Cloud, whether you are developing an app or any other integration. Use it to interact with Confluence entities, like pages and blog posts, spaces, users, groups, and more."
+        "body": "This is the reference for the Confluence Cloud REST API. This API is the primary way to get and\nmodify data in Confluence Cloud, whether you are developing an app or any other integration.\nUse it to interact with Confluence entities, like pages and blog posts, spaces, users, groups,\nand more.\n\n**NOTE:** Personal data that is used to identify users, such as `username` and `userKey`, has\nbeen removed from the Confluence Cloud REST API. In addition, other personal data (for example, email)\nis now restricted by a user's profile settings (or in the case of managed accounts, the visibility\nsettings decided by the site administrator). You must update your apps to accommodate these changes,\nif you have not done so already. This change was previously announced on 01 October 2018 and followed\nby a deprecation period (see the [announcement](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/))."
       },
       {
         "title": "Authentication and authorization",
@@ -8187,13 +8410,13 @@
       {
         "title": "Capabilities",
         "anchor": "capabilities",
-        "body": "**Webhooks:** A webhook is a user-defined callback over HTTP. You can use Confluence webhooks to notify your app or web application when certain events occur in Confluence. For example, when a page is created or updated. To learn more, see [Webhooks](https://developer.atlassian.com/cloud/confluence/modules/webhook/).\n\n**Content properties:** Content properties are a key-value storage associated with a piece of Confluence content. If you are building an app, this is one form of persistence that you can use. You can use the Confluence REST API to get, update, and delete content properties. To learn more, see [Confluence entity properties](https://developer.atlassian.com/cloud/confluence/confluence-entity-properties/).\n\n**CQL:** The Confluence Query Language (CQL) allows you to perform complex searches for content using an SQL-like syntax in the `search` resource. To learn more, see [Advanced searching using CQL](https://developer.atlassian.com/cloud/confluence/advanced-searching-using-cql/)."
+        "body": "**Webhooks:** A webhook is a user-defined callback over HTTP. You can use Confluence webhooks to notify your app or web application when certain events occur in Confluence. For example, when a page is created or updated. To learn more, see [Webhooks](https://developer.atlassian.com/cloud/confluence/modules/webhook/).\n\n**Content properties:** Content properties are a key-value storage associated with a piece of Confluence content. If you are building an app, this is one form of persistence that you can use. You can use the Confluence REST API to get, update, and delete content properties. To learn more, see [Content properties in the REST API](https://developer.atlassian.com/cloud/confluence/content-properties/).\n\n**CQL:** The Confluence Query Language (CQL) allows you to perform complex searches for content using an SQL-like syntax in the `search` resource. To learn more, see [Advanced searching using CQL](https://developer.atlassian.com/cloud/confluence/advanced-searching-using-cql/)."
       }
     ]
   },
   "servers": [
     {
-      "url": "//your-domain.atlassian.net/wiki/rest/api"
+      "url": "//your-domain.atlassian.net/wiki/rest"
     }
   ],
   "components": {
@@ -8490,10 +8713,12 @@
                 "default": null
               },
               "username": {
-                "type": "string"
+                "type": "string",
+                "description": "This property has been deprecated and will be removed soon."
               },
               "userKey": {
-                "type": "string"
+                "type": "string",
+                "description": "This property has been deprecated and will be removed soon."
               }
             }
           },
@@ -8605,11 +8830,11 @@
               },
               "username": {
                 "type": "string",
-                "description": "The username of the user that actioned the event."
+                "description": "This property has been deprecated and will be removed soon."
               },
               "userKey": {
                 "type": "string",
-                "description": "The userKey of the user that actioned the event."
+                "description": "This property has been deprecated and will be removed soon."
               }
             }
           },
@@ -8815,6 +9040,50 @@
           "newValue": {
             "type": "string"
           }
+        }
+      },
+      "ConnectModule": {
+        "type": "object",
+        "description": "A [Connect module](https://developer.atlassian.com/cloud/confluence/modules/admin-page/) in the same format as in the\n[app descriptor](https://developer.atlassian.com/cloud/confluence/app-descriptor/).",
+        "example": {
+          "key": "my-webitem",
+          "location": "system.admin/globalsettings",
+          "url": "/my-web-item",
+          "name": {
+            "value": "My Web Item"
+          }
+        }
+      },
+      "ConnectModules": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "array",
+          "description": "A list of modules by type.",
+          "items": {
+            "$ref": "#/components/schemas/ConnectModule"
+          }
+        },
+        "description": "A list of app modules in the same format as the `modules` property in the\n[app descriptor](https://developer.atlassian.com/cloud/confluence/app-descriptor/).",
+        "example": {
+          "webItems": [
+            {
+              "key": "my-webitem",
+              "location": "system.admin/globalsettings",
+              "url": "/my-web-item",
+              "name": {
+                "value": "My Web Item"
+              }
+            }
+          ],
+          "adminPages": [
+            {
+              "key": "my-admin-page",
+              "name": {
+                "value": "My Admin Page"
+              },
+              "url": "/my-admin-page"
+            }
+          ]
         }
       },
       "Container": {
@@ -10079,7 +10348,8 @@
                   "type": "object",
                   "description": "A user that the restriction will be applied to. Either the `username`\nor the `userKey` must be specified to identify the user.",
                   "required": [
-                    "type"
+                    "type",
+                    "accountId"
                   ],
                   "additionalProperties": false,
                   "properties": {
@@ -10095,15 +10365,15 @@
                     },
                     "username": {
                       "type": "string",
-                      "description": "This property has been deprecated due to privacy changes. Use `accountId` instead. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe username of the user. For example, _admin_. Required, unless `accountId` or `userKey` is specified."
+                      "description": "This property is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details."
                     },
                     "userKey": {
                       "type": "string",
-                      "description": "This property has been deprecated due to privacy changes. Use `accountId` instead. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe user key of the user. Required, unless `accountId` or `username` is specified."
+                      "description": "This property is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details."
                     },
                     "accountId": {
                       "type": "string",
-                      "description": "The account ID of the user, which uniquely identifies the user across all Atlassian products.\nFor example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`. Required, unless `username` or `userKey` is specified."
+                      "description": "The account ID of the user, which uniquely identifies the user across all Atlassian products.\nFor example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`."
                     }
                   }
                 }
@@ -10440,9 +10710,6 @@
           "copyLabels": {
             "type": "boolean"
           },
-          "originalPageId": {
-            "$ref": "#/components/schemas/ContentId"
-          },
           "destinationPageId": {
             "$ref": "#/components/schemas/ContentId"
           },
@@ -10500,6 +10767,22 @@
               "type = page and creator != admin and space = DEV"
             ]
           }
+        }
+      },
+      "DynamicModulesErrorMessage": {
+        "required": [
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The error message."
+          }
+        },
+        "additionalProperties": false,
+        "example": {
+          "message": "The request is not from a Connect app."
         }
       },
       "Embeddable": {
@@ -11091,8 +11374,6 @@
         "type": "object",
         "required": [
           "type",
-          "username",
-          "userKey",
           "accountId",
           "accountType",
           "email",
@@ -11115,11 +11396,11 @@
           },
           "username": {
             "type": "string",
-            "description": "This property has been deprecated in favor of `accountId`, due to privacy changes. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe username of the user. For example, _admin_."
+            "description": "This property is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details."
           },
           "userKey": {
             "type": "string",
-            "description": "This property has been deprecated in favor of `accountId`, due to privacy changes. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe user key of the user."
+            "description": "This property is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details."
           },
           "accountId": {
             "type": "string",
@@ -12225,11 +12506,11 @@
           },
           "username": {
             "type": "string",
-            "description": "This property has been deprecated in favor of `accountId`. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe username of the user. For example, _admin_."
+            "description": "This property is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details."
           },
           "userKey": {
             "type": "string",
-            "description": "This property has been deprecated in favor of `accountId`. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe user key of the user."
+            "description": "This property is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details."
           },
           "accountId": {
             "type": "string",
@@ -12411,8 +12692,6 @@
         "type": "object",
         "required": [
           "type",
-          "username",
-          "userKey",
           "accountId",
           "accountType",
           "email",
@@ -12435,11 +12714,11 @@
           },
           "username": {
             "type": "string",
-            "description": "This property has been deprecated in favor of `accountId`, due to privacy changes. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe username of the user. For example, _admin_."
+            "description": "This property is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details."
           },
           "userKey": {
             "type": "string",
-            "description": "This property has been deprecated in favor of `accountId`, due to privacy changes. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe user key of the user."
+            "description": "This property is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details."
           },
           "accountId": {
             "type": "string",
@@ -12862,9 +13141,7 @@
         "required": [
           "type",
           "profilePicture",
-          "username",
           "displayName",
-          "userKey",
           "operations",
           "accountId",
           "details"
@@ -12876,11 +13153,11 @@
           },
           "username": {
             "type": "string",
-            "description": "This property has been deprecated in favor of `accountId`. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe username of the user. For example, _admin_."
+            "description": "This property is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details."
           },
           "userKey": {
             "type": "string",
-            "description": "This property has been deprecated in favor of `accountId`. See the\n[migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\nfor details.\n\nThe user key of the user."
+            "description": "This property is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details."
           },
           "accountId": {
             "type": "string",
