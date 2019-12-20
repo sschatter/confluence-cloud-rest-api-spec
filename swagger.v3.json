@@ -28,6 +28,10 @@
       "description": ""
     },
     {
+      "name": "InlineTasks",
+      "description": ""
+    },
+    {
       "name": "Longtask",
       "description": ""
     },
@@ -4031,6 +4035,193 @@
         "x-atlassian-connect-scope": "INACCESSIBLE"
       }
     },
+    "/api/inlinetasks/search": {
+      "get": {
+        "tags": [
+          "InlineTasks"
+        ],
+        "summary": "Get inline tasks based on search parameters",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.all"
+            ]
+          }
+        ],
+        "description": "Returns inline tasks based on the search query.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission). Only tasks\nin contents that the user has permission to view are returned.",
+        "operationId": "com.atlassian.confluence.plugins.restapi.resources.TaskSearchResource.searchTasks_get",
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "description": "The starting offset for the results.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The number of results to be returned.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20
+            }
+          },
+          {
+            "name": "spaceKey",
+            "in": "query",
+            "description": "The space key of a space. Multiple space keys can be specified.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": null
+            }
+          },
+          {
+            "name": "pageId",
+            "in": "query",
+            "description": "The page id of a page. Multiple page ids can be specified.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": null
+            }
+          },
+          {
+            "name": "assignee",
+            "in": "query",
+            "description": "Account ID of a user to whom a task is assigned. Multiple users can be specified.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": null
+            }
+          },
+          {
+            "name": "creator",
+            "in": "query",
+            "description": "Account ID of a user to who created a task. Multiple users can be specified.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": null
+            }
+          },
+          {
+            "name": "completedUser",
+            "in": "query",
+            "description": "Account ID of a user who completed a task. Multiple users can be specified.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": null
+            }
+          },
+          {
+            "name": "duedateFrom",
+            "in": "query",
+            "description": "Start of date range based on due dates (inclusive).",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": null
+            }
+          },
+          {
+            "name": "duedateTo",
+            "in": "query",
+            "description": "End of date range based on due dates (inclusive).",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": null
+            }
+          },
+          {
+            "name": "createdateFrom",
+            "in": "query",
+            "description": "Start of date range based on create dates (inclusive).",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": null
+            }
+          },
+          {
+            "name": "createdateTo",
+            "in": "query",
+            "description": "End of date range based on create dates (inclusive).",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": null
+            }
+          },
+          {
+            "name": "completedateFrom",
+            "in": "query",
+            "description": "Start of date range based on complete dates (inclusive).",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": null
+            }
+          },
+          {
+            "name": "completedateTo",
+            "in": "query",
+            "description": "End of date range based on complete dates (inclusive).",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": null
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "The status of the task. (checked/unchecked)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "complete",
+                "incomplete"
+              ],
+              "default": null
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returned if the query fetches zero or more results.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskPageResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned if the calling user does not have permission to view\nany content."
+          }
+        },
+        "x-atlassian-connect-scope": "READ"
+      }
+    },
     "/api/group": {
       "get": {
         "tags": [
@@ -6005,6 +6196,113 @@
           }
         },
         "x-atlassian-connect-scope": "READ"
+      }
+    },
+    "/api/space/{spaceKey}/permission": {
+      "post": {
+        "tags": [
+          "Experimental"
+        ],
+        "summary": "Add new permission to space",
+        "description": "Adds new permission to space.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Admin' permission for the space.",
+        "operationId": "com.atlassian.confluence.plugins.restapi.resources.SpacePermissionResource.addPermission",
+        "parameters": [
+          {
+            "name": "spaceKey",
+            "in": "path",
+            "description": "The key of the space to be queried for its content.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returned if the requested content is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpacePermissionV2"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Used for various errors. Such as:\n- Permission already exists for the given user or group.\n- 'read space' permission doesn't exist for the given user or group.\n- No group found with the given groupName"
+          },
+          "401": {
+            "description": "Returned if the authentication credentials are incorrect or missing\nfrom the request."
+          },
+          "403": {
+            "description": "Returned if the user isn't authorized."
+          },
+          "404": {
+            "description": "Returned if any of the following is true:\n- There is no space with the given key.\n- The calling user does not have permission to view the space."
+          }
+        },
+        "x-experimental": true,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpacePermissionV2"
+              }
+            }
+          },
+          "description": "The permission to be created.",
+          "required": true
+        },
+        "x-atlassian-connect-scope": "INACCESSIBLE"
+      }
+    },
+    "/api/space/{spaceKey}/permission/{id}": {
+      "delete": {
+        "tags": [
+          "Experimental"
+        ],
+        "summary": "Remove a space permission",
+        "description": "Removes a space permission. Note that removing Read Space permission for a user or group will remove all\nthe space permissions for that user or group.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Admin' permission for the space.",
+        "operationId": "com.atlassian.confluence.plugins.restapi.resources.SpacePermissionResource.removePermission",
+        "parameters": [
+          {
+            "name": "spaceKey",
+            "in": "path",
+            "description": "The key of the space to be queried for its content.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of the permission to be deleted.",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Permission successfully removed."
+          },
+          "400": {
+            "description": "Used for various errors. Such as:\n- All of the admin permissions cannot be removed from a space."
+          },
+          "401": {
+            "description": "Returned if the authentication credentials are incorrect or missing\nfrom the request."
+          },
+          "403": {
+            "description": "Returned if the user isn't authorized."
+          },
+          "404": {
+            "description": "Returned if any of the following is true:\n- There is no permission with the given id.\n- There is no space with the given key.\n- The calling user does not have permission to view the space."
+          }
+        },
+        "x-experimental": true,
+        "x-atlassian-connect-scope": "INACCESSIBLE"
       }
     },
     "/api/space/{spaceKey}/content/{type}": {
@@ -12107,7 +12405,7 @@
       },
       "SpacePermission": {
         "type": "object",
-        "description": "This object represents the permissions for a space. Permissions consist of\nat least one operation object with an accompanying subjects object.\n\nThe following combinations of `operation` and `targetType` values are\nvalid for the `operation` object:\n\n  - 'create': 'page', 'blogpost', 'comment', 'attachment'\n  - 'read': 'space'\n  - 'delete': 'page', 'blogpost', 'comment', 'attachment'\n  - 'export': 'space'\n  - 'administer': 'space'",
+        "description": "This object represents a permission for given space. Permissions consist of\nat least one operation object with an accompanying subjects object.\n\nThe following combinations of `operation` and `targetType` values are\nvalid for the `operation` object:\n\n  - 'create': 'page', 'blogpost', 'comment', 'attachment'\n  - 'read': 'space'\n  - 'delete': 'page', 'blogpost', 'comment', 'attachment'\n  - 'export': 'space'\n  - 'administer': 'space'",
         "required": [
           "subjects",
           "operation",
@@ -12594,6 +12892,99 @@
           },
           "commitHash": {
             "type": "string"
+          }
+        }
+      },
+      "Task": {
+        "type": "object",
+        "required": [
+          "globalId",
+          "id",
+          "contentId",
+          "status",
+          "creator",
+          "createDate"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "globalId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "contentId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "status": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "body": {
+            "type": "string"
+          },
+          "creator": {
+            "type": "string"
+          },
+          "assignee": {
+            "type": "string"
+          },
+          "completeUser": {
+            "type": "string"
+          },
+          "createDate": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "dueDate": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "updateDate": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "completeDate": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "TaskPageResponse": {
+        "type": "object",
+        "required": [
+          "results",
+          "start",
+          "limit",
+          "size"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Task"
+            }
+          },
+          "start": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },
@@ -13228,6 +13619,84 @@
           },
           "superbatch": {
             "$ref": "#/components/schemas/SuperBatchWebResources"
+          }
+        }
+      },
+      "SpacePermissionV2": {
+        "type": "object",
+        "description": "This object represents a single space permission. Permissions consist of\nat least one operation object with an accompanying subjects object.\n\nThe following combinations of `operation.type` and `operation.target` values are\nvalid for the `operation` object:\n\n  - 'create': 'page', 'blogpost', 'comment', 'attachment'\n  - 'read': 'space'\n  - 'delete': 'page', 'blogpost', 'comment', 'attachment'\n  - 'export': 'space'\n  - 'administer': 'space'",
+        "required": [
+          "subject",
+          "operation"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "subject": {
+            "type": "object",
+            "description": "The user or group that the permission applies to.",
+            "additionalProperties": false,
+            "required": [
+              "type",
+              "identifier"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "user",
+                  "group"
+                ]
+              },
+              "identifier": {
+                "type": "string",
+                "description": "for type=user, identifier should be user's accountId or `anonymous` for anonymous users\nfor type=group, identifier should be name of the group"
+              }
+            }
+          },
+          "operation": {
+            "type": "object",
+            "required": [
+              "key",
+              "target"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "key": {
+                "type": "string",
+                "enum": [
+                  "administer",
+                  "copy",
+                  "create",
+                  "delete",
+                  "export",
+                  "move",
+                  "purge",
+                  "purge_version",
+                  "read",
+                  "restore",
+                  "update",
+                  "use"
+                ]
+              },
+              "target": {
+                "type": "string",
+                "description": "The space or content type that the operation applies to.",
+                "enum": [
+                  "page",
+                  "blogpost",
+                  "comment",
+                  "attachment",
+                  "space"
+                ]
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/GenericLinks"
           }
         }
       }
