@@ -1007,7 +1007,7 @@
             "description": "Returned if a draft with current content cannot be found when setting the status\nparameter to draft and the content status is current."
           },
           "409": {
-            "description": "Returned if;\n- The page is a draft (draft pages cannot be updated). - The version property has not been set correctly for the content type."
+            "description": "Returned if;\n\n- The page is a draft (draft pages cannot be updated).\n- The version property has not been set correctly for the content\ntype."
           }
         },
         "requestBody": {
@@ -1142,6 +1142,85 @@
           }
         },
         "x-atlassian-connect-scope": "READ"
+      }
+    },
+    "/api/content/{id}/move/{position}/{targetId}": {
+      "put": {
+        "tags": [
+          "Content"
+        ],
+        "summary": "Move a page to a new location relative to a target page",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-content"
+            ]
+          }
+        ],
+        "description": "Move a page to a new location relative to a target page:\n\n* `before` - move the page under the same parent as the target, before the target in the list of children\n* `after` - move the page under the same parent as the target, after the target in the list of children\n* `append` - move the page to be a child of the target\n\nCaution: This api can be used to move pages to the top level of a space, which may make them difficult to find\nusing the UI as it does not show up in the page tree display. It is recommended that users do NOT do that.\nThis can be avoided by never using 'before' or 'after' positions when the 'targetId' is a top-level page.",
+        "operationId": "com.atlassian.confluence.plugins.restapi.resources.movePage_put",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the page to be moved",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "position",
+            "in": "path",
+            "description": "The position to move the page to relative to the target page:\n* `before` - move the page under the same parent as the target, before the target in the list of children\n* `after` - move the page under the same parent as the target, after the target in the list of children\n* `append` - move the page to be a child of the target",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "before",
+                "after",
+                "append"
+              ]
+            }
+          },
+          {
+            "name": "targetId",
+            "in": "path",
+            "description": "The ID of the target page for this operation",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Page was successfully moved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "pageId": {
+                      "description": "The content id of the page that was moved.",
+                      "$ref": "#/components/schemas/ContentId"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Returned if;\n\n- A page already exists in the target space with the same name.\n  User is advised to rename page before moving.\n- The move would create a parent-child loop (page becomes a descendant and ancestor of itself)\n- The page has permission restrictions that the user does not have permission to create in the target space.\n  User is advised to remove restrictions before moving."
+          },
+          "403": {
+            "description": "Returned if;\n\n- User does not have permission to remove page from current space\n- User does not have permission to create a page in target space"
+          },
+          "404": {
+            "description": "Returned if;\n\n- The id or targetId refer to non-existent pages"
+          }
+        },
+        "x-atlassian-connect-scope": "WRITE"
       }
     },
     "/api/content/{id}/child/attachment": {
@@ -4430,6 +4509,13 @@
           "Longtask"
         ],
         "summary": "Get long-running task",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-space.summary"
+            ]
+          }
+        ],
         "description": "Returns information about an active long-running task (e.g. space export),\nsuch as how long it has been running and the percentage of the task that\nhas completed.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.LongTaskResource.getTask_get",
         "parameters": [
@@ -5197,7 +5283,7 @@
         "tags": [
           "Search"
         ],
-        "summary": "Search",
+        "summary": "Search content",
         "security": [
           {
             "oAuthDefinitions": [
@@ -5287,7 +5373,7 @@
         "tags": [
           "Search"
         ],
-        "summary": "Search",
+        "summary": "Search users",
         "description": "Searches for users using user-specific queries from the\n[Confluence Query Language (CQL)](https://developer.atlassian.com/cloud/confluence/advanced-searching-using-cql/).\n\nNote that some user fields may be set to null depending on the user's privacy settings.\nThese are: email, profilePicture, and displayName.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.SearchResource.search_user_get",
         "parameters": [
