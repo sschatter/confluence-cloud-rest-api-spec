@@ -1157,7 +1157,7 @@
             ]
           }
         ],
-        "description": "Move a page to a new location relative to a target page:\n\n* `before` - move the page under the same parent as the target, before the target in the list of children\n* `after` - move the page under the same parent as the target, after the target in the list of children\n* `append` - move the page to be a child of the target\n\nCaution: This api can be used to move pages to the top level of a space, which may make them difficult to find\nusing the UI as it does not show up in the page tree display. It is recommended that users do NOT do that.\nThis can be avoided by never using 'before' or 'after' positions when the 'targetId' is a top-level page.",
+        "description": "Move a page to a new location relative to a target page:\n\n* `before` - move the page under the same parent as the target, before the target in the list of children\n* `after` - move the page under the same parent as the target, after the target in the list of children\n* `append` - move the page to be a child of the target\n\nCaution: This API can move pages to the top level of a space. Top-level pages are difficult to find in the UI\nbecause they do not show up in the page tree display. To avoid this, never use `before` or `after` positions\nwhen the `targetId` is a top-level page.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.movePage_put",
         "parameters": [
           {
@@ -2452,6 +2452,72 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/CopyPageHierarchyRequest"
+              }
+            }
+          },
+          "description": "Request object from json post body",
+          "required": true
+        },
+        "x-atlassian-connect-scope": "WRITE"
+      }
+    },
+    "/api/content/{id}/copy": {
+      "post": {
+        "tags": [
+          "Content"
+        ],
+        "summary": "Copy single page",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-content"
+            ]
+          }
+        ],
+        "description": "Copies a single page and its associated properties, permissions, attachments, and custom contents.\n The `id` path parameter refers to the content ID of the page to copy. The target of the page to be copied\n is defined using the `destination` in the request body and can be one of the following types.\n\n  - `space`: page will be copied to the specified space as a root page on the space\n  - `parent_page`: page will be copied as a child of the specified parent page\n  - `existing_page`: page will be copied and replace the specified page\n\nBy default, the following objects are expanded: `space`, `history`, `version`.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**: 'Add' permission for the space that the content will be copied in and permission to update the content if copying to an `existing_page`.",
+        "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentResource.copyPage_post",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/contentExpand"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returned if the content is copied.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Content"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Returned if;\n\n- destination or any of its fields are not specified.\n- destination.type is invalid."
+          },
+          "401": {
+            "description": "Returned if the authentication credentials are incorrect or missing\nfrom the request."
+          },
+          "403": {
+            "description": "Returned if the user does not have permission to create content at destination."
+          },
+          "404": {
+            "description": "Returned if;\n\n- the original page doesn't exist.\n- the destination page doesn’t exist.\n- the destination space doesn’t exist."
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CopyPageRequest"
               }
             }
           },
@@ -8808,7 +8874,7 @@
       "contentExpand": {
         "name": "expand",
         "in": "query",
-        "description": "A multi-value parameter indicating which properties of the content to expand.\n\n- `childTypes.all` returns whether the content has attachments, comments, or child pages.\nUse this if you only need to check whether the content has children of a particular type.\n- `childTypes.attachment` returns whether the content has attachments.\n- `childTypes.comment` returns whether the content has comments.\n- `childTypes.page` returns whether the content has child pages.\n- `container` returns the space that the content is in. This is the same as the information\nreturned by [Get space](#api-space-spaceKey-get).\n- `metadata.currentuser` returns information about the current user in relation to the content,\nincluding when they last viewed it, modified it, contributed to it, or added it as a favourite.\n- `metadata.properties` returns content properties that have been set via the Confluence REST API.\n- `metadata.labels` returns the labels that have been added to the content.\n- `metadata.frontend` (this property is only used by Atlassian)\n- `operations` returns the operations for the content, which are used when setting permissions.\n- `children.page` returns pages that are descendants at the level immediately below the content.\n- `children.attachment` returns all attachments for the content.\n- `children.comment` returns all comments on the content.\n- `restrictions.read.restrictions.user` returns the users that have permission to read the content.\n- `restrictions.read.restrictions.group` returns the groups that have permission to read the content. Note that\nthis may return deleted groups, because deleting a group doesn't remove associated restrictions.\n- `restrictions.update.restrictions.user` returns the users that have permission to update the content.\n- `restrictions.update.restrictions.group` returns the groups that have permission to update the content. Note that\nthis may return deleted groups, because deleting a group doesn't remove associated restrictions.\n- `history` returns the history of the content, including the date it was created.\n- `history.lastUpdated` returns information about the most recent update of the content, including\nwho updated it and when it was updated.\n- `history.previousVersion` returns information about the update prior to the current content update.\n- `history.contributors` returns all of the users who have contributed to the content.\n- `history.nextVersion` returns information about the update after to the current content update.\n- `ancestors` returns the parent page, if the content is a page.\n- `body` returns the body of the content in different formats, including the editor format,\nview format, and export format.\n- `version` returns information about the most recent update of the content, including who updated it\nand when it was updated.\n- `descendants.page` returns pages that are descendants at any level below the content.\n- `descendants.attachment` returns all attachments for the content, same as `children.attachment`.\n- `descendants.comment` returns all comments on the content, same as `children.comment`.\n- `space` returns the space that the content is in. This is the same as the information returned by\n[Get space](#api-space-spaceKey-get).\n\nIn addition, the following comment-specific expansions can be used:\n- `extensions.inlineProperties` returns inline comment-specific properties.\n- `extensions.resolution` returns the resolution status of each comment.",
+        "description": "A multi-value parameter indicating which properties of the content to expand.\n\n- `childTypes.all` returns whether the content has attachments, comments, or child pages.\nUse this if you only need to check whether the content has children of a particular type.\n- `childTypes.attachment` returns whether the content has attachments.\n- `childTypes.comment` returns whether the content has comments.\n- `childTypes.page` returns whether the content has child pages.\n- `container` returns the space that the content is in. This is the same as the information\nreturned by [Get space](#api-space-spaceKey-get).\n- `metadata.currentuser` returns information about the current user in relation to the content,\nincluding when they last viewed it, modified it, contributed to it, or added it as a favorite.\n- `metadata.properties` returns content properties that have been set via the Confluence REST API.\n- `metadata.labels` returns the labels that have been added to the content.\n- `metadata.frontend` this property is only used by Atlassian.\n- `operations` returns the operations for the content, which are used when setting permissions.\n- `children.page` returns pages that are descendants at the level immediately below the content.\n- `children.attachment` returns all attachments for the content.\n- `children.comment` returns all comments on the content.\n- `restrictions.read.restrictions.user` returns the users that have permission to read the content.\n- `restrictions.read.restrictions.group` returns the groups that have permission to read the content. Note that\nthis may return deleted groups, because deleting a group doesn't remove associated restrictions.\n- `restrictions.update.restrictions.user` returns the users that have permission to update the content.\n- `restrictions.update.restrictions.group` returns the groups that have permission to update the content. Note that\nthis may return deleted groups because deleting a group doesn't remove associated restrictions.\n- `history` returns the history of the content, including the date it was created.\n- `history.lastUpdated` returns information about the most recent update of the content, including\nwho updated it and when it was updated.\n- `history.previousVersion` returns information about the update prior to the current content update.\n- `history.contributors` returns all of the users who have contributed to the content.\n- `history.nextVersion` returns information about the update after to the current content update.\n- `ancestors` returns the parent page, if the content is a page.\n- `body` returns the body of the content in different formats, including the editor format,\nview format, and export format.\n- `version` returns information about the most recent update of the content, including who updated it\nand when it was updated.\n- `descendants.page` returns pages that are descendants at any level below the content.\n- `descendants.attachment` returns all attachments for the content, same as `children.attachment`.\n- `descendants.comment` returns all comments on the content, same as `children.comment`.\n- `space` returns the space that the content is in. This is the same as the information returned by\n[Get space](#api-space-spaceKey-get).\n\nIn addition, the following comment-specific expansions can be used:\n- `extensions.inlineProperties` returns inline comment-specific properties.\n- `extensions.resolution` returns the resolution status of each comment.",
         "required": false,
         "style": "form",
         "schema": {
@@ -11083,16 +11149,24 @@
         "type": "object",
         "properties": {
           "copyAttachments": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "If set to `true`, attachments will be copied to the destination page.",
+            "default": false
           },
           "copyPermissions": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "If set to `true`, page permissions will be copied to the destination page.",
+            "default": false
           },
           "copyProperties": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "If set to `true`, content properties will be copied to the destination page.",
+            "default": false
           },
           "copyLabels": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "If set to `true`, labels will be copied to the destination page.",
+            "default": false
           },
           "destinationPageId": {
             "$ref": "#/components/schemas/ContentId"
@@ -11113,6 +11187,83 @@
           },
           "search": {
             "type": "string"
+          }
+        }
+      },
+      "CopyPageRequest": {
+        "type": "object",
+        "required": [
+          "destination"
+        ],
+        "properties": {
+          "copyAttachments": {
+            "type": "boolean",
+            "description": "If set to `true`, attachments will be copied to the destination page.",
+            "default": false
+          },
+          "copyPermissions": {
+            "type": "boolean",
+            "description": "If set to `true`, page permissions will be copied to the destination page.",
+            "default": false
+          },
+          "copyProperties": {
+            "type": "boolean",
+            "description": "If set to `true`, content properties will be copied to the destination page.",
+            "default": false
+          },
+          "copyLabels": {
+            "type": "boolean",
+            "description": "If set to `true`, labels will be copied to the destination page.",
+            "default": false
+          },
+          "copyCustomContents": {
+            "type": "boolean",
+            "description": "If set to `true`, custom contents will be copied to the destination page.",
+            "default": false
+          },
+          "destination": {
+            "$ref": "#/components/schemas/CopyPageRequestDestination"
+          },
+          "pageTitle": {
+            "type": "string",
+            "description": "If defined, this will replace the title of the destination page."
+          },
+          "body": {
+            "type": "object",
+            "minProperties": 1,
+            "maxProperties": 1,
+            "additionalProperties": false,
+            "description": "If defined, this will replace the body of the destination page.",
+            "properties": {
+              "storage": {
+                "$ref": "#/components/schemas/ContentBodyCreate"
+              },
+              "editor2": {
+                "$ref": "#/components/schemas/ContentBodyCreate"
+              }
+            }
+          }
+        }
+      },
+      "CopyPageRequestDestination": {
+        "type": "object",
+        "required": [
+          "type",
+          "value"
+        ],
+        "description": "Defines where the page will be copied to, and can be one of the following types.\n\n  - `parent_page`: page will be copied as a child of the specified parent page\n  - `space`: page will be copied to the specified space as a root page on the space\n  - `existing_page`: page will be copied and replace the specified page",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "space",
+              "existing_page",
+              "parent_page"
+            ]
+          },
+          "value": {
+            "type": "string",
+            "description": "The space key for `space` type, and content id for `parent_page` and `existing_page`"
           }
         }
       },
