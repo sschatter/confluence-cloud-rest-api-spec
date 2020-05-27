@@ -16,7 +16,47 @@
       "description": ""
     },
     {
-      "name": "Contentbody",
+      "name": "Content - attachments",
+      "description": ""
+    },
+    {
+      "name": "Content body",
+      "description": ""
+    },
+    {
+      "name": "Content - children and descendants",
+      "description": ""
+    },
+    {
+      "name": "Content - macro body",
+      "description": ""
+    },
+    {
+      "name": "Content comments",
+      "description": ""
+    },
+    {
+      "name": "Content labels",
+      "description": ""
+    },
+    {
+      "name": "Content properties",
+      "description": ""
+    },
+    {
+      "name": "Content restrictions",
+      "description": ""
+    },
+    {
+      "name": "Content versions",
+      "description": ""
+    },
+    {
+      "name": "Content watches",
+      "description": ""
+    },
+    {
+      "name": "Dynamic modules",
       "description": ""
     },
     {
@@ -28,11 +68,11 @@
       "description": ""
     },
     {
-      "name": "InlineTasks",
+      "name": "Inline tasks",
       "description": ""
     },
     {
-      "name": "Longtask",
+      "name": "Long-running task",
       "description": ""
     },
     {
@@ -52,15 +92,23 @@
       "description": ""
     },
     {
+      "name": "Space properties",
+      "description": ""
+    },
+    {
+      "name": "Space settings",
+      "description": ""
+    },
+    {
       "name": "Template",
       "description": ""
     },
     {
-      "name": "User",
+      "name": "Themes",
       "description": ""
     },
     {
-      "name": "Dynamic modules",
+      "name": "Users",
       "description": ""
     }
   ],
@@ -1074,7 +1122,7 @@
     "/api/content/{id}/child": {
       "get": {
         "tags": [
-          "Content"
+          "Content - children and descendants"
         ],
         "summary": "Get content children",
         "security": [
@@ -1147,7 +1195,7 @@
     "/api/content/{id}/move/{position}/{targetId}": {
       "put": {
         "tags": [
-          "Content"
+          "Content - children and descendants"
         ],
         "summary": "Move a page to a new location relative to a target page",
         "security": [
@@ -1226,7 +1274,7 @@
     "/api/content/{id}/child/attachment": {
       "get": {
         "tags": [
-          "Content"
+          "Content - attachments"
         ],
         "summary": "Get attachments",
         "security": [
@@ -1311,7 +1359,7 @@
       },
       "post": {
         "tags": [
-          "Content"
+          "Content - attachments"
         ],
         "summary": "Create attachment",
         "security": [
@@ -1376,7 +1424,7 @@
       },
       "put": {
         "tags": [
-          "Content"
+          "Content - attachments"
         ],
         "summary": "Create or update attachment",
         "security": [
@@ -1440,7 +1488,7 @@
     "/api/content/{id}/child/attachment/{attachmentId}": {
       "put": {
         "tags": [
-          "Content"
+          "Content - attachments"
         ],
         "summary": "Update attachment properties",
         "security": [
@@ -1514,7 +1562,7 @@
     "/api/content/{id}/child/attachment/{attachmentId}/data": {
       "post": {
         "tags": [
-          "Content"
+          "Content - attachments"
         ],
         "summary": "Update attachment data",
         "security": [
@@ -1573,7 +1621,7 @@
     "/api/content/{id}/child/comment": {
       "get": {
         "tags": [
-          "Content"
+          "Content comments"
         ],
         "summary": "Get content comments",
         "security": [
@@ -1676,7 +1724,7 @@
     "/api/content/{id}/child/{type}": {
       "get": {
         "tags": [
-          "Content"
+          "Content - children and descendants"
         ],
         "summary": "Get content children by type",
         "security": [
@@ -1769,7 +1817,7 @@
     "/api/content/{id}/descendant": {
       "get": {
         "tags": [
-          "Content"
+          "Content - children and descendants"
         ],
         "summary": "Get content descendants",
         "security": [
@@ -1831,7 +1879,7 @@
     "/api/content/{id}/descendant/{type}": {
       "get": {
         "tags": [
-          "Content"
+          "Content - children and descendants"
         ],
         "summary": "Get content descendants by type",
         "security": [
@@ -1916,7 +1964,7 @@
         "tags": [
           "Content"
         ],
-        "summary": "Get history for content",
+        "summary": "Get content history",
         "security": [
           {
             "oAuthDefinitions": [
@@ -1980,7 +2028,7 @@
     "/api/content/{id}/history/{version}/macro/id/{macroId}": {
       "get": {
         "tags": [
-          "Content"
+          "Content - macro body"
         ],
         "summary": "Get macro body by macro ID",
         "security": [
@@ -2046,7 +2094,7 @@
     "/api/content/{id}/label": {
       "get": {
         "tags": [
-          "Content"
+          "Content labels"
         ],
         "summary": "Get labels for content",
         "security": [
@@ -2124,7 +2172,7 @@
       },
       "post": {
         "tags": [
-          "Content"
+          "Content labels"
         ],
         "summary": "Add labels to content",
         "security": [
@@ -2177,7 +2225,7 @@
       },
       "delete": {
         "tags": [
-          "Content"
+          "Content labels"
         ],
         "summary": "Remove label from content using query parameter",
         "security": [
@@ -2226,7 +2274,7 @@
     "/api/content/{id}/label/{label}": {
       "delete": {
         "tags": [
-          "Content"
+          "Content labels"
         ],
         "summary": "Remove label from content",
         "security": [
@@ -2278,7 +2326,7 @@
     "/api/content/{id}/notification/child-created": {
       "get": {
         "tags": [
-          "Content"
+          "Content watches"
         ],
         "summary": "Get watches for page",
         "security": [
@@ -2346,7 +2394,7 @@
     "/api/content/{id}/notification/created": {
       "get": {
         "tags": [
-          "Content"
+          "Content watches"
         ],
         "summary": "Get watches for space",
         "security": [
@@ -2414,7 +2462,7 @@
     "/api/content/{id}/pagehierarchy/copy": {
       "post": {
         "tags": [
-          "Content"
+          "Content - children and descendants"
         ],
         "summary": "Copy page hierarchy",
         "security": [
@@ -2464,7 +2512,7 @@
     "/api/content/{id}/copy": {
       "post": {
         "tags": [
-          "Content"
+          "Content - children and descendants"
         ],
         "summary": "Copy single page",
         "security": [
@@ -2530,7 +2578,7 @@
     "/api/content/{id}/property": {
       "get": {
         "tags": [
-          "Content"
+          "Content properties"
         ],
         "summary": "Get content properties",
         "security": [
@@ -2613,7 +2661,7 @@
       },
       "post": {
         "tags": [
-          "Content"
+          "Content properties"
         ],
         "summary": "Create content property",
         "security": [
@@ -2674,7 +2722,7 @@
     "/api/content/{id}/property/{key}": {
       "get": {
         "tags": [
-          "Content"
+          "Content properties"
         ],
         "summary": "Get content property",
         "security": [
@@ -2742,7 +2790,7 @@
       },
       "post": {
         "tags": [
-          "Content"
+          "Content properties"
         ],
         "summary": "Create content property for key",
         "security": [
@@ -2884,7 +2932,7 @@
       },
       "delete": {
         "tags": [
-          "Content"
+          "Content properties"
         ],
         "summary": "Delete content property",
         "security": [
@@ -2930,7 +2978,7 @@
     "/api/content/{id}/restriction": {
       "get": {
         "tags": [
-          "Content"
+          "Content restrictions"
         ],
         "summary": "Get restrictions",
         "security": [
@@ -3014,7 +3062,7 @@
       },
       "post": {
         "tags": [
-          "Content"
+          "Content restrictions"
         ],
         "summary": "Add restrictions",
         "security": [
@@ -3085,7 +3133,7 @@
       },
       "put": {
         "tags": [
-          "Content"
+          "Content restrictions"
         ],
         "summary": "Update restrictions",
         "security": [
@@ -3156,7 +3204,7 @@
       },
       "delete": {
         "tags": [
-          "Content"
+          "Content restrictions"
         ],
         "summary": "Delete restrictions",
         "security": [
@@ -3224,7 +3272,7 @@
     "/api/content/{id}/restriction/byOperation": {
       "get": {
         "tags": [
-          "Content"
+          "Content restrictions"
         ],
         "summary": "Get restrictions by operation",
         "security": [
@@ -3294,7 +3342,7 @@
     "/api/content/{id}/restriction/byOperation/{operationKey}": {
       "get": {
         "tags": [
-          "Content"
+          "Content restrictions"
         ],
         "summary": "Get restrictions for operation",
         "security": [
@@ -3390,7 +3438,7 @@
     "/api/content/{id}/restriction/byOperation/{operationKey}/group/{groupName}": {
       "get": {
         "tags": [
-          "Content"
+          "Content restrictions"
         ],
         "summary": "Get content restriction status for group",
         "security": [
@@ -3447,7 +3495,7 @@
       },
       "put": {
         "tags": [
-          "Content"
+          "Content restrictions"
         ],
         "summary": "Add group to content restriction",
         "security": [
@@ -3504,7 +3552,7 @@
       },
       "delete": {
         "tags": [
-          "Content"
+          "Content restrictions"
         ],
         "summary": "Remove group from content restriction",
         "security": [
@@ -3563,7 +3611,7 @@
     "/api/content/{id}/restriction/byOperation/{operationKey}/user": {
       "get": {
         "tags": [
-          "Content"
+          "Content restrictions"
         ],
         "summary": "Get content restriction status for user",
         "security": [
@@ -3634,7 +3682,7 @@
       },
       "put": {
         "tags": [
-          "Content"
+          "Content restrictions"
         ],
         "summary": "Add user to content restriction",
         "security": [
@@ -3705,7 +3753,7 @@
       },
       "delete": {
         "tags": [
-          "Content"
+          "Content restrictions"
         ],
         "summary": "Remove user from content restriction",
         "security": [
@@ -3782,7 +3830,7 @@
     "/api/content/{id}/version": {
       "get": {
         "tags": [
-          "Content"
+          "Content versions"
         ],
         "summary": "Get content versions",
         "security": [
@@ -3865,7 +3913,7 @@
       },
       "post": {
         "tags": [
-          "Content"
+          "Content versions"
         ],
         "summary": "Restore content version",
         "security": [
@@ -3939,7 +3987,7 @@
     "/api/content/{id}/version/{versionNumber}": {
       "get": {
         "tags": [
-          "Content"
+          "Content versions"
         ],
         "summary": "Get content version",
         "security": [
@@ -4011,7 +4059,7 @@
       },
       "delete": {
         "tags": [
-          "Content"
+          "Content versions"
         ],
         "summary": "Delete content version",
         "security": [
@@ -4061,7 +4109,7 @@
     "/api/contentbody/convert/{to}": {
       "post": {
         "tags": [
-          "Contentbody"
+          "Content body"
         ],
         "summary": "Convert content body",
         "description": "Converts a content body from one format to another format.\n\nSupported conversions:\n\n- storage: view, export_view, styled_view, editor\n- editor: storage\n- view: none\n- export_view: none\n- styled_view: none\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nIf request specifies 'contentIdContext', 'View' permission for the space, and permission to view the content.",
@@ -4183,7 +4231,7 @@
     "/api/inlinetasks/search": {
       "get": {
         "tags": [
-          "InlineTasks"
+          "Inline tasks"
         ],
         "summary": "Get inline tasks based on search parameters",
         "security": [
@@ -4520,7 +4568,7 @@
     "/api/longtask": {
       "get": {
         "tags": [
-          "Longtask"
+          "Long-running task"
         ],
         "summary": "Get long-running tasks",
         "description": "Returns information about all active long-running tasks (e.g. space export),\nsuch as how long each task has been running and the percentage of each task\nthat has completed.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
@@ -4572,7 +4620,7 @@
     "/api/longtask/{id}": {
       "get": {
         "tags": [
-          "Longtask"
+          "Long-running task"
         ],
         "summary": "Get long-running task",
         "security": [
@@ -5061,7 +5109,7 @@
         "tags": [
           "Relation"
         ],
-        "summary": "Delete",
+        "summary": "Delete relationship",
         "security": [
           {
             "oAuthDefinitions": [
@@ -5185,7 +5233,7 @@
         "tags": [
           "Relation"
         ],
-        "summary": "Find target entities related to a source entity",
+        "summary": "Find source entities related to a target entity",
         "security": [
           {
             "oAuthDefinitions": [
@@ -5744,7 +5792,7 @@
     "/api/settings/theme": {
       "get": {
         "tags": [
-          "Settings"
+          "Themes"
         ],
         "summary": "Get themes",
         "security": [
@@ -5800,7 +5848,7 @@
     "/api/settings/theme/selected": {
       "get": {
         "tags": [
-          "Settings"
+          "Themes"
         ],
         "summary": "Get global theme",
         "security": [
@@ -5833,7 +5881,7 @@
     "/api/settings/theme/{themeKey}": {
       "get": {
         "tags": [
-          "Settings"
+          "Themes"
         ],
         "summary": "Get theme",
         "security": [
@@ -6561,7 +6609,7 @@
     "/api/space/{spaceKey}/property": {
       "get": {
         "tags": [
-          "Space"
+          "Space properties"
         ],
         "summary": "Get space properties",
         "security": [
@@ -6644,7 +6692,7 @@
       },
       "post": {
         "tags": [
-          "Space"
+          "Space properties"
         ],
         "summary": "Create space property",
         "security": [
@@ -6705,7 +6753,7 @@
     "/api/space/{spaceKey}/property/{key}": {
       "get": {
         "tags": [
-          "Space"
+          "Space properties"
         ],
         "summary": "Get space property",
         "security": [
@@ -6773,7 +6821,7 @@
       },
       "post": {
         "tags": [
-          "Space"
+          "Space properties"
         ],
         "summary": "Create space property for key",
         "security": [
@@ -6841,7 +6889,7 @@
       },
       "put": {
         "tags": [
-          "Space"
+          "Space properties"
         ],
         "summary": "Update space property",
         "security": [
@@ -6915,7 +6963,7 @@
       },
       "delete": {
         "tags": [
-          "Space"
+          "Space properties"
         ],
         "summary": "Delete space property",
         "security": [
@@ -6961,7 +7009,7 @@
     "/api/space/{spaceKey}/settings": {
       "get": {
         "tags": [
-          "Space"
+          "Space settings"
         ],
         "summary": "Get space settings",
         "security": [
@@ -7006,7 +7054,7 @@
       },
       "put": {
         "tags": [
-          "Space"
+          "Space settings"
         ],
         "summary": "Update space settings",
         "security": [
@@ -7064,7 +7112,7 @@
     "/api/space/{spaceKey}/theme": {
       "get": {
         "tags": [
-          "Space"
+          "Themes"
         ],
         "summary": "Get space theme",
         "security": [
@@ -7106,7 +7154,7 @@
       },
       "put": {
         "tags": [
-          "Space"
+          "Themes"
         ],
         "summary": "Set space theme",
         "security": [
@@ -7161,7 +7209,7 @@
       },
       "delete": {
         "tags": [
-          "Space"
+          "Themes"
         ],
         "summary": "Reset space theme",
         "security": [
@@ -7198,9 +7246,9 @@
     "/api/space/{spaceKey}/watch": {
       "get": {
         "tags": [
-          "Space"
+          "Content watches"
         ],
-        "summary": "Returns a list of watchers of a space",
+        "summary": "Get space watchers",
         "description": "Returns a list of watchers of a space",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.SpaceResource.getWatchersForSpace_get",
         "parameters": [
@@ -7583,7 +7631,7 @@
     "/api/user": {
       "get": {
         "tags": [
-          "User"
+          "Users"
         ],
         "summary": "Get user",
         "description": "Returns a user. This includes information about the user, such as the\ndisplay name, account ID, profile picture, and more. The information returned may be\nrestricted by the user's profile visibility settings.\n\n**Note:** to add, edit, or delete users in your organization, see the\n[user management REST API](/cloud/admin/user-management/about/).\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
@@ -7663,7 +7711,7 @@
     "/api/user/anonymous": {
       "get": {
         "tags": [
-          "User"
+          "Users"
         ],
         "summary": "Get anonymous user",
         "description": "Returns information about how anonymous users are represented, like the\nprofile picture and display name.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
@@ -7707,7 +7755,7 @@
     "/api/user/current": {
       "get": {
         "tags": [
-          "User"
+          "Users"
         ],
         "summary": "Get current user",
         "description": "Returns the currently logged-in user. This includes information about\nthe user, like the display name, userKey, account ID, profile picture,\nand more.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
@@ -7754,7 +7802,7 @@
     "/api/user/memberof": {
       "get": {
         "tags": [
-          "User"
+          "Users"
         ],
         "summary": "Get group memberships for user",
         "description": "Returns the groups that a user is a member of.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
@@ -7833,7 +7881,7 @@
     "/api/user/bulk": {
       "get": {
         "tags": [
-          "User"
+          "Users"
         ],
         "summary": "Get multiple users using ids",
         "description": "Returns user details for the ids provided in request.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
@@ -7901,7 +7949,7 @@
     "/api/user/watch/content/{contentId}": {
       "get": {
         "tags": [
-          "User"
+          "Content watches"
         ],
         "summary": "Get content watch status",
         "security": [
@@ -7973,7 +8021,7 @@
       },
       "post": {
         "tags": [
-          "User"
+          "Content watches"
         ],
         "summary": "Add content watcher",
         "security": [
@@ -8038,7 +8086,7 @@
       },
       "delete": {
         "tags": [
-          "User"
+          "Content watches"
         ],
         "summary": "Remove content watcher",
         "security": [
@@ -8105,7 +8153,7 @@
     "/api/user/watch/label/{labelName}": {
       "get": {
         "tags": [
-          "User"
+          "Content watches"
         ],
         "summary": "Get label watch status",
         "security": [
@@ -8177,7 +8225,7 @@
       },
       "post": {
         "tags": [
-          "User"
+          "Content watches"
         ],
         "summary": "Add label watcher",
         "security": [
@@ -8242,7 +8290,7 @@
       },
       "delete": {
         "tags": [
-          "User"
+          "Content watches"
         ],
         "summary": "Remove label watcher",
         "security": [
@@ -8309,7 +8357,7 @@
     "/api/user/watch/space/{spaceKey}": {
       "get": {
         "tags": [
-          "User"
+          "Content watches"
         ],
         "summary": "Get space watch status",
         "security": [
@@ -8381,7 +8429,7 @@
       },
       "post": {
         "tags": [
-          "User"
+          "Content watches"
         ],
         "summary": "Add space watcher",
         "security": [
@@ -8446,7 +8494,7 @@
       },
       "delete": {
         "tags": [
-          "User"
+          "Content watches"
         ],
         "summary": "Remove space watch",
         "security": [
@@ -8513,9 +8561,9 @@
     "/api/user/email": {
       "get": {
         "tags": [
-          "User"
+          "Users"
         ],
-        "summary": "Get a user's email",
+        "summary": "Get user email address",
         "description": "Returns a user's email address. This API is only available to apps approved by\nAtlassian, according to these [guidelines](https://community.developer.atlassian.com/t/guidelines-for-requesting-access-to-email-address/27603).\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.UserEmailResource.getPrivacyUnsafeUserEmail_get",
         "parameters": [
@@ -8559,9 +8607,9 @@
     "/api/user/email/bulk": {
       "get": {
         "tags": [
-          "User"
+          "Users"
         ],
-        "summary": "Bulk fetch of users' email addresses",
+        "summary": "Get user email addresses in batch",
         "description": "Returns user email addresses for a set of accountIds. This API is only available to apps approved by\nAtlassian, according to these [guidelines](https://community.developer.atlassian.com/t/guidelines-for-requesting-access-to-email-address/27603).\n\nAny accounts which are not available will not be included in the result.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.UserEmailResource.getPrivacyUnsafeUserEmailBulk_get",
         "parameters": [
@@ -8605,9 +8653,9 @@
     "/api/user/bulk/migration": {
       "get": {
         "tags": [
-          "User"
+          "Users"
         ],
-        "summary": "Get accountIds for users",
+        "summary": "Get user accountIds",
         "description": "Returns the accountIds for the users specified in the key or username parameters. Note that multiple key and username parameters can be specified.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission if specifying a user, otherwise\npermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.UserResource.getBulkUserMigration",
         "parameters": [
