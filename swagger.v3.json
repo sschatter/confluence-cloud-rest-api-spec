@@ -72,6 +72,10 @@
       "description": ""
     },
     {
+      "name": "Label info",
+      "description": ""
+    },
+    {
       "name": "Long-running task",
       "description": ""
     },
@@ -4413,6 +4417,95 @@
           }
         },
         "x-atlassian-connect-scope": "READ"
+      }
+    },
+    "/api/label": {
+      "get": {
+        "tags": [
+          "Label info"
+        ],
+        "summary": "Get Label information.",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.summary"
+            ]
+          }
+        ],
+        "description": "Returns label information and a list of contents associated with the label.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission). Only contents\nthat the user is permitted to view is returned.",
+        "operationId": "com.atlassian.confluence.plugins.restapi.resources.LabelResource.getAllLabelContent_get",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Name of the label to query.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": null
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "The type of contents that are to be returned.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "page",
+                "blogpost",
+                "attachment",
+                "page_template"
+              ],
+              "default": null
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "The starting offset for the results.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The number of results to be returned.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returned if the query fetches zero or more results.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LabelDetails"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Returned if no label name is provide or\nif content type provided in the query is invalid."
+          },
+          "403": {
+            "description": "Returned if the calling user does not have permission to view\nany content including label info."
+          },
+          "404": {
+            "description": "Returned if the lable name is invalid or if no label is found for a given label."
+          }
+        },
+        "x-atlassian-connect-scope": "INACCESSIBLE"
       }
     },
     "/api/group": {
@@ -11578,6 +11671,80 @@
           },
           "_links": {
             "$ref": "#/components/schemas/GenericLinks"
+          }
+        }
+      },
+      "LabeledContent": {
+        "type": "object",
+        "required": [
+          "contentType",
+          "contentId",
+          "title"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "contentType": {
+            "$ref": "#/components/schemas/LabeledContentType"
+          },
+          "contentId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of the content."
+          }
+        }
+      },
+      "LabeledContentType": {
+        "type": "string",
+        "enum": [
+          "page",
+          "blogpost",
+          "attachment",
+          "page_template"
+        ]
+      },
+      "LabeledContentPageResponse": {
+        "type": "object",
+        "required": [
+          "results",
+          "size"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LabeledContent"
+            }
+          },
+          "start": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "LabelDetails": {
+        "type": "object",
+        "required": [
+          "label"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "label": {
+            "$ref": "#/components/schemas/Label"
+          },
+          "associatedContents": {
+            "$ref": "#/components/schemas/LabeledContentPageResponse"
           }
         }
       },
