@@ -530,7 +530,9 @@
                 "draft",
                 "any"
               ],
-              "default": "current"
+              "default": [
+                "current"
+              ]
             }
           },
           {
@@ -921,7 +923,9 @@
                 "draft",
                 "any"
               ],
-              "default": "current"
+              "default": [
+                "current"
+              ]
             }
           },
           {
@@ -4558,15 +4562,131 @@
           }
         },
         "x-atlassian-connect-scope": "READ"
+      },
+      "post": {
+        "tags": [
+          "Group"
+        ],
+        "summary": "Create new user group",
+        "description": "Creates a new user group.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nUser must be a site admin.",
+        "operationId": "com.atlassian.confluence.plugins.restapi.resources.GroupResource.createGroup_post",
+        "responses": {
+          "201": {
+            "description": "Returned if the group was created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Group"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Returned if the name is missing or invalid."
+          },
+          "401": {
+            "description": "Returned if the calling user is not logged in to Confluence."
+          },
+          "403": {
+            "description": "Returned if the user is not a site admin."
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GroupName"
+              }
+            }
+          },
+          "description": "Name of the group that is to be created.",
+          "required": true
+        },
+        "x-atlassian-connect-scope": "INACCESSIBLE"
+      },
+      "delete": {
+        "tags": [
+          "Group"
+        ],
+        "summary": "Delete user group",
+        "description": "Delete user group.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nUser must be a site admin.",
+        "operationId": "com.atlassian.confluence.plugins.restapi.resources.GroupResource.removeGroup_delete",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Name of the group to delete.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Returned if the group was removed successfully."
+          },
+          "400": {
+            "description": "Returned if the name is missing or invalid."
+          },
+          "401": {
+            "description": "Returned if the calling user is not logged in to Confluence."
+          },
+          "403": {
+            "description": "Returned if the user is not a site admin."
+          },
+          "404": {
+            "description": "If no user group by the give name exists."
+          }
+        },
+        "x-atlassian-connect-scope": "INACCESSIBLE"
       }
     },
-    "/api/group/{groupName}": {
+    "/api/group/by-name": {
       "get": {
         "tags": [
           "Group"
         ],
         "summary": "Get group",
         "description": "Returns a user group for a given group name.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
+        "operationId": "com.atlassian.confluence.plugins.restapi.resources.GroupResource.getGroupByQueryParam_get",
+        "parameters": [
+          {
+            "name": "name",
+            "description": "The name of the group. This is the same as the group name shown in\nthe Confluence administration console.",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returned if the requested group is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Group"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned if the calling user does not have permission to view\ngroups."
+          }
+        },
+        "x-atlassian-connect-scope": "READ"
+      }
+    },
+    "/api/group/{groupName}": {
+      "get": {
+        "deprecated": true,
+        "tags": [
+          "Group"
+        ],
+        "summary": "Get group",
+        "description": "Returns a user group for a given group name.\n\nUse updated Get group API\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.GroupResource.getGroup_get",
         "parameters": [
           {
@@ -4597,13 +4717,75 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/api/group/{groupName}/member": {
+    "/api/group/member": {
       "get": {
         "tags": [
           "Group"
         ],
         "summary": "Get group members",
         "description": "Returns the users that are members of a group.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
+        "operationId": "com.atlassian.confluence.plugins.restapi.resources.GroupResource.getMembersByQueryParam_get",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "The name of the group to be queried for its members.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "The starting index of the returned users.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The maximum number of users to return per page.\nNote, this may be restricted by fixed system limits.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0,
+              "default": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returned if the requested users are returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserArrayWithLinks"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned if the calling user does not have permission to view users."
+          }
+        },
+        "x-atlassian-connect-scope": "READ"
+      }
+    },
+    "/api/group/{groupName}/member": {
+      "get": {
+        "deprecated": true,
+        "tags": [
+          "Group"
+        ],
+        "summary": "Get group members",
+        "description": "Returns the users that are members of a group.\n\nUse updated Get group API\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.GroupResource.getGroupMembers_get",
         "parameters": [
           {
@@ -4656,6 +4838,102 @@
           }
         },
         "x-atlassian-connect-scope": "READ"
+      }
+    },
+    "/api/group/user": {
+      "post": {
+        "tags": [
+          "Group"
+        ],
+        "summary": "Add member to group",
+        "description": "Adds a user as a member in a group.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nUser must be a site admin.",
+        "operationId": "com.atlassian.confluence.plugins.restapi.resources.GroupResource.addUserToGroup_post",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Name of the group whose membership is updated",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Returned if the group was created successfully."
+          },
+          "400": {
+            "description": "Returned if the name or accountId are missing or invalid."
+          },
+          "401": {
+            "description": "Returned if the calling user is not logged in to Confluence."
+          },
+          "403": {
+            "description": "Returned if the user is not a site admin."
+          },
+          "404": {
+            "description": "If no user group by the give name exists."
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountId"
+              }
+            }
+          },
+          "description": "AccountId of the user who needs to be added as member.",
+          "required": true
+        },
+        "x-atlassian-connect-scope": "INACCESSIBLE"
+      },
+      "delete": {
+        "tags": [
+          "Group"
+        ],
+        "summary": "Remove member from group",
+        "description": "Remove user as a member from a group.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nUser must be a site admin.",
+        "operationId": "com.atlassian.confluence.plugins.restapi.resources.GroupResource.removeMemberFromGroup_delete",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Name of the group whose membership is updated.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "accountId",
+            "in": "query",
+            "description": "AccountId of the user whose membership is removed.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Returned if the group was removed successfully."
+          },
+          "400": {
+            "description": "Returned if the name is missing or invalid."
+          },
+          "401": {
+            "description": "Returned if the calling user is not logged in to Confluence."
+          },
+          "403": {
+            "description": "Returned if the user is not a site admin.\nNote: A 204 is returned if the user is not part of the\ngroup."
+          },
+          "404": {
+            "description": "If no user group by the give name exists or if no user exists\nfor the given accountId."
+          }
+        },
+        "x-atlassian-connect-scope": "INACCESSIBLE"
       }
     },
     "/api/longtask": {
@@ -8981,7 +9259,7 @@
       {
         "title": "About",
         "anchor": "about",
-        "body": "This is the reference for the Confluence Cloud REST API. This API is the primary way to get and\nmodify data in Confluence Cloud, whether you are developing an app or any other integration.\nUse it to interact with Confluence entities, like pages and blog posts, spaces, users, groups,\nand more.\n\n**NOTE:** Personal data that is used to identify users, such as `username` and `userKey`, has\nbeen removed from the Confluence Cloud REST API. In addition, other personal data (for example, email)\nis now restricted by a user's profile settings (or in the case of managed accounts, the visibility\nsettings decided by the site administrator). You must update your apps to accommodate these changes,\nif you have not done so already. This change was previously announced on 01 October 2018 and followed\nby a deprecation period (see the [announcement](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/))."
+        "body": "This is the reference for the Confluence Cloud REST API. This API is the primary way to get and\nmodify data in Confluence Cloud, whether you are developing an app or any other integration.\nUse it to interact with Confluence entities, like pages and blog posts, spaces, users, groups,\nand more."
       },
       {
         "title": "Authentication and authorization",
@@ -9142,13 +9420,27 @@
               "read:confluence-props": "Read content properties.",
               "write:confluence-props": "Write content properties.",
               "search:confluence": "Search Confluence. Note, APIs using this scope may also return data allowed by read:confluence-space.summary and read:confluence-content.summary. However, this scope is not a substitute for read:confluence-space.summary or read:confluence-content.summary.",
-              "manage:confluence-configuration": "Manage global settings."
+              "manage:confluence-configuration": "Manage global settings.",
+              "read:confluence-groups": "Read user groups.",
+              "write:confluence-groups": "Create, remove and update user groups."
             }
           }
         }
       }
     },
     "schemas": {
+      "AccountId": {
+        "type": "object",
+        "required": [
+          "accountId"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "accountId": {
+            "type": "string"
+          }
+        }
+      },
       "AccountIdEmailRecord": {
         "type": "object",
         "required": [
@@ -11560,6 +11852,18 @@
             }
           }
         ]
+      },
+      "GroupName": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
       },
       "HeaderLookAndFeel": {
         "type": "object",
