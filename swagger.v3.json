@@ -4518,6 +4518,13 @@
           "Group"
         ],
         "summary": "Get groups",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-groups"
+            ]
+          }
+        ],
         "description": "Returns all user groups. The returned groups are ordered alphabetically in\nascending order by group name.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.GroupResource.getGroups_get",
         "parameters": [
@@ -4568,6 +4575,13 @@
           "Group"
         ],
         "summary": "Create new user group",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-groups"
+            ]
+          }
+        ],
         "description": "Creates a new user group.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nUser must be a site admin.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.GroupResource.createGroup_post",
         "responses": {
@@ -4609,6 +4623,13 @@
           "Group"
         ],
         "summary": "Delete user group",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-groups"
+            ]
+          }
+        ],
         "description": "Delete user group.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nUser must be a site admin.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.GroupResource.removeGroup_delete",
         "parameters": [
@@ -4648,6 +4669,13 @@
           "Group"
         ],
         "summary": "Get group",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-groups"
+            ]
+          }
+        ],
         "description": "Returns a user group for a given group name.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.GroupResource.getGroupByQueryParam_get",
         "parameters": [
@@ -4723,6 +4751,13 @@
           "Group"
         ],
         "summary": "Get group members",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-groups"
+            ]
+          }
+        ],
         "description": "Returns the users that are members of a group.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.GroupResource.getMembersByQueryParam_get",
         "parameters": [
@@ -4846,6 +4881,13 @@
           "Group"
         ],
         "summary": "Add member to group",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-groups"
+            ]
+          }
+        ],
         "description": "Adds a user as a member in a group.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nUser must be a site admin.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.GroupResource.addUserToGroup_post",
         "parameters": [
@@ -4894,6 +4936,13 @@
           "Group"
         ],
         "summary": "Remove member from group",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-groups"
+            ]
+          }
+        ],
         "description": "Remove user as a member from a group.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nUser must be a site admin.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.GroupResource.removeMemberFromGroup_delete",
         "parameters": [
