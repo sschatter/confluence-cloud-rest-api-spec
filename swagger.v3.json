@@ -1114,11 +1114,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Returned if the content is successfully trashed."
-          },
           "204": {
-            "description": "Returned if the content is successfully purged."
+            "description": "Returned if the content is successfully trashed or purged."
           },
           "404": {
             "description": "Returned if;\n\n- There is no content with the given ID.\n- The requesting user does not have permission to trash or purge the\ncontent."
@@ -4682,6 +4679,43 @@
           {
             "name": "name",
             "description": "The name of the group. This is the same as the group name shown in\nthe Confluence administration console.",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returned if the requested group is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Group"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned if the calling user does not have permission to view\ngroups."
+          }
+        },
+        "x-atlassian-connect-scope": "READ"
+      }
+    },
+    "/api/group/by-id": {
+      "get": {
+        "tags": [
+          "Group"
+        ],
+        "summary": "Get group",
+        "description": "Returns a user group for a given group id.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
+        "operationId": "com.atlassian.confluence.plugins.restapi.resources.GroupResource.getGroupByGroupId_get",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "The id of the group.",
             "in": "query",
             "required": true,
             "schema": {
@@ -9320,7 +9354,7 @@
       {
         "title": "Using the REST API",
         "anchor": "using",
-        "body": "**Expansion:** The Confluence REST API uses resource expansion: some parts of a resource are not returned unless explicitly specified. This simplifies responses and minimizes network traffic.\n\nTo expand part of a resource in a request, use the `expand` query parameter and specify the entities to be expanded. If you need to expand nested entities, use the `.` dot notation. For example, the following request will expand information about the requested content's space and labels:\n```\nGET /wiki/rest/api/content/{id}?expand=space,metadata.labels\n```\n**Pagination:** The Confluence REST API uses pagination: a method that returns a response with multiple objects can only return a limited number at one time. This limits the size of responses and conserves server resources.\n\nUse the 'limit' and 'start' query parameters to specify pagination:\n\n- `limit` is the number of objects to return per page. This may be restricted by system limits.\n- `start` is the index of the first item returned in the page of results. The base index is 0.\n\nFor example, the following request will return ten content objects, starting from the fifth object.\n```\nGET /wiki/rest/api/content?start=4,limit=10\n```\n**Special headers:**\n\n- `X-Atlassian-Token: no-check` request header must be specified for methods\nthat are protected from Cross Site Request Forgery (XSRF/CSRF) attacks. This is\nstated in the method description, if required. For more information, see this\n[KB article](https://confluence.atlassian.com/cloudkb/xsrf-check-failed-when-calling-cloud-apis-826874382.html)."
+        "body": "**Expansion:** The Confluence REST API uses resource expansion: some parts of a resource are not returned unless explicitly specified. This simplifies responses and minimizes network traffic.\n\nTo expand part of a resource in a request, use the `expand` query parameter and specify the entities to be expanded. If you need to expand nested entities, use the `.` dot notation. For example, the following request will expand information about the requested content's space and labels:\n```\nGET /wiki/rest/api/content/{id}?expand=space,metadata.labels\n```\n**Pagination:** The Confluence REST API uses pagination: a method that returns a response with multiple objects can only return a limited number at one time. This limits the size of responses and conserves server resources.\n\nUse the 'limit' and 'start' query parameters to specify pagination:\n\n- `limit` is the number of objects to return per page. This may be restricted by system limits.\n- `start` is the index of the first item returned in the page of results. The base index is 0.\n\nFor example, the following request will return ten content objects, starting from the fifth object.\n```\nGET /wiki/rest/api/content?start=4&limit=10\n```\n**Special headers:**\n\n- `X-Atlassian-Token: no-check` request header must be specified for methods\nthat are protected from Cross Site Request Forgery (XSRF/CSRF) attacks. This is\nstated in the method description, if required. For more information, see this\n[KB article](https://confluence.atlassian.com/cloudkb/xsrf-check-failed-when-calling-cloud-apis-826874382.html)."
       },
       {
         "title": "Capabilities",
@@ -10528,6 +10562,33 @@
           }
         }
       },
+      "ContentBodyCreateStorage": {
+        "type": "object",
+        "description": "This object is used when creating or updating content.",
+        "required": [
+          "value",
+          "representation"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "The body of the content in the relevant format."
+          },
+          "representation": {
+            "type": "string",
+            "description": "The content format type. Set the value of this property to\nthe name of the format being used, e.g. 'storage'.",
+            "enum": [
+              "storage",
+              "view",
+              "export_view",
+              "styled_view",
+              "editor2",
+              "anonymous_export_view"
+            ]
+          }
+        }
+      },
       "ContentChildType": {
         "type": "object",
         "description": "Shows whether a piece of content has attachments, comments, or child pages.\nNote, this doesn't actually contain the child objects.",
@@ -11612,7 +11673,7 @@
                 "$ref": "#/components/schemas/ContentBodyCreate"
               },
               "storage": {
-                "$ref": "#/components/schemas/ContentBodyCreate"
+                "$ref": "#/components/schemas/ContentBodyCreateStorage"
               },
               "editor2": {
                 "$ref": "#/components/schemas/ContentBodyCreate"
@@ -11830,6 +11891,7 @@
         "required": [
           "type",
           "name",
+          "id",
           "_links"
         ],
         "additionalProperties": false,
@@ -11842,6 +11904,9 @@
             "default": "group"
           },
           "name": {
+            "type": "string"
+          },
+          "id": {
             "type": "string"
           },
           "_links": {
@@ -12654,6 +12719,7 @@
             "type": "string",
             "description": "The space or content type that the operation applies to.",
             "enum": [
+              "application",
               "page",
               "blogpost",
               "comment",
