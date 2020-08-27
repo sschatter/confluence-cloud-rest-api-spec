@@ -818,7 +818,7 @@
             "name": "cql",
             "in": "query",
             "description": "The CQL string that is used to find the requested content.",
-            "required": false,
+            "required": true,
             "schema": {
               "type": "string"
             }
@@ -2256,7 +2256,7 @@
             "name": "name",
             "in": "query",
             "description": "The name of the label to be removed.",
-            "required": false,
+            "required": true,
             "schema": {
               "type": "string"
             }
@@ -2490,7 +2490,7 @@
           }
         ],
         "responses": {
-          "200": {
+          "202": {
             "description": "Returns a full JSON representation of a long running task"
           },
           "400": {
@@ -11687,6 +11687,9 @@
       },
       "CopyPageHierarchyRequest": {
         "type": "object",
+        "required": [
+          "destinationPageId"
+        ],
         "properties": {
           "copyAttachments": {
             "type": "boolean",
@@ -11723,6 +11726,7 @@
       },
       "CopyPageHierarchyTitleOptions": {
         "type": "object",
+        "description": "Required for copying page in the same space.",
         "properties": {
           "prefix": {
             "type": "string"
