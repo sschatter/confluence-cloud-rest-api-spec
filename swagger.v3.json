@@ -9114,7 +9114,7 @@
             "name": "key",
             "in": "query",
             "description": "The key of a user. To specify multiple users, pass multiple key parameters separated by ampersands.\nFor example, key=mia&key=alana. Required if username isn't provided. Cannot be provided if username is present.",
-            "required": false,
+            "required": true,
             "schema": {
               "type": "array",
               "items": {
@@ -9293,7 +9293,7 @@
             "in": "query",
             "name": "moduleKey",
             "description": "The key of the module to remove. To include multiple module keys, provide multiple copies of this parameter.\nFor example, `moduleKey=dynamic-attachment-entity-property&moduleKey=dynamic-select-field`.\nNonexistent keys are ignored.",
-            "required": false,
+            "required": true,
             "schema": {
               "type": "array",
               "items": {
