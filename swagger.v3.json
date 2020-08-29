@@ -14323,9 +14323,9 @@
         "properties": {
           "operationKey": {
             "type": "string",
-            "description": "Set to 'RESTORE'.",
+            "description": "Set to 'restore'.",
             "enum": [
-              "RESTORE"
+              "restore"
             ]
           },
           "params": {
