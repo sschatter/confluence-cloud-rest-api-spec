@@ -3127,7 +3127,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ContentRestrictionUpdateArray"
+                "$ref": "#/components/schemas/AddContentRestrictionUpdateArray"
               }
             }
           },
@@ -8551,6 +8551,16 @@
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.UserWatchResource.removeContentWatcher_delete",
         "parameters": [
           {
+            "name": "X-Atlassian-Token",
+            "in": "header",
+            "description": "Note, you must add header when making a\nrequest, as this operation has XSRF protection.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "no-check"
+            }
+          },
+          {
             "name": "contentId",
             "in": "path",
             "description": "The ID of the content to remove the watcher from.",
@@ -8689,6 +8699,16 @@
         "description": "Adds a user as a watcher to a label. Choose the user by doing one of the\nfollowing:\n\n- Specify a user via a query parameter: Use the `accountId` to identify the user.\n- Do not specify a user: The currently logged-in user will be used.\n\nNote, you must add the `X-Atlassian-Token: no-check` header when making a\nrequest, as this operation has XSRF protection.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission if specifying a user, otherwise\npermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.UserWatchResource.addLabelWatcher_post",
         "parameters": [
+          {
+            "name": "X-Atlassian-Token",
+            "in": "header",
+            "description": "Note, you must add header when making a\nrequest, as this operation has XSRF protection.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "no-check"
+            }
+          },
           {
             "name": "labelName",
             "in": "path",
@@ -8893,6 +8913,16 @@
         "description": "Adds a user as a watcher to a space. Choose the user by doing one of the\nfollowing:\n\n- Specify a user via a query parameter: Use the `accountId` to identify the user.\n- Do not specify a user: The currently logged-in user will be used.\n\nNote, you must add the `X-Atlassian-Token: no-check` header when making a\nrequest, as this operation has XSRF protection.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission if specifying a user, otherwise\npermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.UserWatchResource.addSpaceWatcher_post",
         "parameters": [
+          {
+            "name": "X-Atlassian-Token",
+            "in": "header",
+            "description": "Note, you must add header when making a\nrequest, as this operation has XSRF protection.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "no-check"
+            }
+          },
           {
             "name": "spaceKey",
             "in": "path",
@@ -11402,6 +11432,100 @@
         "type": "array",
         "items": {
           "$ref": "#/components/schemas/ContentRestrictionUpdate"
+        }
+      },
+      "AddContentRestriction": {
+        "type": "object",
+        "required": [
+          "operation",
+          "restrictions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "operation": {
+            "type": "string",
+            "description": "The restriction operation applied to content.",
+            "enum": [
+              "read",
+              "update"
+            ]
+          },
+          "restrictions": {
+            "type": "object",
+            "description": "The users/groups that the restrictions will be applied to. At least one of\n`user` or `group` must be specified for this object.",
+            "additionalProperties": false,
+            "properties": {
+              "user": {
+                "type": "array",
+                "description": "The users that the restrictions will be applied to. This array must\nhave at least one item, otherwise it should be omitted.",
+                "items": {
+                  "type": "object",
+                  "description": "A user that the restriction will be applied to. Either the `username`\nor the `userKey` must be specified to identify the user.",
+                  "required": [
+                    "type",
+                    "accountId"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "description": "Set to 'known'.",
+                      "enum": [
+                        "known",
+                        "unknown",
+                        "anonymous",
+                        "user"
+                      ]
+                    },
+                    "username": {
+                      "type": "string",
+                      "description": "This property is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details."
+                    },
+                    "userKey": {
+                      "type": "string",
+                      "description": "This property is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details."
+                    },
+                    "accountId": {
+                      "type": "string",
+                      "description": "The account ID of the user, which uniquely identifies the user across all Atlassian products.\nFor example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`."
+                    }
+                  }
+                }
+              },
+              "group": {
+                "type": "array",
+                "description": "The groups that the restrictions will be applied to. This array must\nhave at least one item, otherwise it should be omitted.",
+                "items": {
+                  "type": "object",
+                  "description": "A group that the restriction will be applied to.",
+                  "required": [
+                    "type",
+                    "name"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "description": "Set to 'group'.",
+                      "enum": [
+                        "group"
+                      ]
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the group."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "AddContentRestrictionUpdateArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/AddContentRestriction"
         }
       },
       "ContentTemplate": {
