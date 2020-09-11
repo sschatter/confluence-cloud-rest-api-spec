@@ -14625,7 +14625,7 @@
       },
       "SpacePermissionV2": {
         "type": "object",
-        "description": "This object represents a single space permission. Permissions consist of\nat least one operation object with an accompanying subjects object.\n\nThe following combinations of `operation.type` and `operation.target` values are\nvalid for the `operation` object:\n\n  - 'create': 'page', 'blogpost', 'comment', 'attachment'\n  - 'read': 'space'\n  - 'delete': 'page', 'blogpost', 'comment', 'attachment'\n  - 'export': 'space'\n  - 'administer': 'space'",
+        "description": "This object represents a single space permission. Permissions consist of\nat least one operation object with an accompanying subjects object.\n\nThe following combinations of `operation.key` and `operation.target` values are\nvalid for the `operation` object:\n``` bash\n'create': 'page', 'blogpost', 'comment', 'attachment'\n'read': 'space'\n'delete': 'page', 'blogpost', 'comment', 'attachment'\n'export': 'space'\n'administer': 'space'\n```",
         "required": [
           "subject",
           "operation"
