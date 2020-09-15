@@ -4191,7 +4191,7 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/api/experimental/cql/pdcleaner": {
+    "/experimental/cql/pdcleaner": {
       "post": {
         "tags": [
           "Experimental"
