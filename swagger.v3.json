@@ -11629,7 +11629,7 @@
             "description": "The type of the new template. Set to `page`."
           },
           "body": {
-            "$ref": "#/components/schemas/ContentBodyCreate"
+            "$ref": "#/components/schemas/ContentTemplateBodyCreate"
           },
           "description": {
             "type": "string",
@@ -11655,6 +11655,16 @@
                 "type": "string"
               }
             }
+          }
+        }
+      },
+      "ContentTemplateBodyCreate": {
+        "type": "object",
+        "description": "This object is used when creating or updating content.",
+        "additionalProperties": false,
+        "properties": {
+          "storage": {
+            "$ref": "#/components/schemas/ContentBodyCreate"
           }
         }
       },
