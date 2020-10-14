@@ -4913,6 +4913,70 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
+    "/api/group/{groupId}/membersByGroupId": {
+      "get": {
+        "tags": [
+          "Group"
+        ],
+        "summary": "Get group members",
+        "description": "Returns the users that are members of a group.\n\nUse updated Get group API\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
+        "operationId": "com.atlassian.confluence.plugins.restapi.resources.GroupResource.getGroupMembersByGroupId_get",
+        "parameters": [
+          {
+            "name": "groupId",
+            "in": "path",
+            "description": "The id of the group to be queried for its members.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "The starting index of the returned users.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The maximum number of users to return per page.\nNote, this may be restricted by fixed system limits.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0,
+              "default": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returned if the requested users are returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserArrayWithLinks"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Returned of given limit is greated than 200"
+          },
+          "403": {
+            "description": "Returned if the calling user does not have permission to view users."
+          }
+        },
+        "x-atlassian-connect-scope": "READ"
+      }
+    },
     "/api/group/user": {
       "post": {
         "tags": [
