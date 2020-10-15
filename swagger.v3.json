@@ -4913,6 +4913,55 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
+    "/api/group/userByGroupId": {
+      "post": {
+        "tags": [
+          "Group"
+        ],
+        "summary": "Add member to group by groupId",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-groups"
+            ]
+          }
+        ],
+        "description": "Adds a user as a member in a group represented by its groupId\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nUser must be a site admin.",
+        "operationId": "com.atlassian.confluence.plugins.restapi.resources.GroupResource.addUserToGroupByGroupId_post",
+        "parameters": [
+          {
+            "name": "groupId",
+            "in": "query",
+            "description": "GroupId of the group whose membership is updated",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Returned if the group was created successfully."
+          },
+          "400": {
+            "description": "Returned if the groupId or accountId are missing or invalid."
+          },
+          "401": {
+            "description": "Returned if the calling user is not logged in to Confluence."
+          },
+          "403": {
+            "description": "Returned if the user is not a site admin."
+          },
+          "404": {
+            "description": "If no user group by the give name exists."
+          }
+        },
+        "requestBody": {
+          "$ref": "#/components/requestBodies/AccountId"
+        },
+        "x-atlassian-connect-scope": "INACCESSIBLE"
+      }
+    },
     "/api/group/{groupId}/membersByGroupId": {
       "get": {
         "tags": [
@@ -5021,15 +5070,7 @@
           }
         },
         "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AccountId"
-              }
-            }
-          },
-          "description": "AccountId of the user who needs to be added as member.",
-          "required": true
+          "$ref": "#/components/requestBodies/AccountId"
         },
         "x-atlassian-connect-scope": "INACCESSIBLE"
       },
@@ -9568,6 +9609,17 @@
             }
           }
         }
+      },
+      "AccountId": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/AccountId"
+            }
+          }
+        },
+        "description": "AccountId of the user who needs to be added as member.",
+        "required": true
       },
       "ContentBlueprintDraft": {
         "content": {
