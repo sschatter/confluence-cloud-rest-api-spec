@@ -2867,7 +2867,7 @@
       },
       "put": {
         "tags": [
-          "Content"
+          "Content properties"
         ],
         "summary": "Update content property",
         "security": [
@@ -11312,12 +11312,8 @@
         "properties": {
           "value": {
             "type": "object",
-            "description": "The value of the property.",
-            "minProperties": 1,
-            "maxProperties": 1,
-            "additionalProperties": {
-              "type": "string"
-            }
+            "description": "The value of the content property. This can be empty or a complex object.",
+            "additionalProperties": true
           },
           "version": {
             "type": "object",
