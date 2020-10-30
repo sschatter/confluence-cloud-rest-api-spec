@@ -4960,6 +4960,59 @@
           "$ref": "#/components/requestBodies/AccountId"
         },
         "x-atlassian-connect-scope": "INACCESSIBLE"
+      },
+      "delete": {
+        "tags": [
+          "Group"
+        ],
+        "summary": "Remove member from group using group id",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-groups"
+            ]
+          }
+        ],
+        "description": "Remove user as a member from a group.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nUser must be a site admin.",
+        "operationId": "com.atlassian.confluence.plugins.restapi.resources.GroupResource.removeMemberFromGroupByGroupId_delete",
+        "parameters": [
+          {
+            "name": "groupId",
+            "in": "query",
+            "description": "Id of the group whose membership is updated.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "accountId",
+            "in": "query",
+            "description": "AccountId of the user whose membership is removed.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Returned if the group was removed successfully."
+          },
+          "400": {
+            "description": "Returned if the name is missing or invalid."
+          },
+          "401": {
+            "description": "Returned if the calling user is not logged in to Confluence."
+          },
+          "403": {
+            "description": "Returned if the user is not a site admin.\nNote: A 204 is returned if the user is not part of the\ngroup."
+          },
+          "404": {
+            "description": "If no user group by the give name exists or if no user exists\nfor the given accountId."
+          }
+        },
+        "x-atlassian-connect-scope": "INACCESSIBLE"
       }
     },
     "/api/group/{groupId}/membersByGroupId": {
