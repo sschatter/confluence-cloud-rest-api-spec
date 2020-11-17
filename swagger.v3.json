@@ -4121,6 +4121,13 @@
           "Content body"
         ],
         "summary": "Convert content body",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.all"
+            ]
+          }
+        ],
         "description": "Converts a content body from one format to another format.\n\nSupported conversions:\n\n- storage: view, export_view, styled_view, editor\n- editor: storage\n- view: none\n- export_view: none\n- styled_view: none\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nIf request specifies 'contentIdContext', 'View' permission for the space, and permission to view the content.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentBodyResource.convertContentBody_post",
         "parameters": [
@@ -8247,6 +8254,13 @@
           "Users"
         ],
         "summary": "Get user",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-user"
+            ]
+          }
+        ],
         "description": "Returns a user. This includes information about the user, such as the\ndisplay name, account ID, profile picture, and more. The information returned may be\nrestricted by the user's profile visibility settings.\n\n**Note:** to add, edit, or delete users in your organization, see the\n[user management REST API](/cloud/admin/user-management/about/).\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.UserResource.getUser_get",
         "parameters": [
@@ -8327,6 +8341,13 @@
           "Users"
         ],
         "summary": "Get anonymous user",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-user"
+            ]
+          }
+        ],
         "description": "Returns information about how anonymous users are represented, like the\nprofile picture and display name.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.UserResource.getAnonymousUser_get",
         "parameters": [
@@ -8371,6 +8392,13 @@
           "Users"
         ],
         "summary": "Get current user",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-user"
+            ]
+          }
+        ],
         "description": "Returns the currently logged-in user. This includes information about\nthe user, like the display name, userKey, account ID, profile picture,\nand more.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.UserResource.getCurrentUser_get",
         "parameters": [
@@ -8418,6 +8446,13 @@
           "Users"
         ],
         "summary": "Get group memberships for user",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-user"
+            ]
+          }
+        ],
         "description": "Returns the groups that a user is a member of.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.UserResource.getGroupMembershipsForUser_get",
         "parameters": [
@@ -8497,6 +8532,13 @@
           "Users"
         ],
         "summary": "Get multiple users using ids",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-user"
+            ]
+          }
+        ],
         "description": "Returns user details for the ids provided in request.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.UserResource.getBulkUserLookup",
         "parameters": [
@@ -9299,6 +9341,13 @@
           "Users"
         ],
         "summary": "Get user accountIds",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-user"
+            ]
+          }
+        ],
         "description": "Returns the accountIds for the users specified in the key or username parameters. Note that multiple key and username parameters can be specified.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission if specifying a user, otherwise\npermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.UserResource.getBulkUserMigration",
         "parameters": [
@@ -9705,7 +9754,8 @@
               "search:confluence": "Search Confluence. Note, APIs using this scope may also return data allowed by read:confluence-space.summary and read:confluence-content.summary. However, this scope is not a substitute for read:confluence-space.summary or read:confluence-content.summary.",
               "manage:confluence-configuration": "Manage global settings.",
               "read:confluence-groups": "Read user groups.",
-              "write:confluence-groups": "Create, remove and update user groups."
+              "write:confluence-groups": "Create, remove and update user groups.",
+              "read:confluence-user": "Read users."
             }
           }
         }
