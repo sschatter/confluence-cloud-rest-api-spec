@@ -2584,6 +2584,63 @@
         "x-atlassian-connect-scope": "WRITE"
       }
     },
+    "/api/content/{id}/permission/check": {
+      "post": {
+        "tags": [
+          "Content permissions"
+        ],
+        "summary": "Check content permissions",
+        "description": "Check if a user or a group can perform an operation to the specified content. The `operation` to check\nmust be provided. The user’s account ID or the ID of the group can be provided in the `subject` to check\npermissions against a specified user or group. The following permission checks are done to make sure that the\nuser or group has the proper access:\n\n- site permissions\n- space permissions\n- content restrictions\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission) if checking permission for self,\notherwise 'Confluence Administrator' global permission is required.",
+        "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentPermissionResource.permissionCheck_post",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the content to check permissions against.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returned if the permission check completed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PermissionCheckResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Returned if;\n\n- If any of the required fields are missing.\n- If specified `subject` or `operation` is invalid."
+          },
+          "401": {
+            "description": "Returned if the authentication credentials are incorrect or missing\nfrom the request."
+          },
+          "403": {
+            "description": "Returned if the user does not have permission perform the check."
+          },
+          "404": {
+            "description": "Returned if there is no content with the given ID."
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContentPermissionRequest"
+              }
+            }
+          },
+          "description": "The content permission request.",
+          "required": true
+        },
+        "x-atlassian-connect-scope": "READ"
+      }
+    },
     "/api/content/{id}/property": {
       "get": {
         "tags": [
@@ -14874,6 +14931,28 @@
           }
         }
       },
+      "PermissionSubjectWithGroupId": {
+        "type": "object",
+        "description": "The user or group that the permission applies to.",
+        "additionalProperties": false,
+        "required": [
+          "type",
+          "identifier"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "user",
+              "group"
+            ]
+          },
+          "identifier": {
+            "type": "string",
+            "description": "for `type=user`, identifier should be user's accountId or `anonymous` for anonymous users\n\nfor `type=group`, identifier should be ID of the group"
+          }
+        }
+      },
       "SpacePermissionV2": {
         "type": "object",
         "description": "This object represents a single space permission. Permissions consist of\nat least one operation object with an accompanying subjects object.\n\nThe following combinations of `operation.key` and `operation.target` values are\nvalid for the `operation` object:\n``` bash\n'create': 'page', 'blogpost', 'comment', 'attachment'\n'read': 'space'\n'delete': 'page', 'blogpost', 'comment', 'attachment'\n'export': 'space'\n'administer': 'space'\n```",
@@ -14943,7 +15022,7 @@
         "additionalProperties": false,
         "properties": {
           "subject": {
-            "$ref": "#/components/schemas/PermissionSubject"
+            "$ref": "#/components/schemas/PermissionSubjectWithGroupId"
           },
           "operation": {
             "type": "string",
