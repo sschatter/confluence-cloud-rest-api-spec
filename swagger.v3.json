@@ -5085,6 +5085,13 @@
           "Group"
         ],
         "summary": "Get group members",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-groups"
+            ]
+          }
+        ],
         "description": "Returns the users that are members of a group.\n\nUse updated Get group API\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.GroupResource.getGroupMembersByGroupId_get",
         "parameters": [
