@@ -3674,6 +3674,68 @@
         "x-atlassian-connect-scope": "DELETE"
       }
     },
+    "/api/content/{id}/restriction/byOperation/{operationKey}/byGroupId/{groupId}": {
+      "get": {
+        "tags": [
+          "Content restrictions"
+        ],
+        "summary": "Get content restriction status for group",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.all"
+            ]
+          }
+        ],
+        "description": "Returns whether the specified content restriction applies to a group.\nFor example, if a page with `id=123` has a `read` restriction for the `123456` group id,\nthe following request will return `true`:\n\n`https://your-domain.atlassian.net/wiki/rest/api/content/123/restriction/byOperation/read/byGroupId/123456`\n\nNote that a response of `true` does not guarantee that the group can view the page, as it does not account for\naccount-inherited restrictions, space permissions, or even product access. For more\ninformation, see [Confluence permissions](https://confluence.atlassian.com/x/_AozKw).\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to view the content.",
+        "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentRestrictionResource.getIndividualGroupRestrictionStatusByGroupId_get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the content that the restriction applies to.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "operationKey",
+            "in": "path",
+            "description": "The operation that the restriction applies to.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "read",
+                "update"
+              ]
+            }
+          },
+          {
+            "name": "groupId",
+            "in": "path",
+            "description": "The id of the group to be queried for whether the content restriction\napplies to it.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns true if the content restriction applies to the group. The response\nwill not return a response body."
+          },
+          "403": {
+            "description": "Returned if the calling user does not have permission to view the\ncontent."
+          },
+          "404": {
+            "description": "Returned if\n- There is no content with the given ID.\n- An invalid operation or group is specified.\n- Given groupId is blank or has invalid characters"
+          }
+        },
+        "x-atlassian-connect-scope": "READ"
+      }
+    },
     "/api/content/{id}/restriction/byOperation/{operationKey}/user": {
       "get": {
         "tags": [
