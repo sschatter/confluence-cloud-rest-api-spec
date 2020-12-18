@@ -3553,6 +3553,9 @@
           "200": {
             "description": "Returns true if the content restriction applies to the group. The response\nwill not return a response body."
           },
+          "400": {
+            "description": "Returned if;\n\n- Group name is missing"
+          },
           "404": {
             "description": "Returned if;\n\n- There is no content with the given ID.\n- The calling user does not have permission to view the content.\n- An invalid operation or group is specified."
           }
@@ -3734,6 +3737,69 @@
           }
         },
         "x-atlassian-connect-scope": "READ"
+      },
+      "put": {
+        "tags": [
+          "Content restrictions"
+        ],
+        "summary": "Add group to content restriction",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-content"
+            ]
+          }
+        ],
+        "description": "Adds a group to a content restriction by Group Id. That is, grant read or update\npermission to the group for a piece of content.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to edit the content.",
+        "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentRestrictionResource.addGroupToContentRestrictionByGroupId_put",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the content that the restriction applies to.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "operationKey",
+            "in": "path",
+            "description": "The operation that the restriction applies to.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "read",
+                "update"
+              ]
+            }
+          },
+          {
+            "name": "groupId",
+            "in": "path",
+            "description": "The groupId of the group to add to the content restriction.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returned if the group is added to the content restriction by Group Id. The response\nbody will be empty."
+          },
+          "400": {
+            "description": "Returned if;\n- Group Id is not valid"
+          },
+          "403": {
+            "description": "Returned if the calling user does not have permission to update the\ncontent."
+          },
+          "404": {
+            "description": "Returned if;\n- There is no content with the given ID.\n- The calling user does not have permission to view the content.\n- An invalid operation or group id is specified."
+          }
+        },
+        "x-atlassian-connect-scope": "WRITE"
       }
     },
     "/api/content/{id}/restriction/byOperation/{operationKey}/user": {
