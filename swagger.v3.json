@@ -206,6 +206,17 @@
         "summary": "Create audit record",
         "description": "Creates a record in the audit log.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.AuditResource.createAuditRecord_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuditRecordCreate"
+              }
+            }
+          },
+          "description": "The record to be created in the audit log.",
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Returned if the record is created in the audit log.",
@@ -220,17 +231,6 @@
           "400": {
             "description": "Returned if the `remoteAddress` property is not specified."
           }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AuditRecordCreate"
-              }
-            }
-          },
-          "description": "The record to be created in the audit log.",
-          "required": true
         },
         "x-atlassian-connect-scope": "INACCESSIBLE"
       }
@@ -343,6 +343,17 @@
         "summary": "Set retention period",
         "description": "Sets the retention period for records in the audit log. The retention period\ncan be set to a maximum of 20 years.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Confluence Administrator' global permission.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.AuditResource.setRetentionPeriod_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RetentionPeriod"
+              }
+            }
+          },
+          "description": "The updated retention period.",
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Returned if the retention period is updated.",
@@ -357,17 +368,6 @@
           "403": {
             "description": "Returned if the calling user does not have permission to view the audit\nlog."
           }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RetentionPeriod"
-              }
-            }
-          },
-          "description": "The updated retention period.",
-          "required": true
         },
         "x-atlassian-connect-scope": "INACCESSIBLE"
       }
@@ -646,6 +646,17 @@
             "$ref": "#/components/parameters/contentExpand"
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContentCreate"
+              }
+            }
+          },
+          "description": "The new content to be created. Set the `representation` to the name of the body\nformat type. For example, if you use `storage` for the body format, set\n'`representation`=`storage`'. See\n[Confluence storage format](https://confluence.atlassian.com/x/AJkiLw).\n\nIf you are not sure how to generate the different formats, you can create a page in the\nConfluence application, retrieve the content using [Get content](#api-content-get),\nand expand the desired content format, e.g. `expand=body.storage`.",
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Returned if the content is created.",
@@ -663,17 +674,6 @@
           "403": {
             "description": "Returned if;\n\n- The space that the content is being created in does not exist.\n- If the requesting user does not have permission to create content in it."
           }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ContentCreate"
-              }
-            }
-          },
-          "description": "The new content to be created. Set the `representation` to the name of the body\nformat type. For example, if you use `storage` for the body format, set\n'`representation`=`storage`'. See\n[Confluence storage format](https://confluence.atlassian.com/x/AJkiLw).\n\nIf you are not sure how to generate the different formats, you can create a page in the\nConfluence application, retrieve the content using [Get content](#api-content-get),\nand expand the desired content format, e.g. `expand=body.storage`.",
-          "required": true
         },
         "x-atlassian-connect-scope": "WRITE"
       }
@@ -717,6 +717,9 @@
             "$ref": "#/components/parameters/contentExpand"
           }
         ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/ContentBlueprintDraft"
+        },
         "responses": {
           "200": {
             "description": "Returned if the draft was successfully published.",
@@ -734,9 +737,6 @@
           "409": {
             "description": "Returned if the version is not set to 1."
           }
-        },
-        "requestBody": {
-          "$ref": "#/components/requestBodies/ContentBlueprintDraft"
         },
         "x-atlassian-connect-scope": "WRITE"
       },
@@ -778,6 +778,9 @@
             "$ref": "#/components/parameters/contentExpand"
           }
         ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/ContentBlueprintDraft"
+        },
         "responses": {
           "200": {
             "description": "Returned if the draft was successfully published.",
@@ -795,9 +798,6 @@
           "409": {
             "description": "Returned if the version is not set to 1."
           }
-        },
-        "requestBody": {
-          "$ref": "#/components/requestBodies/ContentBlueprintDraft"
         },
         "x-atlassian-connect-scope": "WRITE"
       }
@@ -1046,6 +1046,17 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContentUpdate"
+              }
+            }
+          },
+          "description": "The updated content.",
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Returned if the content is updated.",
@@ -1069,17 +1080,6 @@
           "409": {
             "description": "Returned if;\n\n- The page is a draft (draft pages cannot be updated).\n- The version property has not been set correctly for the content\ntype."
           }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ContentUpdate"
-              }
-            }
-          },
-          "description": "The updated content.",
-          "required": true
         },
         "x-atlassian-connect-scope": "WRITE"
       },
@@ -1159,6 +1159,7 @@
             "description": "A multi-value parameter indicating which properties of the children to expand, where:\n\n- `attachment` returns all attachments for the content.\n- `comments` returns all comments for the content.\n- `page` returns all child pages of the content.",
             "required": false,
             "style": "form",
+            "explode": false,
             "schema": {
               "type": "array",
               "items": {
@@ -1259,7 +1260,6 @@
                   "type": "object",
                   "properties": {
                     "pageId": {
-                      "description": "The content id of the page that was moved.",
                       "$ref": "#/components/schemas/ContentId"
                     }
                   }
@@ -1405,6 +1405,9 @@
             }
           }
         ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/com.atlassian.confluence.plugins.restapi.resources.AttachmentResource.createAttachments_post"
+        },
         "responses": {
           "200": {
             "description": "Returned if the attachments were added to the content.",
@@ -1425,9 +1428,6 @@
           "404": {
             "description": "Returned if;\n\n- The requested content is not found.\n- The user does not have permission to view it\n- The attachment exceeds the maximum configured attachment size."
           }
-        },
-        "requestBody": {
-          "$ref": "#/components/requestBodies/com.atlassian.confluence.plugins.restapi.resources.AttachmentResource.createAttachments_post"
         },
         "x-atlassian-connect-scope": "WRITE"
       },
@@ -1470,6 +1470,9 @@
             }
           }
         ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/com.atlassian.confluence.plugins.restapi.resources.AttachmentResource.createAttachments_post"
+        },
         "responses": {
           "200": {
             "description": "Returned if the attachments were added to the content.",
@@ -1487,9 +1490,6 @@
           "404": {
             "description": "Returned if;\n\n- The requested content is not found.\n- The user does not have permission to view it.\n- The attachment exceeds the maximum configured attachment size."
           }
-        },
-        "requestBody": {
-          "$ref": "#/components/requestBodies/com.atlassian.confluence.plugins.restapi.resources.AttachmentResource.createAttachments_post"
         },
         "x-atlassian-connect-scope": "WRITE"
       }
@@ -1530,6 +1530,17 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AttachmentUpdate"
+              }
+            }
+          },
+          "description": "The details of the attachment to be updated.",
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Returned if the attachment is updated.",
@@ -1553,17 +1564,6 @@
           "409": {
             "description": "Returned if the version of the supplied attachment does not match\nthe version of the attachment stored in the database."
           }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AttachmentUpdate"
-              }
-            }
-          },
-          "description": "The details of the attachment to be updated.",
-          "required": true
         },
         "x-atlassian-connect-scope": "WRITE"
       }
@@ -1603,6 +1603,9 @@
             }
           }
         ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/com.atlassian.confluence.plugins.restapi.resources.AttachmentResource.createAttachments_post"
+        },
         "responses": {
           "200": {
             "description": "Returned if the attachment is updated.",
@@ -1620,9 +1623,6 @@
           "404": {
             "description": "Returned if no attachment is found for the attachment ID."
           }
-        },
-        "requestBody": {
-          "$ref": "#/components/requestBodies/com.atlassian.confluence.plugins.restapi.resources.AttachmentResource.createAttachments_post"
         },
         "x-atlassian-connect-scope": "WRITE"
       }
@@ -1854,6 +1854,7 @@
             "description": "A multi-value parameter indicating which properties of the children to\nexpand, where:\n\n- `attachment` returns all attachments for the content.\n- `comments` returns all comments for the content.\n- `page` returns all child pages of the content.",
             "required": false,
             "style": "form",
+            "explode": false,
             "schema": {
               "type": "array",
               "items": {
@@ -1999,6 +2000,7 @@
             "description": "A multi-value parameter indicating which properties of the content history to expand.\n\n- `lastUpdated` returns information about the most recent update of the content,\nincluding who updated it and when it was updated.\n- `previousVersion` returns information about the update prior to the current content\nupdate. For this method, it contains the same information as `lastUpdated`.\n- `contributors` returns all of the users who have contributed to the content.\n- `nextVersion` This parameter is not used for this method.",
             "required": false,
             "style": "form",
+            "explode": false,
             "schema": {
               "type": "array",
               "items": {
@@ -2204,6 +2206,17 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LabelCreateArray"
+              }
+            }
+          },
+          "description": "The labels to add to the content.",
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Returned if the labels are added to the content.",
@@ -2218,17 +2231,6 @@
           "404": {
             "description": "Returned if;\n\n- There is no content with the given ID.\n- The calling user does not have permission to view the content."
           }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LabelCreateArray"
-              }
-            }
-          },
-          "description": "The labels to add to the content.",
-          "required": true
         },
         "x-atlassian-connect-scope": "WRITE"
       },
@@ -2493,17 +2495,6 @@
             }
           }
         ],
-        "responses": {
-          "202": {
-            "description": "Returns a full JSON representation of a long running task"
-          },
-          "400": {
-            "description": "Returned if original page or destination page doesn't exist."
-          },
-          "403": {
-            "description": "Returned if the user does not have permission to create content at destination"
-          }
-        },
         "requestBody": {
           "content": {
             "application/json": {
@@ -2514,6 +2505,17 @@
           },
           "description": "Request object from json post body",
           "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Returns a full JSON representation of a long running task"
+          },
+          "400": {
+            "description": "Returned if original page or destination page doesn't exist."
+          },
+          "403": {
+            "description": "Returned if the user does not have permission to create content at destination"
+          }
         },
         "x-atlassian-connect-scope": "WRITE"
       }
@@ -2546,6 +2548,17 @@
             "$ref": "#/components/parameters/contentExpand"
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CopyPageRequest"
+              }
+            }
+          },
+          "description": "Request object from json post body",
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Returned if the content is copied.",
@@ -2570,17 +2583,6 @@
             "description": "Returned if;\n\n- the original page doesn't exist.\n- the destination page doesn’t exist.\n- the destination space doesn’t exist."
           }
         },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CopyPageRequest"
-              }
-            }
-          },
-          "description": "Request object from json post body",
-          "required": true
-        },
         "x-atlassian-connect-scope": "WRITE"
       }
     },
@@ -2603,6 +2605,17 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContentPermissionRequest"
+              }
+            }
+          },
+          "description": "The content permission request.",
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Returned if the permission check completed successfully",
@@ -2626,17 +2639,6 @@
           "404": {
             "description": "Returned if there is no content with the given ID."
           }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ContentPermissionRequest"
-              }
-            }
-          },
-          "description": "The content permission request.",
-          "required": true
         },
         "x-atlassian-connect-scope": "READ"
       }
@@ -2672,6 +2674,7 @@
             "description": "A multi-value parameter indicating which properties of the content to\nexpand. By default, the `version` object is expanded.\n\n- `content` returns the content that the property is stored against.\n- `version` returns information about the version of the property, such\nas the version number, when it was created, etc.",
             "required": false,
             "style": "form",
+            "explode": false,
             "schema": {
               "type": "array",
               "items": {
@@ -2750,6 +2753,17 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContentPropertyCreate"
+              }
+            }
+          },
+          "description": "The content property to be created.",
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Returned if the content property is created.",
@@ -2770,17 +2784,6 @@
           "413": {
             "description": "Returned if the value is too long."
           }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ContentPropertyCreate"
-              }
-            }
-          },
-          "description": "The content property to be created.",
-          "required": true
         },
         "x-atlassian-connect-scope": "WRITE"
       }
@@ -2825,6 +2828,7 @@
             "description": "A multi-value parameter indicating which properties of the content to\nexpand. By default, the `version` object is expanded.\n\n- `content` returns the content that the property is stored against.\n- `version` returns information about the version of the property, such\nas the version number, when it was created, etc.",
             "required": false,
             "style": "form",
+            "explode": false,
             "schema": {
               "type": "array",
               "items": {
@@ -2888,6 +2892,17 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContentPropertyCreateNoKey"
+              }
+            }
+          },
+          "description": "The content property to be created.",
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Returned if the content property is created.",
@@ -2908,17 +2923,6 @@
           "413": {
             "description": "Returned if the value is too long."
           }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ContentPropertyCreateNoKey"
-              }
-            }
-          },
-          "description": "The content property to be created.",
-          "required": true
         },
         "x-atlassian-connect-scope": "WRITE"
       },
@@ -2956,6 +2960,17 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContentPropertyUpdate"
+              }
+            }
+          },
+          "description": "The content property being updated.",
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Returned if the content property is created.",
@@ -2982,17 +2997,6 @@
           "413": {
             "description": "Returned if the value is too long."
           }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ContentPropertyUpdate"
-              }
-            }
-          },
-          "description": "The content property being updated.",
-          "required": true
         },
         "x-atlassian-connect-scope": "WRITE"
       },
@@ -3072,6 +3076,7 @@
             "description": "A multi-value parameter indicating which properties of the content\nrestrictions to expand. By default, the following objects are expanded:\n`restrictions.user`, `restrictions.group`.\n\n- `restrictions.user` returns the piece of content that the restrictions are\napplied to.\n- `restrictions.group` returns the piece of content that the restrictions are\napplied to.\n- `content` returns the piece of content that the restrictions are\napplied to.",
             "required": false,
             "style": "form",
+            "explode": false,
             "schema": {
               "type": "array",
               "items": {
@@ -3156,6 +3161,7 @@
             "description": "A multi-value parameter indicating which properties of the content\nrestrictions (returned in response) to expand.\n\n- `restrictions.user` returns the piece of content that the restrictions are\napplied to. Expanded by default.\n- `restrictions.group` returns the piece of content that the restrictions are\napplied to. Expanded by default.\n- `content` returns the piece of content that the restrictions are\napplied to.",
             "required": false,
             "style": "form",
+            "explode": false,
             "schema": {
               "type": "array",
               "items": {
@@ -3169,6 +3175,17 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddContentRestrictionUpdateArray"
+              }
+            }
+          },
+          "description": "The restrictions to be added to the content.",
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Returned if the requested restrictions are added.",
@@ -3183,17 +3200,6 @@
           "404": {
             "description": "Returned if;\n\n- There is no content with the given ID.\n- The calling user does not have permission to add restrictions to\nthe content."
           }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddContentRestrictionUpdateArray"
-              }
-            }
-          },
-          "description": "The restrictions to be added to the content.",
-          "required": true
         },
         "x-atlassian-connect-scope": "WRITE"
       },
@@ -3227,6 +3233,7 @@
             "description": "A multi-value parameter indicating which properties of the content\nrestrictions (returned in response) to expand.\n\n- `restrictions.user` returns the piece of content that the restrictions are\napplied to. Expanded by default.\n- `restrictions.group` returns the piece of content that the restrictions are\napplied to. Expanded by default.\n- `content` returns the piece of content that the restrictions are\napplied to.",
             "required": false,
             "style": "form",
+            "explode": false,
             "schema": {
               "type": "array",
               "items": {
@@ -3240,6 +3247,17 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContentRestrictionUpdateArray"
+              }
+            }
+          },
+          "description": "The updated restrictions for the content.",
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Returned if the requested restrictions are updated.",
@@ -3254,17 +3272,6 @@
           "404": {
             "description": "Returned if;\n\n- There is no content with the given ID.\n- The calling user does not have permission to update restrictions\nfor the content."
           }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ContentRestrictionUpdateArray"
-              }
-            }
-          },
-          "description": "The updated restrictions for the content.",
-          "required": true
         },
         "x-atlassian-connect-scope": "WRITE"
       },
@@ -3298,6 +3305,7 @@
             "description": "A multi-value parameter indicating which properties of the content\nrestrictions (returned in response) to expand.\n\n- `restrictions.user` returns the piece of content that the restrictions are\napplied to. Expanded by default.\n- `restrictions.group` returns the piece of content that the restrictions are\napplied to. Expanded by default.\n- `content` returns the piece of content that the restrictions are\napplied to.",
             "required": false,
             "style": "form",
+            "explode": false,
             "schema": {
               "type": "array",
               "items": {
@@ -3366,6 +3374,7 @@
             "description": "A multi-value parameter indicating which properties of the content\nrestrictions to expand.\n\n- `restrictions.user` returns the piece of content that the restrictions are\napplied to. Expanded by default.\n- `restrictions.group` returns the piece of content that the restrictions are\napplied to. Expanded by default.\n- `content` returns the piece of content that the restrictions are\napplied to.",
             "required": false,
             "style": "form",
+            "explode": false,
             "schema": {
               "type": "array",
               "items": {
@@ -3449,6 +3458,7 @@
             "description": "A multi-value parameter indicating which properties of the content\nrestrictions to expand.\n\n- `restrictions.user` returns the piece of content that the restrictions are\napplied to. Expanded by default.\n- `restrictions.group` returns the piece of content that the restrictions are\napplied to. Expanded by default.\n- `content` returns the piece of content that the restrictions are\napplied to.",
             "required": false,
             "style": "form",
+            "explode": false,
             "schema": {
               "type": "array",
               "items": {
@@ -4076,6 +4086,7 @@
             "description": "A multi-value parameter indicating which properties of the content to expand.\n\n- `collaborators` returns the users that collaborated on the version.\n- `content` returns the content for the version.",
             "required": false,
             "style": "form",
+            "explode": false,
             "schema": {
               "type": "array",
               "items": {
@@ -4134,6 +4145,7 @@
             "in": "query",
             "description": "A multi-value parameter indicating which properties of the returned\ncontent to expand.\n\n- `collaborators` returns the users that collaborated on the version.\n- `content` returns the content for the version.",
             "style": "form",
+            "explode": false,
             "schema": {
               "type": "array",
               "items": {
@@ -4146,6 +4158,17 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VersionRestore"
+              }
+            }
+          },
+          "description": "The content version to be restored.",
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Returned if the version is restored.",
@@ -4163,17 +4186,6 @@
           "403": {
             "description": "Returned if the calling user doesn't have permission to edit the\ncontent."
           }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/VersionRestore"
-              }
-            }
-          },
-          "description": "The content version to be restored.",
-          "required": true
         },
         "x-atlassian-connect-scope": "WRITE"
       }
@@ -4219,6 +4231,7 @@
             "description": "A multi-value parameter indicating which properties of the content to\nexpand. By default, the `content` object is expanded.\n\n- `collaborators` returns the users that collaborated on the version.\n- `content` returns the content for the version.",
             "required": false,
             "style": "form",
+            "explode": false,
             "schema": {
               "type": "array",
               "items": {
@@ -4361,6 +4374,17 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContentBodyCreate"
+              }
+            }
+          },
+          "description": "The content body to convert.",
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Returned if the content is converted.",
@@ -4373,17 +4397,6 @@
             }
           }
         },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ContentBodyCreate"
-              }
-            }
-          },
-          "description": "The content body to convert.",
-          "required": true
-        },
         "x-atlassian-connect-scope": "READ"
       }
     },
@@ -4395,6 +4408,17 @@
         "summary": "Convert user identifiers to account IDs in CQL queries",
         "description": "Converts one or more CQL queries with user identifiers (username or user key)\nto equivalent CQL queries with account IDs.\n\nYou may wish to use this operation if your system stores CQL queries and you\nwant to make them GDPR-compliant. For more information about GDPR-related changes,\nsee the [migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/).\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**: None",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ExperimentalCQLResource.cqlPDCleaner_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CQLPersonalDataMigrationRequest"
+              }
+            }
+          },
+          "description": "The CQL queries to convert.",
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Returned if the request is successful. The CQL queries are returned\nin the same order that they were passed. Note that if the user in a\nCQL query cannot be found, a `200` code is still returned but the username\nor key is converted to an empty string.",
@@ -4414,17 +4438,6 @@
           "400": {
             "description": "Returned if:\n\n* At least one of the queries cannot be converted. For example, the\nCQL has invalid operators or invalid keywords.\n* More than 100 CQL queries are included in the request."
           }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CQLPersonalDataMigrationRequest"
-              }
-            }
-          },
-          "description": "The CQL queries to convert.",
-          "required": true
         },
         "x-atlassian-connect-scope": "INACCESSIBLE"
       }
@@ -4777,6 +4790,17 @@
         ],
         "description": "Creates a new user group.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nUser must be a site admin.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.GroupResource.createGroup_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GroupName"
+              }
+            }
+          },
+          "description": "Name of the group that is to be created.",
+          "required": true
+        },
         "responses": {
           "201": {
             "description": "Returned if the group was created successfully.",
@@ -4797,17 +4821,6 @@
           "403": {
             "description": "Returned if the user is not a site admin."
           }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GroupName"
-              }
-            }
-          },
-          "description": "Name of the group that is to be created.",
-          "required": true
         },
         "x-atlassian-connect-scope": "INACCESSIBLE"
       },
@@ -5131,6 +5144,9 @@
             }
           }
         ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/AccountId"
+        },
         "responses": {
           "201": {
             "description": "Returned if the group was created successfully."
@@ -5147,9 +5163,6 @@
           "404": {
             "description": "If no user group by the give name exists."
           }
-        },
-        "requestBody": {
-          "$ref": "#/components/requestBodies/AccountId"
         },
         "x-atlassian-connect-scope": "INACCESSIBLE"
       },
@@ -5304,6 +5317,9 @@
             }
           }
         ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/AccountId"
+        },
         "responses": {
           "201": {
             "description": "Returned if the group was created successfully."
@@ -5320,9 +5336,6 @@
           "404": {
             "description": "If no user group by the give name exists."
           }
-        },
-        "requestBody": {
-          "$ref": "#/components/requestBodies/AccountId"
         },
         "x-atlassian-connect-scope": "INACCESSIBLE"
       },
@@ -5585,6 +5598,7 @@
             "description": "A multi-value parameter indicating which properties of the response\nobject to expand.\n\n- `relationData` returns information about the relationship, such as\nwho created it and when it was created.\n- `source` returns the source entity.\n- `target` returns the target entity.",
             "required": false,
             "style": "form",
+            "explode": false,
             "schema": {
               "type": "array",
               "items": {
@@ -5758,6 +5772,7 @@
             "description": "A multi-value parameter indicating which properties of the response\nobject to expand.\n\n- `relationData` returns information about the relationship, such as\nwho created it and when it was created.\n- `source` returns the source entity.\n- `target` returns the target entity.",
             "required": false,
             "style": "form",
+            "explode": false,
             "schema": {
               "type": "array",
               "items": {
@@ -6149,6 +6164,7 @@
             "description": "A multi-value parameter indicating which properties of the response\nobject to expand.\n\n- `relationData` returns information about the relationship, such as\nwho created it and when it was created.\n- `source` returns the source entity.\n- `target` returns the target entity.",
             "required": false,
             "style": "form",
+            "explode": false,
             "schema": {
               "type": "array",
               "items": {
@@ -6431,6 +6447,17 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LookAndFeel"
+              }
+            }
+          },
+          "description": "The updated settings. All values for the settings must be included,\nregardless of whether they are being changed.\n\nOne way to create the request body is to copy the settings from the\nresponse body of [Get look and feel settings](#api-settings-lookandfeel-get)\nand modify it as needed.",
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Returned if the look and feel settings are updated.",
@@ -6451,17 +6478,6 @@
           "404": {
             "description": "Returned if there is no space with the given `spaceKey`."
           }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LookAndFeel"
-              }
-            }
-          },
-          "description": "The updated settings. All values for the settings must be included,\nregardless of whether they are being changed.\n\nOne way to create the request body is to copy the settings from the\nresponse body of [Get look and feel settings](#api-settings-lookandfeel-get)\nand modify it as needed.",
-          "required": true
         },
         "x-atlassian-connect-scope": "WRITE"
       },
@@ -6533,6 +6549,17 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LookAndFeelType"
+              }
+            }
+          },
+          "description": "The look and feel settings to be set.",
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Returned if the look and feel settings were set.",
@@ -6553,17 +6580,6 @@
           "404": {
             "description": "Returned if there is no space with the given `spaceKey`."
           }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LookAndFeelType"
-              }
-            }
-          },
-          "description": "The look and feel settings to be set.",
-          "required": true
         },
         "x-atlassian-connect-scope": "WRITE"
       }
@@ -6893,6 +6909,17 @@
         ],
         "description": "Creates a new space. Note, currently you cannot set space labels when\ncreating a space.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Create Space(s)' global permission.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.SpaceResource.createSpace_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpaceCreate"
+              }
+            }
+          },
+          "description": "The space to be created.",
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Returned if the space is created.",
@@ -6914,17 +6941,6 @@
             "description": "Returned if the callig user does not have permission to create a space."
           }
         },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SpaceCreate"
-              }
-            }
-          },
-          "description": "The space to be created.",
-          "required": true
-        },
         "x-atlassian-connect-scope": "WRITE"
       }
     },
@@ -6943,6 +6959,17 @@
         ],
         "description": "Creates a new space that is only visible to the creator. This method is\nthe same as the [Create space](#api-space-post) method with permissions\nset to the current user only. Note, currently you cannot set space\nlabels when creating a space.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Create Space(s)' global permission.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.SpaceResource.createPrivateSpace_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpacePrivateCreate"
+              }
+            }
+          },
+          "description": "The space to be created.",
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Returned if the space is created.",
@@ -6963,17 +6990,6 @@
           "403": {
             "description": "Returned if the user does not have permission to create a space."
           }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SpacePrivateCreate"
-              }
-            }
-          },
-          "description": "The space to be created.",
-          "required": true
         },
         "x-atlassian-connect-scope": "WRITE"
       }
@@ -7052,6 +7068,17 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpaceUpdate"
+              }
+            }
+          },
+          "description": "The updated space.",
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Returned if the space is updated.",
@@ -7069,17 +7096,6 @@
           "404": {
             "description": "Returned if any of the following is true:\n\n- There is no space with the given key\n- The calling user does not have permission to update the space."
           }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SpaceUpdate"
-              }
-            }
-          },
-          "description": "The updated space.",
-          "required": true
         },
         "x-atlassian-connect-scope": "WRITE"
       },
@@ -7229,6 +7245,17 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpacePermissionV2"
+              }
+            }
+          },
+          "description": "The permission to be created.",
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Returned if the requested content is returned.",
@@ -7254,17 +7281,6 @@
           }
         },
         "x-experimental": true,
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SpacePermissionV2"
-              }
-            }
-          },
-          "description": "The permission to be created.",
-          "required": true
-        },
         "x-atlassian-connect-scope": "INACCESSIBLE"
       }
     },
@@ -7449,6 +7465,7 @@
             "description": "A multi-value parameter indicating which properties of the space\nproperty to expand. By default, the `version` object is expanded.\n\n- `version` returns information about the version of the content.\n- `space` returns the space that the properties are in.",
             "required": false,
             "style": "form",
+            "explode": false,
             "schema": {
               "type": "array",
               "items": {
@@ -7527,6 +7544,17 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpacePropertyCreate"
+              }
+            }
+          },
+          "description": "The space property to be created.",
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Returned if the space property is created.",
@@ -7547,17 +7575,6 @@
           "413": {
             "description": "Returned if the value for the property is too long."
           }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SpacePropertyCreate"
-              }
-            }
-          },
-          "description": "The space property to be created.",
-          "required": true
         },
         "x-atlassian-connect-scope": "WRITE"
       }
@@ -7602,6 +7619,7 @@
             "description": "A multi-value parameter indicating which properties of the space\nproperty to expand. By default, the `version` object is expanded.\n\n- `version` returns information about the version of the content.\n- `space` returns the space that the properties are in.",
             "required": false,
             "style": "form",
+            "explode": false,
             "schema": {
               "type": "array",
               "items": {
@@ -7665,6 +7683,17 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpacePropertyCreateNoKey"
+              }
+            }
+          },
+          "description": "The space property to be created.",
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Returned if the space property is created.",
@@ -7685,17 +7714,6 @@
           "413": {
             "description": "Returned if the value for the property is too long."
           }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SpacePropertyCreateNoKey"
-              }
-            }
-          },
-          "description": "The space property to be created.",
-          "required": true
         },
         "x-atlassian-connect-scope": "WRITE"
       },
@@ -7733,6 +7751,17 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpacePropertyUpdate"
+              }
+            }
+          },
+          "description": "The space property being updated.",
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Returned if the space property is updated.",
@@ -7759,17 +7788,6 @@
           "413": {
             "description": "Returned if the value of the property is too long."
           }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SpacePropertyUpdate"
-              }
-            }
-          },
-          "description": "The space property being updated.",
-          "required": true
         },
         "x-atlassian-connect-scope": "WRITE"
       },
@@ -7889,6 +7907,17 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpaceSettingsUpdate"
+              }
+            }
+          },
+          "description": "The space settings to update.",
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Returned if space settings are updated.",
@@ -7906,17 +7935,6 @@
           "404": {
             "description": "Returned if;\n\n- There is no space with the given key.\n- The calling user does not have permission to update the space."
           }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SpaceSettingsUpdate"
-              }
-            }
-          },
-          "description": "The space settings to update.",
-          "required": true
         },
         "x-atlassian-connect-scope": "WRITE"
       }
@@ -7989,6 +8007,16 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ThemeUpdate"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Returned if the theme was set for the space.",
@@ -8006,16 +8034,6 @@
           "404": {
             "description": "Returned if there is no space with the given key."
           }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ThemeUpdate"
-              }
-            }
-          },
-          "required": true
         },
         "x-atlassian-connect-scope": "WRITE"
       },
@@ -8125,6 +8143,17 @@
         ],
         "description": "Creates a new content template. Note, blueprint templates cannot be created via the REST API.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Admin' permission for the space to create a space template or 'Confluence Administrator'\nglobal permission to create a global template.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.TemplateResource.createContentTemplate_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContentTemplateCreate"
+              }
+            }
+          },
+          "description": "The content template to be created.\nThe content body must be in 'storage' format.",
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Returned if the template is created.",
@@ -8139,17 +8168,6 @@
           "403": {
             "description": "Returned if the calling user does not have permission to create the\ntemplate."
           }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ContentTemplateCreate"
-              }
-            }
-          },
-          "description": "The content template to be created.\nThe content body must be in 'storage' format.",
-          "required": true
         },
         "x-atlassian-connect-scope": "WRITE"
       },
@@ -8167,6 +8185,17 @@
         ],
         "description": "Updates a content template. Note, blueprint templates cannot be updated\nvia the REST API.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Admin' permission for the space to create a space template or 'Confluence Administrator'\nglobal permission to create a global template.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.TemplateResource.updateContentTemplate_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContentTemplateUpdate"
+              }
+            }
+          },
+          "description": "The updated content template.",
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Returned if the template is updated.",
@@ -8181,17 +8210,6 @@
           "403": {
             "description": "Returned if the calling user does not have permission to update the\ntemplate."
           }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ContentTemplateUpdate"
-              }
-            }
-          },
-          "description": "The updated content template.",
-          "required": true
         },
         "x-atlassian-connect-scope": "WRITE"
       }
@@ -8251,6 +8269,7 @@
             "description": "A multi-value parameter indicating which properties of the template\nto expand.\n\n- `body` returns the content of the template in storage format.",
             "required": false,
             "style": "form",
+            "explode": false,
             "schema": {
               "type": "array",
               "items": {
@@ -8335,6 +8354,7 @@
             "description": "A multi-value parameter indicating which properties of the template\nto expand.\n\n- `body` returns the content of the template in storage format.",
             "required": false,
             "style": "form",
+            "explode": false,
             "schema": {
               "type": "array",
               "items": {
@@ -8489,6 +8509,7 @@
             "description": "A multi-value parameter indicating which properties of the user to\nexpand.\n\n  - `operations` returns the operations that the user is allowed to do.\n  - `details.personal` returns the 'Personal' details in the user's profile, like the 'Email' and 'Phone'.\n  Note that these fields have been deprecated due to privacy changes. See the\n  [migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\n  for details.\n  - `details.business` returns the 'Company' details in the user's profile, like the 'Position' and 'Department'.\n  Note that these fields have been deprecated due to privacy changes. See the\n  [migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\n  for details.\n  - personalSpace returns the user's personal space, if it exists.",
             "required": false,
             "style": "form",
+            "explode": false,
             "schema": {
               "type": "array",
               "items": {
@@ -8549,6 +8570,7 @@
             "description": "A multi-value parameter indicating which properties of the user to\nexpand.\n\n  - `operations` returns the operations that the user is allowed to do.",
             "required": false,
             "style": "form",
+            "explode": false,
             "schema": {
               "type": "array",
               "items": {
@@ -8600,6 +8622,7 @@
             "description": "A multi-value parameter indicating which properties of the user to\nexpand.\n\n  - `operations` returns the operations that the user is allowed to do.\n  - `details.personal` returns the 'Personal' details in the user's profile, like the 'Email' and 'Phone'.\n  Note that these fields have been deprecated due to privacy changes. See the\n  [migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\n  for details.\n  - `details.business` returns the 'Company' details in the user's profile, like the 'Position' and 'Department'.\n  Note that these fields have been deprecated due to privacy changes. See the\n  [migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\n  for details.\n  - personalSpace returns the user's personal space, if it exists.",
             "required": false,
             "style": "form",
+            "explode": false,
             "schema": {
               "type": "array",
               "items": {
@@ -8749,6 +8772,7 @@
             "description": "A multi-value parameter indicating which properties of the user to\nexpand.\n\n  - `operations` returns the operations that the user is allowed to do.\n  - `details.personal` returns the 'Personal' details in the user's profile, like the 'Email' and 'Phone'.\n  Note that these fields have been deprecated due to privacy changes. See the\n  [migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\n  for details.\n  - `details.business` returns the 'Company' details in the user's profile, like the 'Position' and 'Department'.\n  Note that these fields have been deprecated due to privacy changes. See the\n  [migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\n  for details.\n  - personalSpace returns the user's personal space, if it exists.",
             "required": false,
             "style": "form",
+            "explode": false,
             "schema": {
               "type": "array",
               "items": {
@@ -9495,6 +9519,8 @@
             "in": "query",
             "description": "The account IDs of the users.",
             "required": true,
+            "style": "form",
+            "explode": false,
             "schema": {
               "type": "array",
               "items": {
@@ -9548,6 +9574,8 @@
             "in": "query",
             "description": "The key of a user. To specify multiple users, pass multiple key parameters separated by ampersands.\nFor example, key=mia&key=alana. Required if username isn't provided. Cannot be provided if username is present.",
             "required": true,
+            "style": "form",
+            "explode": false,
             "schema": {
               "type": "array",
               "items": {
@@ -9560,6 +9588,8 @@
             "in": "query",
             "description": "The username of a user. To specify multiple users, pass multiple username parameters separated by ampersands.\nFor example, username=mia&username=alana. Required if key isn't provided. Cannot be provided if key is present.",
             "required": false,
+            "style": "form",
+            "explode": false,
             "schema": {
               "type": "array",
               "items": {
@@ -9661,6 +9691,16 @@
         "summary": "Register modules",
         "description": "Registers a list of modules. For the list of modules that support dynamic registration, see [Dynamic modules](https://developer.atlassian.com/cloud/confluence/dynamic-modules/).\n\n**[Permissions](#permissions) required:** Only Connect apps can make this request.",
         "operationId": "DynamicModulesResource.registerModules_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConnectModules"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Returned if the request is successful."
@@ -9702,16 +9742,6 @@
         },
         "deprecated": false,
         "x-experimental": true,
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ConnectModules"
-              }
-            }
-          },
-          "required": true
-        },
         "x-atlassian-connect-scope": "NONE"
       },
       "delete": {
@@ -9727,6 +9757,8 @@
             "name": "moduleKey",
             "description": "The key of the module to remove. To include multiple module keys, provide multiple copies of this parameter.\nFor example, `moduleKey=dynamic-attachment-entity-property&moduleKey=dynamic-select-field`.\nNonexistent keys are ignored.",
             "required": true,
+            "style": "form",
+            "explode": false,
             "schema": {
               "type": "array",
               "items": {
@@ -9809,6 +9841,7 @@
         "description": "A multi-value parameter indicating which properties of the content to expand.\n\n- `childTypes.all` returns whether the content has attachments, comments, or child pages.\nUse this if you only need to check whether the content has children of a particular type.\n- `childTypes.attachment` returns whether the content has attachments.\n- `childTypes.comment` returns whether the content has comments.\n- `childTypes.page` returns whether the content has child pages.\n- `container` returns the space that the content is in. This is the same as the information\nreturned by [Get space](#api-space-spaceKey-get).\n- `metadata.currentuser` returns information about the current user in relation to the content,\nincluding when they last viewed it, modified it, contributed to it, or added it as a favorite.\n- `metadata.properties` returns content properties that have been set via the Confluence REST API.\n- `metadata.labels` returns the labels that have been added to the content.\n- `metadata.frontend` this property is only used by Atlassian.\n- `operations` returns the operations for the content, which are used when setting permissions.\n- `children.page` returns pages that are descendants at the level immediately below the content.\n- `children.attachment` returns all attachments for the content.\n- `children.comment` returns all comments on the content.\n- `restrictions.read.restrictions.user` returns the users that have permission to read the content.\n- `restrictions.read.restrictions.group` returns the groups that have permission to read the content. Note that\nthis may return deleted groups, because deleting a group doesn't remove associated restrictions.\n- `restrictions.update.restrictions.user` returns the users that have permission to update the content.\n- `restrictions.update.restrictions.group` returns the groups that have permission to update the content. Note that\nthis may return deleted groups because deleting a group doesn't remove associated restrictions.\n- `history` returns the history of the content, including the date it was created.\n- `history.lastUpdated` returns information about the most recent update of the content, including\nwho updated it and when it was updated.\n- `history.previousVersion` returns information about the update prior to the current content update.\n- `history.contributors` returns all of the users who have contributed to the content.\n- `history.nextVersion` returns information about the update after to the current content update.\n- `ancestors` returns the parent page, if the content is a page.\n- `body` returns the body of the content in different formats, including the editor format,\nview format, and export format.\n- `version` returns information about the most recent update of the content, including who updated it\nand when it was updated.\n- `descendants.page` returns pages that are descendants at any level below the content.\n- `descendants.attachment` returns all attachments for the content, same as `children.attachment`.\n- `descendants.comment` returns all comments on the content, same as `children.comment`.\n- `space` returns the space that the content is in. This is the same as the information returned by\n[Get space](#api-space-spaceKey-get).\n\nIn addition, the following comment-specific expansions can be used:\n- `extensions.inlineProperties` returns inline comment-specific properties.\n- `extensions.resolution` returns the resolution status of each comment.",
         "required": false,
         "style": "form",
+        "explode": false,
         "schema": {
           "type": "array",
           "items": {
@@ -9853,6 +9886,7 @@
         "description": "A multi-value parameter indicating which properties of the spaces to\nexpand, where:\n\n  - `settings` returns the settings for the space, similar to [Get space settings](#api-space-spaceKey-settings-get).\n  - `metadata.labels` returns the space labels, which are used to categorize the space.\n  - `operations` returns the operations for a space, which are used when setting permissions.\n  - `lookAndFeel` returns information about the look and feel of the space, including the color scheme.\n  - `permissions` returns the permissions for the space. Note that this may return permissions for deleted groups,\n  because deleting a group doesn't remove associated space permissions.\n  - `icon` returns information about space icon.\n  - `description.plain` returns the description of the space.\n  - `description.view` returns the description of the space.\n  - `theme` returns information about the space theme.\n  - `homepage` returns information about the space homepage.",
         "required": false,
         "style": "form",
+        "explode": false,
         "schema": {
           "type": "array",
           "items": {
@@ -9902,7 +9936,8 @@
               ]
             }
           }
-        }
+        },
+        "required": true
       },
       "AccountId": {
         "content": {
