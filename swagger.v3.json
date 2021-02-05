@@ -100,6 +100,10 @@
       "description": ""
     },
     {
+      "name": "Space permissions",
+      "description": ""
+    },
+    {
       "name": "Space properties",
       "description": ""
     },
@@ -3810,6 +3814,69 @@
           }
         },
         "x-atlassian-connect-scope": "WRITE"
+      },
+      "delete": {
+        "tags": [
+          "Content restrictions"
+        ],
+        "summary": "Remove group from content restriction",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-content"
+            ]
+          }
+        ],
+        "description": "Removes a group from a content restriction. That is, remove read or update\npermission for the group for a piece of content.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to edit the content.",
+        "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentRestrictionResource.removeGroupFromContentRestriction_deleteByGroupId",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the content that the restriction applies to.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "operationKey",
+            "in": "path",
+            "description": "The operation that the restriction applies to.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "read",
+                "update"
+              ]
+            }
+          },
+          {
+            "name": "groupId",
+            "in": "path",
+            "description": "The id of the group to remove from the content restriction.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returned if the group is removed from the content restriction. The response\nbody will be empty."
+          },
+          "400": {
+            "description": "Returned if given group id is blank"
+          },
+          "403": {
+            "description": "Returned if the calling user does not have permission to view the content."
+          },
+          "404": {
+            "description": "Returned if;\n\n- There is no content with the given ID.\n- The calling user does not have permission to view the content.\n- The restriction to be deleted does not exist."
+          }
+        },
+        "x-atlassian-connect-scope": "DELETE"
       }
     },
     "/api/content/{id}/restriction/byOperation/{operationKey}/user": {
@@ -5028,7 +5095,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The maximum number of users to return per page.\nNote, this may be restricted by fixed system limits.",
+            "description": "The maximum number of users to return per page.\nNote, this is restricted by fixed system limit of 200 which is to say if the limit parameter\nexceeds 200, this API will return a maximum of 200 users per page.",
             "required": false,
             "schema": {
               "type": "integer",
@@ -5110,6 +5177,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Returned if given limit is greater than 200"
           },
           "403": {
             "description": "Returned if the calling user does not have permission to view users."
@@ -5282,7 +5352,7 @@
             }
           },
           "400": {
-            "description": "Returned of given limit is greated than 200"
+            "description": "Returned if given limit is greater than 200"
           },
           "403": {
             "description": "Returned if the calling user does not have permission to view users."
@@ -6553,11 +6623,16 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/LookAndFeelType"
+                "type": "string",
+                "enum": [
+                  "global",
+                  "custom",
+                  "theme"
+                ]
               }
             }
           },
-          "description": "The look and feel settings to be set.",
+          "description": "The look and feel type to be set.",
           "required": true
         },
         "responses": {
@@ -6566,7 +6641,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LookAndFeelSettings"
+                  "type": "string"
                 }
               }
             }
@@ -7229,10 +7304,10 @@
     "/api/space/{spaceKey}/permission": {
       "post": {
         "tags": [
-          "Experimental"
+          "Space permissions"
         ],
         "summary": "Add new permission to space",
-        "description": "Adds new permission to space.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Admin' permission for the space.",
+        "description": "Adds new permission to space.\n\nIf the permission to be added is a group permission, the group can be identified\nby its group name or group id.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Admin' permission for the space.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.SpacePermissionResource.addPermission",
         "parameters": [
           {
@@ -7268,7 +7343,7 @@
             }
           },
           "400": {
-            "description": "Used for various errors. Such as:\n- Permission already exists for the given user or group.\n- 'read space' permission doesn't exist for the given user or group.\n- No group found with the given groupName"
+            "description": "Used for various errors. Such as:\n- Permission already exists for the given user or group.\n- 'read space' permission doesn't exist for the given user or group.\n- No group found with the given groupName or groupId"
           },
           "401": {
             "description": "Returned if the authentication credentials are incorrect or missing\nfrom the request."
@@ -7280,14 +7355,13 @@
             "description": "Returned if any of the following is true:\n- There is no space with the given key.\n- The calling user does not have permission to view the space."
           }
         },
-        "x-experimental": true,
         "x-atlassian-connect-scope": "INACCESSIBLE"
       }
     },
     "/api/space/{spaceKey}/permission/{id}": {
       "delete": {
         "tags": [
-          "Experimental"
+          "Space permissions"
         ],
         "summary": "Remove a space permission",
         "description": "Removes a space permission. Note that removing Read Space permission for a user or group will remove all\nthe space permissions for that user or group.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Admin' permission for the space.",
@@ -7329,7 +7403,6 @@
             "description": "Returned if any of the following is true:\n- There is no permission with the given id.\n- There is no space with the given key.\n- The calling user does not have permission to view the space."
           }
         },
-        "x-experimental": true,
         "x-atlassian-connect-scope": "INACCESSIBLE"
       }
     },
@@ -12882,30 +12955,6 @@
           }
         }
       },
-      "LookAndFeelType": {
-        "type": "object",
-        "description": "The object for choosing the look and feel settings for the site or a space.",
-        "required": [
-          "selected"
-        ],
-        "additionalProperties": false,
-        "properties": {
-          "selected": {
-            "type": "string",
-            "description": "The look and feel scheme. If you set this to `global`, you must specify\nthe current global look and feel settings as a `global` object in this\nrequest. Similarly, if you set this to `custom`, you must specify the\ncurrent custom look and feel settings as a `custom` object in this request.",
-            "enum": [
-              "global",
-              "custom"
-            ]
-          },
-          "global": {
-            "$ref": "#/components/schemas/LookAndFeel"
-          },
-          "custom": {
-            "$ref": "#/components/schemas/LookAndFeel"
-          }
-        }
-      },
       "LongTaskStatus": {
         "type": "object",
         "required": [
@@ -14349,6 +14398,18 @@
           },
           "commitHash": {
             "type": "string"
+          },
+          "baseUrl": {
+            "type": "string"
+          },
+          "edition": {
+            "type": "string"
+          },
+          "siteTitle": {
+            "type": "string"
+          },
+          "defaultLocale": {
+            "type": "string"
           }
         }
       },
@@ -15097,7 +15158,7 @@
           },
           "identifier": {
             "type": "string",
-            "description": "for `type=user`, identifier should be user's accountId or `anonymous` for anonymous users\n\nfor `type=group`, identifier should be name of the group"
+            "description": "for `type=user`, identifier should be user's accountId or `anonymous` for anonymous users\n\nfor `type=group`, identifier should be name of the group or groupId"
           }
         }
       },
