@@ -64,10 +64,6 @@
       "description": ""
     },
     {
-      "name": "Experimental",
-      "description": ""
-    },
-    {
       "name": "Group",
       "description": ""
     },
@@ -4465,48 +4461,6 @@
           }
         },
         "x-atlassian-connect-scope": "READ"
-      }
-    },
-    "/experimental/cql/pdcleaner": {
-      "post": {
-        "tags": [
-          "Experimental"
-        ],
-        "summary": "Convert user identifiers to account IDs in CQL queries",
-        "description": "Converts one or more CQL queries with user identifiers (username or user key)\nto equivalent CQL queries with account IDs.\n\nYou may wish to use this operation if your system stores CQL queries and you\nwant to make them GDPR-compliant. For more information about GDPR-related changes,\nsee the [migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/).\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**: None",
-        "operationId": "com.atlassian.confluence.plugins.restapi.resources.ExperimentalCQLResource.cqlPDCleaner_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CQLPersonalDataMigrationRequest"
-              }
-            }
-          },
-          "description": "The CQL queries to convert.",
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Returned if the request is successful. The CQL queries are returned\nin the same order that they were passed. Note that if the user in a\nCQL query cannot be found, a `200` code is still returned but the username\nor key is converted to an empty string.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CQLPersonalDataConvertedQueries"
-                },
-                "examples": {
-                  "response": {
-                    "value": "{ \"queryStrings\": [ \"type = page and creator != '847586:5371623a-12b4-1a11-ed01-a53542f02dd1' and space = DEV\"] }"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Returned if:\n\n* At least one of the queries cannot be converted. For example, the\nCQL has invalid operators or invalid keywords.\n* More than 100 CQL queries are included in the request."
-          }
-        },
-        "x-atlassian-connect-scope": "INACCESSIBLE"
       }
     },
     "/api/inlinetasks/search": {
