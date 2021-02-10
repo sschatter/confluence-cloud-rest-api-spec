@@ -5142,6 +5142,74 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
+    "/api/group/picker": {
+      "get": {
+        "tags": [
+          "Group"
+        ],
+        "summary": "Search groups by partial query provided.",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-groups"
+            ]
+          }
+        ],
+        "description": "Get search results of groups by partial query provided.",
+        "operationId": "com.atlassian.confluence.plugins.restapi.resources.GroupResource.getGroupsSearch_get",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "description": "the search term used to query results.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "The starting index of the returned groups.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The maximum number of groups to return per page.\nNote, this is restricted to a maximum limit of 200 groups.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0,
+              "default": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a full JSON representation of group collection.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroupArrayWithLinks"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned if the calling user does not have permission to view\ngroups."
+          }
+        },
+        "x-atlassian-connect-scope": "READ"
+      }
+    },
     "/api/group/userByGroupId": {
       "post": {
         "tags": [
