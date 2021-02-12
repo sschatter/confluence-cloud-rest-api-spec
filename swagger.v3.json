@@ -1962,6 +1962,9 @@
               }
             }
           },
+          "400": {
+            "description": "Returned if;\n\n- Any of the required request params are missing.\n- The request is invalid such as negative start param, a format besides int32 for limit etc."
+          },
           "404": {
             "description": "Returned if;\n\n- There is no content with the given ID.\n- The calling user does not have permission to view the content."
           }
