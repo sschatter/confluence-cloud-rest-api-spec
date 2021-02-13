@@ -2207,6 +2207,15 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "use-400-error-response",
+            "in": "query",
+            "description": "If true, return the new 400 error response on invalid requests. Otherwise return a server error response\non invalid requests.\n\nWhy does this parameter exist? Previously, our API was returning a 500 status code with\na difficult-to-consume response body. We've fixed the response to have a 400 status code and a more useful\nbody. This parameter enables a smooth transition without a breaking change; eventually, we'll\ncompletely remove the 500 response and this parameter won't be needed.",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
           }
         ],
         "requestBody": {
@@ -2230,6 +2239,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Returned if;\n\n- The body contains labels with invalid characters or too many characters.\n- The body contains too many labels.\n- The target content would contain too many labels after the operation.\n- The calling user does not have permission to edit labels."
           },
           "404": {
             "description": "Returned if;\n\n- There is no content with the given ID.\n- The calling user does not have permission to view the content."
