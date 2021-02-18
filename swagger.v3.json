@@ -2607,6 +2607,13 @@
           "Content permissions"
         ],
         "summary": "Check content permissions",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.permission"
+            ]
+          }
+        ],
         "description": "Check if a user or a group can perform an operation to the specified content. The `operation` to check\nmust be provided. The user’s account ID or the ID of the group can be provided in the `subject` to check\npermissions against a specified user or group. The following permission checks are done to make sure that the\nuser or group has the proper access:\n\n- site permissions\n- space permissions\n- content restrictions\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission) if checking permission for self,\notherwise 'Confluence Administrator' global permission is required.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.ContentPermissionResource.permissionCheck_post",
         "parameters": [
@@ -10081,6 +10088,7 @@
             "tokenUrl": "https://auth.atlassian.com/oauth/token",
             "scopes": {
               "read:confluence-content.all": "Read all content, including content body (expansions permitted). Note, APIs using this scope may also return data allowed by read:confluence-space.summary. However, this scope is not a substitute for read:confluence-space.summary.",
+              "read:confluence-content.permission": "Read content permissions.",
               "read:confluence-content.summary": "Read a summary of the content, which is the content without expansions. Note, APIs using this scope may also return data allowed by read:confluence-space.summary. However, this scope is not a substitute for read:confluence-space.summary.",
               "write:confluence-content": "Permits the creation of pages, blogs, comments and questions.",
               "read:confluence-space.summary": "Read a summary of space information without expansions.",
