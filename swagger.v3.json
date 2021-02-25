@@ -5169,7 +5169,7 @@
         "tags": [
           "Group"
         ],
-        "summary": "Search groups by partial query provided.",
+        "summary": "Search groups by partial query",
         "security": [
           {
             "oAuthDefinitions": [
@@ -13002,7 +13002,7 @@
       },
       "LongTaskStatus": {
         "type": "object",
-        "description": "Current status of a long running task\n\nStatus keys:\n\nERROR_UNKNOWN - Generic error\nERROR_LOCK_FAILED - Could not get the lock on destination space\nERROR_RELINK - Error when relink pages/attachments\nERROR_COPY_PAGE - Error while copying 1 page\nWARN_RENAME_PAGE - Warning page is rename during copy\nWARN_IGNORE_COPY_PERMISSION - Warning could not copy permission\nWARN_IGNORE_COPY_ATTACHMENT - Warning could not copy attachment\nWARN_IGNORE_DELETE_PAGE - Warning ignoring delete of a non agreed on page\nSTATUS_COPIED_PAGES - Message total pages are copied\nSTATUS_COPYING_PAGES - Message copy pages\nSTATUS_RELINK_PAGES - Message relink pages/attachments\nSTATUS_DELETING_PAGES - Message delete pages\nSTATUS_DELETED_PAGES - Message total pages are deleted\nSTATUS_MOVING_PAGES - Message move pages\nWARN_IGNORE_VIEW_RESTRICTED - Permission changed - view restricted\nWARN_IGNORE_EDIT_RESTRICTED - Permission changed - edit restricted\nINITIALIZING_TASK - Message when initializing task\nUNKNOWN_STATUS - Message when status is unknown",
+        "description": "Current status of a long running task\n\nStatus keys:\n\n- `ERROR_UNKNOWN` - Generic error\n- `ERROR_LOCK_FAILED` - Could not get the lock on destination space\n- `ERROR_RELINK` - Error when relink pages/attachments\n- `ERROR_COPY_PAGE` - Error while copying 1 page\n- `WARN_RENAME_PAGE` - Warning page is rename during copy\n- `WARN_IGNORE_COPY_PERMISSION` - Warning could not copy permission\n- `WARN_IGNORE_COPY_ATTACHMENT` - Warning could not copy attachment\n- `WARN_IGNORE_DELETE_PAGE` - Warning ignoring delete of a non agreed on page\n- `STATUS_COPIED_PAGES` - Message total pages are copied\n- `STATUS_COPYING_PAGES` - Message copy pages\n- `STATUS_RELINK_PAGES` - Message relink pages/attachments\n- `STATUS_DELETING_PAGES` - Message delete pages\n- `STATUS_DELETED_PAGES` - Message total pages are deleted\n- `STATUS_MOVING_PAGES` - Message move pages\n- `WARN_IGNORE_VIEW_RESTRICTED` - Permission changed - view restricted\n- `WARN_IGNORE_EDIT_RESTRICTED` - Permission changed - edit restricted\n- `INITIALIZING_TASK` - Message when initializing task\n- `UNKNOWN_STATUS` - Message when status is unknown",
         "required": [
           "id",
           "name",
