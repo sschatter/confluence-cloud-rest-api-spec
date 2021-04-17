@@ -1926,6 +1926,21 @@
             }
           },
           {
+            "name": "depth",
+            "in": "query",
+            "description": "Filter the results to descendants upto a desired level of the content. Note, the maximum value supported is 100. root level of the content means immediate (level 1) descendants of the type requested. all represents returning all descendants of the type requested.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "all",
+                "root",
+                "<any positive integer argument in the range of 1 and 100>"
+              ],
+              "default": "all"
+            }
+          },
+          {
             "$ref": "#/components/parameters/contentExpand"
           },
           {
