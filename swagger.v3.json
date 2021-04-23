@@ -11412,6 +11412,24 @@
             ],
             "default": "current"
           },
+          "container": {
+            "type": "object",
+            "required": [
+              "id",
+              "type"
+            ],
+            "description": "The container of the content. Required if type is `comment`. If you are trying\nto create a comment that is a child of another comment, specify the parent comment\nin the ancestor field, not in this field.",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "The `id` of the container."
+              },
+              "type": {
+                "type": "string",
+                "description": "The `type` of the container."
+              }
+            }
+          },
           "ancestors": {
             "type": "array",
             "description": "The parent content of the new content. Only one parent content\n`id` can be specified.",
