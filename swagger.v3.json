@@ -11384,8 +11384,7 @@
             "enum": [
               "page",
               "blogpost",
-              "comment",
-              "attachment"
+              "comment"
             ]
           },
           "space": {
@@ -11418,7 +11417,7 @@
               "id",
               "type"
             ],
-            "description": "The container of the content. Required if type is `comment`. If you are trying\nto create a comment that is a child of another comment, specify the parent comment\nin the ancestor field, not in this field.",
+            "description": "The container of the content. Required if type is `comment` or certain types of\ncustom content. If you are trying to create a comment that is a child of another comment,\nspecify the parent comment in the ancestors field, not in this field.",
             "properties": {
               "id": {
                 "type": "string",
@@ -11432,7 +11431,7 @@
           },
           "ancestors": {
             "type": "array",
-            "description": "The parent content of the new content. Only one parent content\n`id` can be specified.",
+            "description": "The parent content of the new content.  If you are creating a top-level `page` or `comment`,\nthis can be left blank. If you are creating a child page, this is where the parent page id goes.\nIf you are creating a child comment, this is where the parent comment id goes. Only one parent\ncontent id can be specified.",
             "items": {
               "type": "object",
               "required": [
