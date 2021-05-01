@@ -6548,6 +6548,57 @@
           }
         },
         "x-atlassian-connect-scope": "READ"
+      },
+      "put": {
+        "tags": [
+          "Settings"
+        ],
+        "summary": "Select look and feel settings",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "manage:confluence-configuration"
+            ]
+          }
+        ],
+        "description": "Sets the look and feel settings to the default (global) settings, the\ncustom settings, or the current theme's settings for a space.\nThe custom and theme settings can only be selected if there is already\na theme set for a space. Note, the default space settings are inherited\nfrom the current global settings.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Admin' permission for the space.",
+        "operationId": "com.atlassian.confluence.plugins.restapi.resources.LookAndFeelResource.updateLookAndFeel_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LookAndFeelSelection"
+              }
+            }
+          },
+          "description": "The look and feel type to be set.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Returned if the look and feel settings were set.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LookAndFeelSelection"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Returned if;\n\n- `spaceKey` is invalid.\n- `lookAndFeelType` is invalid."
+          },
+          "403": {
+            "description": "Returned if the calling user doesn't have permission to edit the\nlook and feel settings."
+          },
+          "404": {
+            "description": "Returned if there is no space with the given `spaceKey`."
+          },
+          "409": {
+            "description": "Returned if `lookAndFeelType` is set to 'custom' or 'theme',\nand a theme is not currently set for the space."
+          }
+        },
+        "x-atlassian-connect-scope": "WRITE"
       }
     },
     "/api/settings/lookandfeel/custom": {
@@ -6654,6 +6705,7 @@
     },
     "/api/settings/lookandfeel/selected": {
       "put": {
+        "deprecated": true,
         "tags": [
           "Settings"
         ],
@@ -13004,6 +13056,28 @@
             }
           }
         ]
+      },
+      "LookAndFeelSelection": {
+        "description": "Look and feel selection",
+        "type": "object",
+        "required": [
+          "spaceKey",
+          "lookAndFeelType"
+        ],
+        "properties": {
+          "spaceKey": {
+            "type": "string",
+            "description": "The key of the space for which the look and feel settings will be\nset."
+          },
+          "lookAndFeelType": {
+            "type": "string",
+            "enum": [
+              "global",
+              "custom",
+              "theme"
+            ]
+          }
+        }
       },
       "LookAndFeelSettings": {
         "type": "object",
