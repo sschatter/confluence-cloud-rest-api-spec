@@ -5006,6 +5006,50 @@
           }
         },
         "x-atlassian-connect-scope": "READ"
+      },
+      "delete": {
+        "tags": [
+          "Group"
+        ],
+        "summary": "Delete user group",
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "write:confluence-groups"
+            ]
+          }
+        ],
+        "description": "Delete user group.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nUser must be a site admin.",
+        "operationId": "com.atlassian.confluence.plugins.restapi.resources.GroupResource.removeGroupById_delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "Id of the group to delete.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Returned if the group was removed successfully."
+          },
+          "400": {
+            "description": "Returned if the id is missing or invalid."
+          },
+          "401": {
+            "description": "Returned if the calling user is not logged in to Confluence."
+          },
+          "403": {
+            "description": "Returned if the user is not a site admin."
+          },
+          "404": {
+            "description": "If no user group by the given id exists."
+          }
+        },
+        "x-atlassian-connect-scope": "INACCESSIBLE"
       }
     },
     "/api/group/{groupName}": {
