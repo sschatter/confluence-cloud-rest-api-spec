@@ -3947,24 +3947,6 @@
             }
           },
           {
-            "name": "key",
-            "in": "query",
-            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "userName",
-            "in": "query",
-            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "name": "accountId",
             "in": "query",
             "description": "The account ID of the user to be queried for whether the content restriction applies to it. The accountId\nuniquely identifies the user across all Atlassian products. For example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.",
@@ -4013,24 +3995,6 @@
             "in": "path",
             "description": "The operation that the restriction applies to.",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "key",
-            "in": "query",
-            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "userName",
-            "in": "query",
-            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -4090,24 +4054,6 @@
                 "read",
                 "update"
               ]
-            }
-          },
-          {
-            "name": "key",
-            "in": "query",
-            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "userName",
-            "in": "query",
-            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
-            "required": false,
-            "schema": {
-              "type": "string"
             }
           },
           {
@@ -8705,24 +8651,6 @@
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.UserResource.getUser_get",
         "parameters": [
           {
-            "name": "key",
-            "in": "query",
-            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "username",
-            "in": "query",
-            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "name": "accountId",
             "in": "query",
             "description": "The account ID of the user, which uniquely identifies the user across all Atlassian products.\nFor example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.",
@@ -8734,7 +8662,7 @@
           {
             "name": "expand",
             "in": "query",
-            "description": "A multi-value parameter indicating which properties of the user to\nexpand.\n\n  - `operations` returns the operations that the user is allowed to do.\n  - `details.personal` returns the 'Personal' details in the user's profile, like the 'Email' and 'Phone'.\n  Note that these fields have been deprecated due to privacy changes. See the\n  [migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\n  for details.\n  - `details.business` returns the 'Company' details in the user's profile, like the 'Position' and 'Department'.\n  Note that these fields have been deprecated due to privacy changes. See the\n  [migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\n  for details.\n  - personalSpace returns the user's personal space, if it exists.\n  - `isExternalCollaborator` returns whether the user is an external collaborator user",
+            "description": "A multi-value parameter indicating which properties of the user to\nexpand.\n\n  - `operations` returns the operations that the user is allowed to do.\n  - personalSpace returns the user's personal space, if it exists.\n  - `isExternalCollaborator` returns whether the user is an external collaborator user",
             "required": false,
             "style": "form",
             "explode": false,
@@ -8744,8 +8672,6 @@
                 "type": "string",
                 "enum": [
                   "operations",
-                  "details.personal",
-                  "details.business",
                   "personalSpace"
                 ]
               }
@@ -8847,7 +8773,7 @@
           {
             "name": "expand",
             "in": "query",
-            "description": "A multi-value parameter indicating which properties of the user to\nexpand.\n\n  - `operations` returns the operations that the user is allowed to do.\n  - `details.personal` returns the 'Personal' details in the user's profile, like the 'Email' and 'Phone'.\n  Note that these fields have been deprecated due to privacy changes. See the\n  [migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\n  for details.\n  - `details.business` returns the 'Company' details in the user's profile, like the 'Position' and 'Department'.\n  Note that these fields have been deprecated due to privacy changes. See the\n  [migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\n  for details.\n  - personalSpace returns the user's personal space, if it exists.",
+            "description": "A multi-value parameter indicating which properties of the user to\nexpand.\n\n  - `operations` returns the operations that the user is allowed to do.\n  - personalSpace returns the user's personal space, if it exists.",
             "required": false,
             "style": "form",
             "explode": false,
@@ -8857,8 +8783,6 @@
                 "type": "string",
                 "enum": [
                   "operations",
-                  "details.personal",
-                  "details.business",
                   "personalSpace"
                 ]
               }
@@ -8899,24 +8823,6 @@
         "description": "Returns the groups that a user is a member of.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.UserResource.getGroupMembershipsForUser_get",
         "parameters": [
-          {
-            "name": "key",
-            "in": "query",
-            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "username",
-            "in": "query",
-            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
           {
             "name": "accountId",
             "in": "query",
@@ -8997,7 +8903,7 @@
           {
             "name": "expand",
             "in": "query",
-            "description": "A multi-value parameter indicating which properties of the user to\nexpand.\n\n  - `operations` returns the operations that the user is allowed to do.\n  - `details.personal` returns the 'Personal' details in the user's profile, like the 'Email' and 'Phone'.\n  Note that these fields have been deprecated due to privacy changes. See the\n  [migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\n  for details.\n  - `details.business` returns the 'Company' details in the user's profile, like the 'Position' and 'Department'.\n  Note that these fields have been deprecated due to privacy changes. See the\n  [migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)\n  for details.\n  - personalSpace returns the user's personal space, if it exists.",
+            "description": "A multi-value parameter indicating which properties of the user to\nexpand.\n\n  - `operations` returns the operations that the user is allowed to do.\n  - personalSpace returns the user's personal space, if it exists.",
             "required": false,
             "style": "form",
             "explode": false,
@@ -9007,8 +8913,6 @@
                 "type": "string",
                 "enum": [
                   "operations",
-                  "details.personal",
-                  "details.business",
                   "personalSpace"
                 ]
               }
@@ -9071,24 +8975,6 @@
             }
           },
           {
-            "name": "key",
-            "in": "query",
-            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "username",
-            "in": "query",
-            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "name": "accountId",
             "in": "query",
             "description": "The `accountId` of the user to be queried for whether they are watching the content. The accountId uniquely\nidentifies the user across all Atlassian products. For example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.",
@@ -9138,24 +9024,6 @@
             "in": "path",
             "description": "The ID of the content to add the watcher to.",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "key",
-            "in": "query",
-            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "username",
-            "in": "query",
-            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -9218,24 +9086,6 @@
             }
           },
           {
-            "name": "key",
-            "in": "query",
-            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "username",
-            "in": "query",
-            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "name": "accountId",
             "in": "query",
             "description": "The `accountId` of the user to be removed as a watcher. The accountId uniquely identifies the user across all Atlassian products.\nFor example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.",
@@ -9280,24 +9130,6 @@
             "in": "path",
             "description": "The name of the label to be queried for whether the specified user is\nwatching it.",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "key",
-            "in": "query",
-            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "username",
-            "in": "query",
-            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -9367,24 +9199,6 @@
             }
           },
           {
-            "name": "key",
-            "in": "query",
-            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "username",
-            "in": "query",
-            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "name": "accountId",
             "in": "query",
             "description": "The `accountId` of the user to be added as a watcher. The accountId uniquely identifies the user across all Atlassian products.\nFor example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.",
@@ -9427,24 +9241,6 @@
             "in": "path",
             "description": "The name of the label to remove the watcher from.",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "key",
-            "in": "query",
-            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "username",
-            "in": "query",
-            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -9494,24 +9290,6 @@
             "in": "path",
             "description": "The key of the space to be queried for whether the specified user is\nwatching it.",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "key",
-            "in": "query",
-            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "username",
-            "in": "query",
-            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -9581,24 +9359,6 @@
             }
           },
           {
-            "name": "key",
-            "in": "query",
-            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "username",
-            "in": "query",
-            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "name": "accountId",
             "in": "query",
             "description": "The `accountId` of the user to be added as a watcher. The accountId uniquely identifies the user across all\nAtlassian products. For example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.",
@@ -9641,24 +9401,6 @@
             "in": "path",
             "description": "The key of the space to remove the watcher from.",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "key",
-            "in": "query",
-            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "username",
-            "in": "query",
-            "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
-            "required": false,
             "schema": {
               "type": "string"
             }
