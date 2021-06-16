@@ -7459,6 +7459,56 @@
         "x-atlassian-connect-scope": "INACCESSIBLE"
       }
     },
+    "/api/space/{spaceKey}/permission/custom-content": {
+      "post": {
+        "tags": [
+          "Space permissions"
+        ],
+        "summary": "Add new custom content permission to space",
+        "description": "Adds new custom content permission to space.\n\nIf the permission to be added is a group permission, the group can be identified\nby its group name or group id.\n\nNote: Only apps can access this REST resource and only make changes to the respective app permissions.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Admin' permission for the space.",
+        "operationId": "com.atlassian.confluence.plugins.restapi.resources.SpacePermissionResource.addCustomContentPermissions",
+        "parameters": [
+          {
+            "name": "spaceKey",
+            "in": "path",
+            "description": "The key of the space to be queried for its content.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpacePermissionCustomContent"
+              }
+            }
+          },
+          "description": "The permissions to be created.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Returned if the requested content is returned."
+          },
+          "400": {
+            "description": "Used for various errors. Such as:\n- Permission already exists for the given user or group.\n- 'read space' permission doesn't exist for the given user or group.\n- No group found with the given groupName or groupId"
+          },
+          "401": {
+            "description": "Returned if the authentication credentials are incorrect or missing\nfrom the request."
+          },
+          "403": {
+            "description": "Returned if the user isn't authorized."
+          },
+          "404": {
+            "description": "Returned if any of the following is true:\n- There is no space with the given key.\n- The calling user does not have permission to view the space."
+          }
+        },
+        "x-atlassian-connect-scope": "WRITE"
+      }
+    },
     "/api/space/{spaceKey}/permission/{id}": {
       "delete": {
         "tags": [
@@ -15194,6 +15244,51 @@
           },
           "_links": {
             "$ref": "#/components/schemas/GenericLinks"
+          }
+        }
+      },
+      "SpacePermissionCustomContent": {
+        "type": "object",
+        "description": "This object represents a list of space permissions for custom content type for an individual user. Permissions consist of\na subjects object and a list with at least one operation object.",
+        "required": [
+          "subject",
+          "operations"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "subject": {
+            "$ref": "#/components/schemas/PermissionSubject"
+          },
+          "operations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "key",
+                "target",
+                "access"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "key": {
+                  "type": "string",
+                  "enum": [
+                    "read",
+                    "create",
+                    "delete"
+                  ],
+                  "description": "The operation type"
+                },
+                "target": {
+                  "type": "string",
+                  "description": "The custom content type"
+                },
+                "access": {
+                  "type": "boolean",
+                  "description": "Grant or restrict access"
+                }
+              }
+            }
           }
         }
       },
