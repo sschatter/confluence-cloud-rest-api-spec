@@ -1202,7 +1202,7 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
-    "/api/content/{id}/move/{position}/{targetId}": {
+    "/api/content/{pageId}/move/{position}/{targetId}": {
       "put": {
         "tags": [
           "Content - children and descendants"
@@ -1219,7 +1219,7 @@
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.movePage_put",
         "parameters": [
           {
-            "name": "id",
+            "name": "pageId",
             "in": "path",
             "description": "The ID of the page to be moved",
             "required": true,
