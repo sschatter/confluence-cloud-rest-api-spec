@@ -4905,6 +4905,104 @@
         "x-atlassian-connect-scope": "READ"
       }
     },
+    "/wiki/rest/api/inlinetasks/{inlineTaskId}": {
+      "get": {
+        "tags": [
+          "Inline tasks"
+        ],
+        "summary": "Get inline task based on global ID",
+        "description": "Returns inline task based on the global ID.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to view the content associated with the task.",
+        "operationId": "com.atlassian.confluence.plugins.restapi.resources.InlineTaskResource.getTaskById_get",
+        "parameters": [
+          {
+            "name": "inlineTaskId",
+            "in": "path",
+            "description": "Global ID of the inline task",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returned if the inline task was found given the global ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Task"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned if the authentication credentials are incorrect or missing from the request."
+          },
+          "403": {
+            "description": "Returned if the user does not have permission to view the content associated with the task."
+          },
+          "404": {
+            "description": "Returned if task could not be found with the given global ID."
+          }
+        },
+        "x-atlassian-connect-scope": "INACCESSIBLE"
+      },
+      "put": {
+        "tags": [
+          "Inline tasks"
+        ],
+        "summary": "Update inline task given global ID",
+        "description": "Updates an inline tasks status given its global ID\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to update the content associated with the task.",
+        "operationId": "com.atlassian.confluence.plugins.restapi.resources.InlineTaskResource.updateTaskById_put",
+        "parameters": [
+          {
+            "name": "inlineTaskId",
+            "in": "path",
+            "description": "Global ID of the inline task to update",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The updated task status.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TaskStatusUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Returned if the inline task was successfully updated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Task"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Returned if client input is invalid."
+          },
+          "401": {
+            "description": "Returned if the authentication credentials are incorrect or missing from the request."
+          },
+          "403": {
+            "description": "Returned if the user does not have permission to update the content associated with the task."
+          },
+          "404": {
+            "description": "Returned if task could not be found with given global ID."
+          }
+        },
+        "x-atlassian-connect-scope": "INACCESSIBLE"
+      }
+    },
     "/wiki/rest/api/label": {
       "get": {
         "tags": [
@@ -14692,6 +14790,21 @@
           }
         }
       },
+      "TaskStatusUpdate": {
+        "required": [
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "complete",
+              "incomplete"
+            ]
+          }
+        }
+      },
       "Task": {
         "required": [
           "contentId",
@@ -14751,6 +14864,9 @@
           "completeDate": {
             "type": "integer",
             "format": "int64"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/GenericLinks"
           }
         }
       },
