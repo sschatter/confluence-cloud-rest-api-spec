@@ -4945,7 +4945,7 @@
             "description": "Returned if task could not be found with the given global ID."
           }
         },
-        "x-atlassian-connect-scope": "INACCESSIBLE"
+        "x-atlassian-connect-scope": "READ"
       },
       "put": {
         "tags": [
@@ -5000,7 +5000,7 @@
             "description": "Returned if task could not be found with given global ID."
           }
         },
-        "x-atlassian-connect-scope": "INACCESSIBLE"
+        "x-atlassian-connect-scope": "WRITE"
       }
     },
     "/wiki/rest/api/label": {
