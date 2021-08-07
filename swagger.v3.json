@@ -127,6 +127,10 @@
     {
       "name": "Users",
       "description": ""
+    },
+    {
+      "name": "Experimental",
+      "description": ""
     }
   ],
   "paths": {
@@ -10399,6 +10403,156 @@
         "x-experimental": true,
         "x-atlassian-connect-scope": "INACCESSIBLE"
       }
+    },
+    "/wiki/rest/api/analytics/content/{contentId}/views": {
+      "get": {
+        "tags": [
+          "Experimental"
+        ],
+        "summary": "Get Views",
+        "description": "Get the total number of views a piece of content has.",
+        "operationId": "com.atlassian.confluence.plugins.restapi.resources.AnalyticsResource.getViews_get",
+        "parameters": [
+          {
+            "name": "contentId",
+            "in": "path",
+            "description": "The ID of the content to get the views for.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fromDate",
+            "in": "query",
+            "description": "The number of views for the content since the date.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "2021-03-21T00:00:00.000Z"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the total number of views for the content.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "The content ID."
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "The total number of views for the content."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Returned if client input is invalid."
+          },
+          "401": {
+            "description": "Returned if the authentication credentials are incorrect.",
+            "content": {}
+          },
+          "403": {
+            "description": "Returned if the authentication credentials are missing\nfrom the request.",
+            "content": {}
+          },
+          "404": {
+            "description": "Returned if;\n- There is no content with the given ID."
+          }
+        },
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.summary"
+            ]
+          }
+        ],
+        "x-experimental": true,
+        "x-atlassian-connect-scope": "READ"
+      }
+    },
+    "/wiki/rest/api/analytics/content/{contentId}/viewers": {
+      "get": {
+        "tags": [
+          "Experimental"
+        ],
+        "summary": "Get Viewers",
+        "description": "Get the total number of distinct viewers a piece of content has.",
+        "operationId": "com.atlassian.confluence.plugins.restapi.resources.AnalyticsResource.getViewers_get",
+        "parameters": [
+          {
+            "name": "contentId",
+            "in": "path",
+            "description": "The ID of the content to get the viewers for.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fromDate",
+            "in": "query",
+            "description": "The number of views for the content since the date.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "2021-03-21T00:00:00.000Z"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the total number of distinct viewers for the content.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "The content ID."
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "The total number of distinct viewers for the content."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Returned if client input is invalid."
+          },
+          "401": {
+            "description": "Returned if the authentication credentials are incorrect.",
+            "content": {}
+          },
+          "403": {
+            "description": "Returned if the authentication credentials are missing\nfrom the request.",
+            "content": {}
+          },
+          "404": {
+            "description": "Returned if;\n- There is no content with the given ID."
+          }
+        },
+        "security": [
+          {
+            "oAuthDefinitions": [
+              "read:confluence-content.summary"
+            ]
+          }
+        ],
+        "x-experimental": true,
+        "x-atlassian-connect-scope": "READ"
+      }
     }
   },
   "components": {
@@ -13740,6 +13894,7 @@
             "description": "The operation itself.",
             "enum": [
               "administer",
+              "archive",
               "copy",
               "create",
               "delete",
@@ -13749,6 +13904,7 @@
               "purge_version",
               "read",
               "restore",
+              "restrict_content",
               "update",
               "use"
             ]
@@ -15812,7 +15968,8 @@
               "read:confluence-groups": "Read user groups.",
               "write:confluence-groups": "Create, remove and update user groups.",
               "read:confluence-user": "Read users.",
-              "readonly:content.attachment:confluence": "Download attachments of a Confluence page or blogpost that you have access to."
+              "readonly:content.attachment:confluence": "Download attachments of a Confluence page or blogpost that you have access to.",
+              "readonly:analytics.content:confluence": "View analytics for content"
             }
           }
         }
