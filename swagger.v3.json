@@ -4226,13 +4226,13 @@
             }
           },
           {
-            "name": "accountId",
-            "in": "query",
-            "description": "The account ID of the user to be queried for whether the content restriction applies to it. The accountId\nuniquely identifies the user across all Atlassian products. For example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "$ref": "#/components/parameters/userLookupKey"
+          },
+          {
+            "$ref": "#/components/parameters/userLookupUsername"
+          },
+          {
+            "$ref": "#/components/parameters/userLookupAccountId"
           }
         ],
         "responses": {
@@ -4281,13 +4281,13 @@
             }
           },
           {
-            "name": "accountId",
-            "in": "query",
-            "description": "The account ID of the user to add to the content restriction. The accountId uniquely identifies the user across\nall Atlassian products. For example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "$ref": "#/components/parameters/userLookupKey"
+          },
+          {
+            "$ref": "#/components/parameters/userLookupUsername"
+          },
+          {
+            "$ref": "#/components/parameters/userLookupAccountId"
           }
         ],
         "responses": {
@@ -4340,13 +4340,13 @@
             }
           },
           {
-            "name": "accountId",
-            "in": "query",
-            "description": "The account ID of the user to remove from the content restriction. The accountId uniquely identifies the user\nacross all Atlassian products. For example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "$ref": "#/components/parameters/userLookupKey"
+          },
+          {
+            "$ref": "#/components/parameters/userLookupUsername"
+          },
+          {
+            "$ref": "#/components/parameters/userLookupAccountId"
           }
         ],
         "responses": {
@@ -5720,13 +5720,13 @@
             }
           },
           {
-            "name": "accountId",
-            "in": "query",
-            "description": "AccountId of the user whose membership is removed.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "$ref": "#/components/parameters/userLookupKey"
+          },
+          {
+            "$ref": "#/components/parameters/userLookupUsername"
+          },
+          {
+            "$ref": "#/components/parameters/userLookupAccountId"
           }
         ],
         "responses": {
@@ -5912,13 +5912,13 @@
             }
           },
           {
-            "name": "accountId",
-            "in": "query",
-            "description": "AccountId of the user whose membership is removed.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "$ref": "#/components/parameters/userLookupKey"
+          },
+          {
+            "$ref": "#/components/parameters/userLookupUsername"
+          },
+          {
+            "$ref": "#/components/parameters/userLookupAccountId"
           }
         ],
         "responses": {
@@ -9267,13 +9267,13 @@
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.UserResource.getUser_get",
         "parameters": [
           {
-            "name": "accountId",
-            "in": "query",
-            "description": "The account ID of the user, which uniquely identifies the user across all Atlassian products.\nFor example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "$ref": "#/components/parameters/userLookupKey"
+          },
+          {
+            "$ref": "#/components/parameters/userLookupUsername"
+          },
+          {
+            "$ref": "#/components/parameters/userLookupAccountId"
           },
           {
             "name": "expand",
@@ -9412,7 +9412,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/User"
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/User"
+                    },
+                    {
+                      "$ref": "#/components/schemas/UserAnonymous"
+                    }
+                  ]
                 }
               }
             }
@@ -9442,13 +9449,13 @@
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.UserResource.getGroupMembershipsForUser_get",
         "parameters": [
           {
-            "name": "accountId",
-            "in": "query",
-            "description": "The account ID of the user, which uniquely identifies the user across all Atlassian products.\nFor example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "$ref": "#/components/parameters/userLookupKey"
+          },
+          {
+            "$ref": "#/components/parameters/userLookupUsername"
+          },
+          {
+            "$ref": "#/components/parameters/userLookupAccountId"
           },
           {
             "name": "start",
@@ -9479,7 +9486,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GroupArray"
+                  "$ref": "#/components/schemas/GroupArrayWithLinks"
                 }
               }
             }
@@ -9591,13 +9598,13 @@
             }
           },
           {
-            "name": "accountId",
-            "in": "query",
-            "description": "The `accountId` of the user to be queried for whether they are watching the content. The accountId uniquely\nidentifies the user across all Atlassian products. For example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "$ref": "#/components/parameters/userLookupKey"
+          },
+          {
+            "$ref": "#/components/parameters/userLookupUsername"
+          },
+          {
+            "$ref": "#/components/parameters/userLookupAccountId"
           }
         ],
         "responses": {
@@ -9647,13 +9654,13 @@
             }
           },
           {
-            "name": "accountId",
-            "in": "query",
-            "description": "The `accountId` of the user to be added as a watcher. The accountId uniquely identifies the user across all Atlassian products.\nFor example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "$ref": "#/components/parameters/userLookupKey"
+          },
+          {
+            "$ref": "#/components/parameters/userLookupUsername"
+          },
+          {
+            "$ref": "#/components/parameters/userLookupAccountId"
           }
         ],
         "responses": {
@@ -9707,13 +9714,13 @@
             }
           },
           {
-            "name": "accountId",
-            "in": "query",
-            "description": "The `accountId` of the user to be removed as a watcher. The accountId uniquely identifies the user across all Atlassian products.\nFor example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "$ref": "#/components/parameters/userLookupKey"
+          },
+          {
+            "$ref": "#/components/parameters/userLookupUsername"
+          },
+          {
+            "$ref": "#/components/parameters/userLookupAccountId"
           }
         ],
         "responses": {
@@ -9759,13 +9766,13 @@
             }
           },
           {
-            "name": "accountId",
-            "in": "query",
-            "description": "The `accountId` of the user to be queried for whether they are watching the label. The accountId uniquely identifies\nthe user across all Atlassian products. For example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "$ref": "#/components/parameters/userLookupKey"
+          },
+          {
+            "$ref": "#/components/parameters/userLookupUsername"
+          },
+          {
+            "$ref": "#/components/parameters/userLookupAccountId"
           }
         ],
         "responses": {
@@ -9825,13 +9832,13 @@
             }
           },
           {
-            "name": "accountId",
-            "in": "query",
-            "description": "The `accountId` of the user to be added as a watcher. The accountId uniquely identifies the user across all Atlassian products.\nFor example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "$ref": "#/components/parameters/userLookupKey"
+          },
+          {
+            "$ref": "#/components/parameters/userLookupUsername"
+          },
+          {
+            "$ref": "#/components/parameters/userLookupAccountId"
           }
         ],
         "responses": {
@@ -9875,13 +9882,13 @@
             }
           },
           {
-            "name": "accountId",
-            "in": "query",
-            "description": "The `accountId` of the user to be removed as a watcher. The accountId uniquely identifies the user across all Atlassian products.\nFor example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "$ref": "#/components/parameters/userLookupKey"
+          },
+          {
+            "$ref": "#/components/parameters/userLookupUsername"
+          },
+          {
+            "$ref": "#/components/parameters/userLookupAccountId"
           }
         ],
         "responses": {
@@ -9927,13 +9934,13 @@
             }
           },
           {
-            "name": "accountId",
-            "in": "query",
-            "description": "The `accountId` of the user to be queried for whether they are watching the space. The accountId uniquely identifies\nthe user across all Atlassian products. For example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "$ref": "#/components/parameters/userLookupKey"
+          },
+          {
+            "$ref": "#/components/parameters/userLookupUsername"
+          },
+          {
+            "$ref": "#/components/parameters/userLookupAccountId"
           }
         ],
         "responses": {
@@ -9993,13 +10000,13 @@
             }
           },
           {
-            "name": "accountId",
-            "in": "query",
-            "description": "The `accountId` of the user to be added as a watcher. The accountId uniquely identifies the user across all\nAtlassian products. For example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "$ref": "#/components/parameters/userLookupKey"
+          },
+          {
+            "$ref": "#/components/parameters/userLookupUsername"
+          },
+          {
+            "$ref": "#/components/parameters/userLookupAccountId"
           }
         ],
         "responses": {
@@ -10043,13 +10050,13 @@
             }
           },
           {
-            "name": "accountId",
-            "in": "query",
-            "description": "The `accountId` of the user to be removed as a watcher. The accountId uniquely identifies the user across all\nAtlassian products. For example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "$ref": "#/components/parameters/userLookupKey"
+          },
+          {
+            "$ref": "#/components/parameters/userLookupUsername"
+          },
+          {
+            "$ref": "#/components/parameters/userLookupAccountId"
           }
         ],
         "responses": {
@@ -10190,9 +10197,8 @@
             "name": "key",
             "in": "query",
             "description": "The key of a user. To specify multiple users, pass multiple key parameters separated by ampersands.\nFor example, key=mia&key=alana. Required if username isn't provided. Cannot be provided if username is present.",
-            "required": true,
             "style": "form",
-            "explode": false,
+            "explode": true,
             "schema": {
               "type": "array",
               "items": {
@@ -10205,7 +10211,7 @@
             "in": "query",
             "description": "The username of a user. To specify multiple users, pass multiple username parameters separated by ampersands.\nFor example, username=mia&username=alana. Required if key isn't provided. Cannot be provided if key is present.",
             "style": "form",
-            "explode": false,
+            "explode": true,
             "schema": {
               "type": "array",
               "items": {
@@ -13075,22 +13081,37 @@
       },
       "GroupArrayWithLinks": {
         "description": "Same as GroupArray but with `_links` property.",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/GroupArray"
-          },
-          {
-            "required": [
-              "_links"
-            ],
-            "type": "object",
-            "properties": {
-              "_links": {
-                "$ref": "#/components/schemas/GenericLinks"
-              }
+        "required": [
+          "limit",
+          "results",
+          "size",
+          "start",
+          "_links"
+        ],
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Group"
             }
+          },
+          "start": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/GenericLinks"
           }
-        ]
+        }
       },
       "GroupName": {
         "required": [
@@ -13897,6 +13918,7 @@
               "archive",
               "copy",
               "create",
+              "create_space",
               "delete",
               "export",
               "move",
@@ -15238,7 +15260,6 @@
       },
       "UserAnonymous": {
         "required": [
-          "_expandable",
           "_links",
           "displayName",
           "profilePicture",
@@ -15260,6 +15281,10 @@
             "items": {
               "$ref": "#/components/schemas/OperationCheckResult"
             }
+          },
+          "isExternalCollaborator": {
+            "type": "boolean",
+            "description": "Whether the user is an external collaborator user"
           },
           "_expandable": {
             "type": "object",
@@ -15942,6 +15967,32 @@
               "homepage"
             ]
           }
+        }
+      },
+      "userLookupKey": {
+        "name": "key",
+        "in": "query",
+        "deprecated": true,
+        "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "userLookupUsername": {
+        "name": "username",
+        "in": "query",
+        "deprecated": true,
+        "description": "This parameter is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details.",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "userLookupAccountId": {
+        "name": "accountId",
+        "in": "query",
+        "description": "The account ID of the user. The accountId uniquely identifies the user across all Atlassian products.\nFor example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`.",
+        "schema": {
+          "type": "string"
         }
       }
     },
