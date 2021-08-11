@@ -201,6 +201,10 @@
               }
             }
           },
+          "401": {
+            "description": "Returned if the authentication credentials are incorrect or missing\nfrom the request.",
+            "content": {}
+          },
           "403": {
             "description": "Returned if the calling user does not have permission to view the audit\nlog.",
             "content": {}
@@ -239,6 +243,10 @@
           },
           "400": {
             "description": "Returned if the `remoteAddress` property is not specified.",
+            "content": {}
+          },
+          "401": {
+            "description": "Returned if the authentication credentials are incorrect or missing\nfrom the request.",
             "content": {}
           }
         },
@@ -10700,9 +10708,7 @@
             "required": [
               "displayName",
               "operations",
-              "type",
-              "userKey",
-              "username"
+              "type"
             ],
             "type": "object",
             "properties": {
@@ -10717,16 +10723,32 @@
                 "type": "string"
               },
               "operations": {
+                "nullable": true,
                 "type": "object",
                 "properties": {}
               },
               "username": {
-                "type": "string",
-                "description": "This property has been deprecated and will be removed soon."
+                "$ref": "#/components/schemas/GenericUserName"
               },
               "userKey": {
+                "$ref": "#/components/schemas/GenericUserKey"
+              },
+              "accountId": {
+                "$ref": "#/components/schemas/GenericAccountId"
+              },
+              "accountType": {
+                "type": "string"
+              },
+              "externalCollaborator": {
+                "type": "boolean"
+              },
+              "isExternalCollaborator": {
+                "type": "boolean",
+                "description": "Whether the user is an external collaborator user"
+              },
+              "publicName": {
                 "type": "string",
-                "description": "This property has been deprecated and will be removed soon."
+                "description": "The public name or nickname of the user. Will always contain a value."
               }
             }
           },
@@ -10748,6 +10770,9 @@
             "type": "string"
           },
           "sysAdmin": {
+            "type": "boolean"
+          },
+          "superAdmin": {
             "type": "boolean"
           },
           "affectedObject": {
@@ -10830,12 +10855,10 @@
                 "description": "Always defaults to null."
               },
               "username": {
-                "type": "string",
-                "description": "This property has been deprecated and will be removed soon."
+                "$ref": "#/components/schemas/GenericUserName"
               },
               "userKey": {
-                "type": "string",
-                "description": "This property has been deprecated and will be removed soon."
+                "$ref": "#/components/schemas/GenericUserKey"
               }
             },
             "description": "The user that actioned the event. If `author` is not specified, then all\n`author` properties will be set to null/empty, except for `type` which\nwill be set to 'user'."
@@ -11032,7 +11055,13 @@
           "oldValue": {
             "type": "string"
           },
+          "hiddenOldValue": {
+            "type": "string"
+          },
           "newValue": {
+            "type": "string"
+          },
+          "hiddenNewValue": {
             "type": "string"
           }
         }
@@ -12406,16 +12435,13 @@
                       ]
                     },
                     "username": {
-                      "type": "string",
-                      "description": "This property is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details."
+                      "$ref": "#/components/schemas/GenericUserName"
                     },
                     "userKey": {
-                      "type": "string",
-                      "description": "This property is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details."
+                      "$ref": "#/components/schemas/GenericUserKey"
                     },
                     "accountId": {
-                      "type": "string",
-                      "description": "The account ID of the user, which uniquely identifies the user across all Atlassian products.\nFor example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`."
+                      "$ref": "#/components/schemas/GenericAccountId"
                     }
                   },
                   "description": "A user that the restriction will be applied to. Either the `username`\nor the `userKey` must be specified to identify the user."
@@ -12496,16 +12522,13 @@
                       ]
                     },
                     "username": {
-                      "type": "string",
-                      "description": "This property is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details."
+                      "$ref": "#/components/schemas/GenericUserName"
                     },
                     "userKey": {
-                      "type": "string",
-                      "description": "This property is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details."
+                      "$ref": "#/components/schemas/GenericUserKey"
                     },
                     "accountId": {
-                      "type": "string",
-                      "description": "The account ID of the user, which uniquely identifies the user across all Atlassian products.\nFor example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`."
+                      "$ref": "#/components/schemas/GenericAccountId"
                     }
                   },
                   "description": "A user that the restriction will be applied to. Either the `username`\nor the `userKey` must be specified to identify the user."
@@ -13017,11 +13040,23 @@
           }
         }
       },
+      "GenericAccountId": {
+        "type": "string",
+        "description": "The account ID of the user, which uniquely identifies the user across all Atlassian products.\nFor example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`."
+      },
       "GenericLinks": {
         "type": "object",
         "additionalProperties": {
           "type": "string"
         }
+      },
+      "GenericUserName": {
+        "type": "string",
+        "description": "This property is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details."
+      },
+      "GenericUserKey": {
+        "type": "string",
+        "description": "This property is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details."
       },
       "Group": {
         "required": [
@@ -13715,13 +13750,13 @@
         "type": "object",
         "properties": {
           "username": {
-            "type": "string"
+            "$ref": "#/components/schemas/GenericUserName"
           },
           "key": {
-            "type": "string"
+            "$ref": "#/components/schemas/GenericUserKey"
           },
           "accountId": {
-            "type": "string"
+            "$ref": "#/components/schemas/GenericAccountId"
           }
         }
       },
@@ -13782,16 +13817,13 @@
             ]
           },
           "username": {
-            "type": "string",
-            "description": "This property is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details."
+            "$ref": "#/components/schemas/GenericUserName"
           },
           "userKey": {
-            "type": "string",
-            "description": "This property is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details."
+            "$ref": "#/components/schemas/GenericUserKey"
           },
           "accountId": {
-            "type": "string",
-            "description": "The account ID of the user, which uniquely identifies the user across all Atlassian products.\nFor example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`."
+            "$ref": "#/components/schemas/GenericAccountId"
           },
           "accountType": {
             "type": "string",
@@ -14864,16 +14896,13 @@
             "type": "string"
           },
           "username": {
-            "type": "string",
-            "description": "This property is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details."
+            "$ref": "#/components/schemas/GenericUserName"
           },
           "userKey": {
-            "type": "string",
-            "description": "This property is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details."
+            "$ref": "#/components/schemas/GenericUserKey"
           },
           "accountId": {
-            "type": "string",
-            "description": "The account ID of the user, which uniquely identifies the user across all Atlassian products.\nFor example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`."
+            "$ref": "#/components/schemas/GenericAccountId"
           },
           "profilePicture": {
             "$ref": "#/components/schemas/Icon"
@@ -15188,16 +15217,13 @@
             ]
           },
           "username": {
-            "type": "string",
-            "description": "This property is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details."
+            "$ref": "#/components/schemas/GenericUserName"
           },
           "userKey": {
-            "type": "string",
-            "description": "This property is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details."
+            "$ref": "#/components/schemas/GenericUserKey"
           },
           "accountId": {
-            "type": "string",
-            "description": "The account ID of the user, which uniquely identifies the user across all Atlassian products.\nFor example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`."
+            "$ref": "#/components/schemas/GenericAccountId"
           },
           "accountType": {
             "type": "string",
@@ -15634,16 +15660,13 @@
             "type": "string"
           },
           "username": {
-            "type": "string",
-            "description": "This property is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details."
+            "$ref": "#/components/schemas/GenericUserName"
           },
           "userKey": {
-            "type": "string",
-            "description": "This property is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details."
+            "$ref": "#/components/schemas/GenericUserKey"
           },
           "accountId": {
-            "type": "string",
-            "description": "The account ID of the user, which uniquely identifies the user across all Atlassian products.\nFor example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`."
+            "$ref": "#/components/schemas/GenericAccountId"
           },
           "profilePicture": {
             "$ref": "#/components/schemas/Icon"
