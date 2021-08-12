@@ -5020,7 +5020,7 @@
         "tags": [
           "Label info"
         ],
-        "summary": "Get Label information.",
+        "summary": "Get label information",
         "description": "Returns label information and a list of contents associated with the label.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission). Only contents\nthat the user is permitted to view is returned.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.LabelResource.getAllLabelContent_get",
         "parameters": [
@@ -6073,7 +6073,7 @@
           {
             "name": "relationName",
             "in": "path",
-            "description": "The name of the relationship. This method supports relationships created via\n[Create relationship](#api-relation-relationName-from-sourceType-sourceKey-to-targetType-targetKey-put).\nNote, this method does not support 'favourite' relationships.",
+            "description": "The name of the relationship. This method supports relationships created via\n[Create relationship](#api-wiki-rest-api-relation-relationname-from-sourcetype-sourcekey-to-targettype-targetkey-put).\nNote, this method does not support 'like' or 'favourite' relationships.",
             "required": true,
             "schema": {
               "type": "string"
@@ -6202,6 +6202,10 @@
               }
             }
           },
+          "400": {
+            "description": "Returned if the request is invalid.",
+            "content": {}
+          },
           "403": {
             "description": "Returned if the user does not have permission to view the\nrelationships.",
             "content": {}
@@ -6233,7 +6237,7 @@
           {
             "name": "relationName",
             "in": "path",
-            "description": "The name of the relationship. This method supports the 'favourite'\n(i.e. 'save for later') relationship as well as any other relationship\ntypes created via [Create relationship](#api-relation-relationName-from-sourceType-sourceKey-to-targetType-targetKey-put).",
+            "description": "The name of the relationship. This method supports the 'favourite'\n(i.e. 'save for later') relationship as well as any other relationship\ntypes created via [Create relationship](#api-wiki-rest-api-relation-relationname-from-sourcetype-sourcekey-to-targettype-targetkey-put).",
             "required": true,
             "schema": {
               "type": "string"
@@ -6348,6 +6352,10 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Returned if the request is invalid.",
+            "content": {}
           },
           "403": {
             "description": "Returned if the user does not have permission to view the\nrelationship.",
@@ -6476,6 +6484,10 @@
               }
             }
           },
+          "400": {
+            "description": "Returned if the request is invalid.",
+            "content": {}
+          },
           "403": {
             "description": "Returned if the user does not have permission to use Confluence.",
             "content": {}
@@ -6597,6 +6609,10 @@
             "description": "Returned if the relationship is deleted or the relationship didn't\nexist.",
             "content": {}
           },
+          "400": {
+            "description": "Returned if the request is invalid.",
+            "content": {}
+          },
           "403": {
             "description": "Returned if the user does not have permission to delete the\nrelationship.",
             "content": {}
@@ -6628,7 +6644,7 @@
           {
             "name": "relationName",
             "in": "path",
-            "description": "The name of the relationship. This method supports relationships created via\n[Create relationship](#api-relation-relationName-from-sourceType-sourceKey-to-targetType-targetKey-put).\nNote, this method does not support 'favourite' relationships.",
+            "description": "The name of the relationship. This method supports relationships created via\n[Create relationship](#api-wiki-rest-api-relation-relationname-from-sourcetype-sourcekey-to-targettype-targetkey-put).\nNote, this method does not support 'like' or 'favourite' relationships.",
             "required": true,
             "schema": {
               "type": "string"
@@ -6756,6 +6772,10 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Returned if the request is invalid.",
+            "content": {}
           },
           "403": {
             "description": "Returned if the user does not have permission to view the\nrelationship",
@@ -10423,7 +10443,7 @@
         "tags": [
           "Experimental"
         ],
-        "summary": "Get Views",
+        "summary": "Get views",
         "description": "Get the total number of views a piece of content has.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.AnalyticsResource.getViews_get",
         "parameters": [
@@ -10498,7 +10518,7 @@
         "tags": [
           "Experimental"
         ],
-        "summary": "Get Viewers",
+        "summary": "Get viewers",
         "description": "Get the total number of distinct viewers a piece of content has.",
         "operationId": "com.atlassian.confluence.plugins.restapi.resources.AnalyticsResource.getViewers_get",
         "parameters": [
@@ -13984,7 +14004,6 @@
       },
       "Relation": {
         "required": [
-          "_expandable",
           "_links",
           "name"
         ],
@@ -13998,18 +14017,15 @@
           },
           "source": {
             "type": "object",
-            "properties": {}
+            "properties": {},
+            "additionalProperties": true
           },
           "target": {
             "type": "object",
-            "properties": {}
+            "properties": {},
+            "additionalProperties": true
           },
           "_expandable": {
-            "required": [
-              "relationData",
-              "source",
-              "target"
-            ],
             "type": "object",
             "properties": {
               "relationData": {
