@@ -11423,6 +11423,7 @@
           "color"
         ],
         "type": "object",
+        "nullable": true,
         "properties": {
           "backgroundColor": {
             "type": "string"
@@ -11538,18 +11539,46 @@
           "padding"
         ],
         "type": "object",
+        "nullable": true,
         "properties": {
           "background": {
             "type": "string"
           },
+          "backgroundAttachment": {
+            "type": "string",
+            "nullable": true
+          },
+          "backgroundBlendMode": {
+            "type": "string",
+            "nullable": true
+          },
+          "backgroundClip": {
+            "type": "string",
+            "nullable": true
+          },
           "backgroundColor": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "backgroundImage": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
+          },
+          "backgroundOrigin": {
+            "type": "string",
+            "nullable": true
+          },
+          "backgroundPosition": {
+            "type": "string",
+            "nullable": true
+          },
+          "backgroundRepeat": {
+            "type": "string",
+            "nullable": true
           },
           "backgroundSize": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "padding": {
             "type": "string"
@@ -12262,12 +12291,6 @@
         "type": "string"
       },
       "ContentLookAndFeel": {
-        "required": [
-          "body",
-          "container",
-          "header",
-          "screen"
-        ],
         "type": "object",
         "properties": {
           "screen": {
@@ -13447,6 +13470,30 @@
           }
         }
       },
+      "HorizontalHeaderLookAndFeel": {
+        "required": [
+          "backgroundColor",
+          "primaryNavigation"
+        ],
+        "type": "object",
+        "properties": {
+          "backgroundColor": {
+            "type": "string"
+          },
+          "button": {
+            "$ref": "#/components/schemas/ButtonLookAndFeel"
+          },
+          "primaryNavigation": {
+            "$ref": "#/components/schemas/TopNavigationLookAndFeel"
+          },
+          "secondaryNavigation": {
+            "$ref": "#/components/schemas/NavigationLookAndFeel"
+          },
+          "search": {
+            "$ref": "#/components/schemas/SearchFieldLookAndFeel"
+          }
+        }
+      },
       "Icon": {
         "required": [
           "height",
@@ -13667,6 +13714,9 @@
           "header": {
             "$ref": "#/components/schemas/HeaderLookAndFeel"
           },
+          "horizontalHeader": {
+            "$ref": "#/components/schemas/HorizontalHeaderLookAndFeel"
+          },
           "content": {
             "$ref": "#/components/schemas/ContentLookAndFeel"
           },
@@ -13680,6 +13730,10 @@
                 "type": "string"
               }
             }
+          },
+          "spaceReference": {
+            "type": "object",
+            "nullable": true
           }
         }
       },
@@ -13816,6 +13870,9 @@
           "additionalDetails": {
             "type": "object",
             "properties": {
+              "destinationId": {
+                "type": "string"
+              },
               "destinationUrl": {
                 "type": "string"
               },
@@ -13933,6 +13990,9 @@
           "additionalDetails": {
             "type": "object",
             "properties": {
+              "destinationId": {
+                "type": "string"
+              },
               "destinationUrl": {
                 "type": "string"
               },
@@ -13990,10 +14050,10 @@
       },
       "Message": {
         "required": [
-          "args",
-          "translation"
+          "args"
         ],
         "type": "object",
+        "additionalProperties": true,
         "properties": {
           "translation": {
             "type": "string"
@@ -14001,8 +14061,16 @@
           "args": {
             "type": "array",
             "items": {
-              "type": "object",
-              "properties": {}
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "properties": {}
+                }
+              ]
             }
           }
         }
@@ -14175,15 +14243,46 @@
           "hoverOrFocus"
         ],
         "type": "object",
+        "nullable": true,
         "properties": {
           "color": {
             "type": "string"
+          },
+          "highlightColor": {
+            "type": "string",
+            "nullable": true
           },
           "hoverOrFocus": {
             "required": [
               "backgroundColor",
               "color"
             ],
+            "type": "object",
+            "properties": {
+              "backgroundColor": {
+                "type": "string"
+              },
+              "color": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "TopNavigationLookAndFeel": {
+        "required": [
+          "highlightColor"
+        ],
+        "type": "object",
+        "properties": {
+          "color": {
+            "type": "string",
+            "nullable": true
+          },
+          "highlightColor": {
+            "type": "string"
+          },
+          "hoverOrFocus": {
             "type": "object",
             "properties": {
               "backgroundColor": {
@@ -14371,40 +14470,76 @@
       },
       "ScreenLookAndFeel": {
         "required": [
-          "background",
-          "backgroundColor",
-          "backgroundImage",
-          "backgroundSize",
-          "gutterBottom",
-          "gutterLeft",
-          "gutterRight",
-          "gutterTop"
+          "background"
         ],
         "type": "object",
         "properties": {
           "background": {
             "type": "string"
           },
+          "backgroundAttachment": {
+            "type": "string",
+            "nullable": true
+          },
+          "backgroundBlendMode": {
+            "type": "string",
+            "nullable": true
+          },
+          "backgroundClip": {
+            "type": "string",
+            "nullable": true
+          },
           "backgroundColor": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "backgroundImage": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
+          },
+          "backgroundOrigin": {
+            "type": "string",
+            "nullable": true
+          },
+          "backgroundPosition": {
+            "type": "string",
+            "nullable": true
+          },
+          "backgroundRepeat": {
+            "type": "string",
+            "nullable": true
           },
           "backgroundSize": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
+          },
+          "layer": {
+            "type": "object",
+            "properties": {
+              "width": {
+                "type": "string"
+              },
+              "height": {
+                "type": "string"
+              }
+            },
+            "nullable": true
           },
           "gutterTop": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "gutterRight": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "gutterBottom": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "gutterLeft": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -14414,6 +14549,7 @@
           "color"
         ],
         "type": "object",
+        "nullable": true,
         "properties": {
           "backgroundColor": {
             "type": "string"
@@ -15364,22 +15500,49 @@
         }
       },
       "Theme": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/ThemeNoLinks"
+        "required": [
+          "themeKey",
+          "_links"
+        ],
+        "type": "object",
+        "properties": {
+          "themeKey": {
+            "type": "string"
           },
-          {
-            "required": [
-              "_links"
-            ],
-            "type": "object",
-            "properties": {
-              "_links": {
-                "$ref": "#/components/schemas/GenericLinks"
-              }
-            }
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "icon": {
+            "$ref": "#/components/schemas/Icon"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/GenericLinks"
           }
-        ]
+        }
+      },
+      "ThemeNoLinks": {
+        "required": [
+          "themeKey"
+        ],
+        "type": "object",
+        "properties": {
+          "themeKey": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "icon": {
+            "$ref": "#/components/schemas/Icon"
+          }
+        },
+        "description": "Theme object without links. Used in ThemeArray."
       },
       "ThemeArray": {
         "required": [
@@ -15413,30 +15576,6 @@
             "$ref": "#/components/schemas/GenericLinks"
           }
         }
-      },
-      "ThemeNoLinks": {
-        "required": [
-          "description",
-          "icon",
-          "name",
-          "themeKey"
-        ],
-        "type": "object",
-        "properties": {
-          "themeKey": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "icon": {
-            "$ref": "#/components/schemas/Icon"
-          }
-        },
-        "description": "Theme object without links. Used in ThemeArray."
       },
       "ThemeUpdate": {
         "required": [
