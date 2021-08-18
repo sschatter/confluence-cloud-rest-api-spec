@@ -73,6 +73,10 @@
       "description": ""
     },
     {
+      "name": "Experimental",
+      "description": ""
+    },
+    {
       "name": "Group",
       "description": ""
     },
@@ -126,10 +130,6 @@
     },
     {
       "name": "Users",
-      "description": ""
-    },
-    {
-      "name": "Experimental",
       "description": ""
     }
   ],
@@ -496,14 +496,10 @@
           {
             "name": "type",
             "in": "query",
-            "description": "The type of content to return.",
+            "description": "The type of content to return. For example:\n  - page\n  - blogpost",
             "schema": {
               "type": "string",
-              "default": "page",
-              "enum": [
-                "page",
-                "blogpost"
-              ]
+              "default": "page"
             }
           },
           {
@@ -539,6 +535,8 @@
               "enum": [
                 "current",
                 "trashed",
+                "deleted",
+                "historical",
                 "draft",
                 "any"
               ]
@@ -1024,6 +1022,8 @@
               "enum": [
                 "current",
                 "trashed",
+                "deleted",
+                "historical",
                 "draft",
                 "any"
               ]
@@ -1077,12 +1077,16 @@
               }
             }
           },
+          "400": {
+            "description": "Returned if the content id is invalid.",
+            "content": {}
+          },
           "401": {
-            "description": "Returned if the authentication credentials are incorrect.",
+            "description": "Returned if the authentication credentials are incorrect or missing from the request.",
             "content": {}
           },
           "403": {
-            "description": "Returned if the authentication credentials are missing\nfrom the request.",
+            "description": "Returned if the calling user can not view the content.",
             "content": {}
           },
           "404": {
@@ -1129,6 +1133,7 @@
               "enum": [
                 "current",
                 "trashed",
+                "deleted",
                 "historical",
                 "draft"
               ]
@@ -1177,12 +1182,20 @@
             "description": "Returned if the authentication credentials are incorrect or missing\nfrom the request.",
             "content": {}
           },
+          "403": {
+            "description": "Returned if the calling user can not update the content with specified id.",
+            "content": {}
+          },
           "404": {
             "description": "Returned if a draft with current content cannot be found when setting the status\nparameter to draft and the content status is current.",
             "content": {}
           },
           "409": {
             "description": "Returned if;\n\n- The page is a draft (draft pages cannot be updated).\n- The version property has not been set correctly for the content\ntype.",
+            "content": {}
+          },
+          "501": {
+            "description": "Indicates that the server does not support the functionality needed to serve the request.\nFor example,\n\n- trying to publish edit draft and passing content status as historical.",
             "content": {}
           }
         },
@@ -1228,6 +1241,18 @@
         "responses": {
           "204": {
             "description": "Returned if the content is successfully trashed or purged.",
+            "content": {}
+          },
+          "400": {
+            "description": "Returned if the content id is invalid.",
+            "content": {}
+          },
+          "401": {
+            "description": "Returned if the authentication credentials are incorrect or missing\nfrom the request.",
+            "content": {}
+          },
+          "403": {
+            "description": "Returned if the calling user can not delete the content with specified id.",
             "content": {}
           },
           "404": {
@@ -3067,6 +3092,18 @@
             }
           },
           {
+            "name": "key",
+            "in": "query",
+            "description": "The key of the content property.",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
             "name": "expand",
             "in": "query",
             "description": "A multi-value parameter indicating which properties of the content to\nexpand. By default, the `version` object is expanded.\n\n- `content` returns the content that the property is stored against.\n- `version` returns information about the version of the property, such\nas the version number, when it was created, etc.",
@@ -3462,6 +3499,10 @@
         "responses": {
           "204": {
             "description": "Returned if the content property is deleted.",
+            "content": {}
+          },
+          "403": {
+            "description": "Returned if the user does not have permission to delete content\nwith the given ID.",
             "content": {}
           },
           "404": {
@@ -7331,8 +7372,7 @@
                 "$ref": "#/components/schemas/LookAndFeelSelection"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -7402,8 +7442,7 @@
                 "$ref": "#/components/schemas/LookAndFeel"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -7521,8 +7560,7 @@
                 ]
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -9785,7 +9823,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [
+                  "anyOf": [
                     {
                       "$ref": "#/components/schemas/User"
                     },
@@ -11527,6 +11565,7 @@
       },
       "Container": {
         "type": "object",
+        "additionalProperties": true,
         "description": "Container for content. This can be either a space (containing a page or blogpost)\nor a page/blog post (containing an attachment or comment)"
       },
       "ContainerLookAndFeel": {
@@ -11606,12 +11645,12 @@
       "Content": {
         "required": [
           "_expandable",
-          "id",
           "status",
-          "title",
           "type"
         ],
+        "nullable": true,
         "type": "object",
+        "additionalProperties": true,
         "properties": {
           "id": {
             "type": "string"
@@ -11635,6 +11674,7 @@
             "$ref": "#/components/schemas/Version"
           },
           "ancestors": {
+            "nullable": true,
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Content"
@@ -11659,9 +11699,6 @@
             "$ref": "#/components/schemas/Container"
           },
           "body": {
-            "required": [
-              "_expandable"
-            ],
             "type": "object",
             "properties": {
               "view": {
@@ -11676,10 +11713,22 @@
               "storage": {
                 "$ref": "#/components/schemas/ContentBody"
               },
+              "wiki": {
+                "$ref": "#/components/schemas/ContentBody"
+              },
+              "editor": {
+                "$ref": "#/components/schemas/ContentBody"
+              },
               "editor2": {
                 "$ref": "#/components/schemas/ContentBody"
               },
               "anonymous_export_view": {
+                "$ref": "#/components/schemas/ContentBody"
+              },
+              "atlas_doc_format": {
+                "$ref": "#/components/schemas/ContentBody"
+              },
+              "dynamic": {
                 "$ref": "#/components/schemas/ContentBody"
               },
               "_expandable": {
@@ -11689,22 +11738,31 @@
                     "type": "string"
                   },
                   "view": {
-                    "type": "object"
+                    "type": "string"
                   },
                   "export_view": {
-                    "type": "object"
+                    "type": "string"
                   },
                   "styled_view": {
-                    "type": "object"
+                    "type": "string"
                   },
                   "storage": {
-                    "type": "object"
+                    "type": "string"
                   },
                   "editor2": {
-                    "type": "object"
+                    "type": "string"
                   },
                   "anonymous_export_view": {
-                    "type": "object"
+                    "type": "string"
+                  },
+                  "atlas_doc_format": {
+                    "type": "string"
+                  },
+                  "wiki": {
+                    "type": "string"
+                  },
+                  "dynamic": {
+                    "type": "string"
                   }
                 }
               }
@@ -11712,6 +11770,7 @@
           },
           "restrictions": {
             "type": "object",
+            "additionalProperties": true,
             "properties": {
               "read": {
                 "$ref": "#/components/schemas/ContentRestriction"
@@ -11724,6 +11783,9 @@
               }
             }
           },
+          "metadata": {
+            "$ref": "#/components/schemas/ContentMetadata"
+          },
           "macroRenderedOutput": {
             "type": "object",
             "additionalProperties": {
@@ -11732,9 +11794,17 @@
           },
           "extensions": {
             "type": "object",
+            "additionalProperties": true,
             "properties": {
               "position": {
-                "type": "integer"
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ]
               }
             }
           },
@@ -11942,8 +12012,11 @@
               "export_view",
               "styled_view",
               "storage",
+              "editor",
               "editor2",
-              "anonymous_export_view"
+              "anonymous_export_view",
+              "wiki",
+              "atlas_doc_format"
             ]
           },
           "embeddedContent": {
@@ -11957,9 +12030,44 @@
           },
           "_expandable": {
             "type": "object",
+            "additionalProperties": true,
             "properties": {
               "content": {
-                "type": "object"
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": true
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "embeddedContent": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/EmbeddedContent"
+                    }
+                  }
+                ]
+              },
+              "webresource": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "$ref": "#/components/schemas/WebResourceDependencies"
+                  }
+                ]
+              },
+              "mediaToken": {
+                "type": "string"
               }
             }
           }
@@ -11971,6 +12079,7 @@
           "value"
         ],
         "type": "object",
+        "additionalProperties": true,
         "properties": {
           "value": {
             "type": "string",
@@ -11984,19 +12093,19 @@
               "export_view",
               "styled_view",
               "storage",
+              "editor",
               "editor2",
-              "anonymous_export_view"
+              "anonymous_export_view",
+              "wiki",
+              "atlas_doc_format"
             ]
           }
         },
         "description": "This object is used when creating or updating content."
       },
       "ContentChildren": {
-        "required": [
-          "_expandable",
-          "_links"
-        ],
         "type": "object",
+        "additionalProperties": true,
         "properties": {
           "attachment": {
             "$ref": "#/components/schemas/ContentArray"
@@ -12009,15 +12118,40 @@
           },
           "_expandable": {
             "type": "object",
+            "additionalProperties": true,
             "properties": {
               "attachment": {
-                "type": "object"
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": true
+                  }
+                ]
               },
               "comment": {
-                "type": "object"
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": true
+                  }
+                ]
               },
               "page": {
-                "type": "object"
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": true
+                  }
+                ]
               }
             }
           },
@@ -12032,6 +12166,7 @@
           "value"
         ],
         "type": "object",
+        "additionalProperties": true,
         "properties": {
           "value": {
             "type": "string",
@@ -12045,8 +12180,11 @@
               "view",
               "export_view",
               "styled_view",
+              "editor",
               "editor2",
-              "anonymous_export_view"
+              "anonymous_export_view",
+              "wiki",
+              "atlas_doc_format"
             ]
           }
         },
@@ -12128,29 +12266,30 @@
           "type"
         ],
         "type": "object",
+        "nullable": true,
+        "additionalProperties": true,
         "properties": {
           "id": {
+            "nullable": true,
             "type": "string",
             "description": "The ID of the draft content. Required when publishing a draft."
           },
           "title": {
+            "nullable": true,
             "maxLength": 255,
             "type": "string"
           },
           "type": {
             "type": "string",
-            "description": "The type of the new content. Custom content types defined by apps are also supported.",
-            "enum": [
-              "page",
-              "blogpost",
-              "comment"
-            ]
+            "description": "The type of the new content. Custom content types defined by apps are also supported. eg. 'page', 'blogpost', 'comment' etc."
           },
           "space": {
+            "nullable": true,
             "required": [
               "key"
             ],
             "type": "object",
+            "additionalProperties": true,
             "properties": {
               "key": {
                 "type": "string",
@@ -12165,20 +12304,29 @@
             "default": "current",
             "enum": [
               "current",
-              "trashed",
+              "deleted",
               "historical",
               "draft"
             ]
           },
           "container": {
+            "nullable": true,
             "required": [
               "id",
               "type"
             ],
             "type": "object",
+            "additionalProperties": true,
             "properties": {
               "id": {
-                "type": "string",
+                "oneOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
                 "description": "The `id` of the container."
               },
               "type": {
@@ -12189,6 +12337,7 @@
             "description": "The container of the content. Required if type is `comment` or certain types of\ncustom content. If you are trying to create a comment that is a child of another comment,\nspecify the parent comment in the ancestors field, not in this field."
           },
           "ancestors": {
+            "nullable": true,
             "type": "array",
             "description": "The parent content of the new content.  If you are creating a top-level `page` or `comment`,\nthis can be left blank. If you are creating a child page, this is where the parent page id goes.\nIf you are creating a child comment, this is where the parent comment id goes. Only one parent\ncontent id can be specified.",
             "items": {
@@ -12196,6 +12345,7 @@
                 "id"
               ],
               "type": "object",
+              "additionalProperties": true,
               "properties": {
                 "id": {
                   "type": "string",
@@ -12219,7 +12369,13 @@
               "storage": {
                 "$ref": "#/components/schemas/ContentBodyCreate"
               },
+              "editor": {
+                "$ref": "#/components/schemas/ContentBodyCreate"
+              },
               "editor2": {
+                "$ref": "#/components/schemas/ContentBodyCreate"
+              },
+              "wiki": {
                 "$ref": "#/components/schemas/ContentBodyCreate"
               },
               "anonymous_export_view": {
@@ -12232,8 +12388,6 @@
       },
       "ContentHistory": {
         "required": [
-          "createdBy",
-          "createdDate",
           "latest"
         ],
         "type": "object",
@@ -12269,16 +12423,44 @@
             "type": "object",
             "properties": {
               "lastUpdated": {
-                "type": "object"
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "object"
+                  }
+                ]
               },
               "previousVersion": {
-                "type": "object"
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "object"
+                  }
+                ]
               },
               "contributors": {
-                "type": "object"
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "object"
+                  }
+                ]
               },
               "nextVersion": {
-                "type": "object"
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "object"
+                  }
+                ]
               }
             }
           },
@@ -12309,9 +12491,11 @@
       },
       "ContentMetadata": {
         "type": "object",
+        "additionalProperties": true,
         "properties": {
           "currentuser": {
             "type": "object",
+            "additionalProperties": true,
             "properties": {
               "favourited": {
                 "type": "object",
@@ -12367,7 +12551,7 @@
           },
           "frontend": {
             "type": "object",
-            "properties": {}
+            "additionalProperties": true
           },
           "labels": {
             "$ref": "#/components/schemas/LabelArray"
@@ -12383,6 +12567,7 @@
           "value"
         ],
         "type": "object",
+        "additionalProperties": true,
         "properties": {
           "id": {
             "type": "string"
@@ -12391,12 +12576,16 @@
             "type": "string"
           },
           "value": {
-            "anyOf": [
+            "oneOf": [
+              {
+                "type": "boolean"
+              },
               {
                 "type": "string"
               },
               {
                 "type": "object",
+                "additionalProperties": true,
                 "properties": {}
               }
             ],
@@ -12410,6 +12599,7 @@
               "when"
             ],
             "type": "object",
+            "additionalProperties": true,
             "properties": {
               "when": {
                 "type": "string",
@@ -12486,6 +12676,7 @@
           "value"
         ],
         "type": "object",
+        "additionalProperties": true,
         "properties": {
           "key": {
             "maxLength": 255,
@@ -12493,12 +12684,16 @@
             "description": "The key of the new property."
           },
           "value": {
-            "anyOf": [
+            "oneOf": [
+              {
+                "type": "boolean"
+              },
               {
                 "type": "string"
               },
               {
                 "type": "object",
+                "additionalProperties": true,
                 "properties": {}
               }
             ],
@@ -12511,14 +12706,19 @@
           "value"
         ],
         "type": "object",
+        "additionalProperties": true,
         "properties": {
           "value": {
-            "anyOf": [
+            "oneOf": [
+              {
+                "type": "boolean"
+              },
               {
                 "type": "string"
               },
               {
                 "type": "object",
+                "additionalProperties": true,
                 "properties": {}
               }
             ],
@@ -12532,14 +12732,19 @@
           "version"
         ],
         "type": "object",
+        "additionalProperties": true,
         "properties": {
           "value": {
-            "anyOf": [
+            "oneOf": [
+              {
+                "type": "boolean"
+              },
               {
                 "type": "string"
               },
               {
                 "type": "object",
+                "additionalProperties": true,
                 "properties": {}
               }
             ],
@@ -12550,6 +12755,8 @@
               "number"
             ],
             "type": "object",
+            "nullable": true,
+            "additionalProperties": true,
             "properties": {
               "number": {
                 "type": "integer",
@@ -12604,10 +12811,26 @@
                 "type": "object",
                 "properties": {
                   "user": {
-                    "type": "object"
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "object",
+                        "additionalProperties": true
+                      }
+                    ]
                   },
                   "group": {
-                    "type": "object"
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "object",
+                        "additionalProperties": true
+                      }
+                    ]
                   }
                 }
               }
@@ -12620,10 +12843,26 @@
             "type": "object",
             "properties": {
               "restrictions": {
-                "type": "object"
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": true
+                  }
+                ]
               },
               "content": {
-                "type": "object"
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": true
+                  }
+                ]
               }
             }
           },
@@ -13049,12 +13288,15 @@
           "version"
         ],
         "type": "object",
+        "additionalProperties": true,
         "properties": {
           "version": {
+            "nullable": true,
             "required": [
               "number"
             ],
             "type": "object",
+            "additionalProperties": true,
             "properties": {
               "number": {
                 "type": "integer",
@@ -13065,19 +13307,15 @@
             "description": "The new version for the updated content. Set this to the current version number incremented by one, unless you are changing the status to 'draft' which must have a version number of 1.\n\nTo get the current version number, use [Get content by ID](#api-content-id-get) and retrieve `version.number`."
           },
           "title": {
+            "nullable": true,
             "maxLength": 255,
             "type": "string",
             "description": "The updated title of the content. If you are not changing this field, set this to the current `title`."
           },
           "type": {
+            "nullable": true,
             "type": "string",
-            "description": "The type of content. Set this to the current type of the content.",
-            "enum": [
-              "page",
-              "blogpost",
-              "comment",
-              "attachment"
-            ]
+            "description": "The type of content. Set this to the current type of the content. For example, - page - blogpost - comment - attachment"
           },
           "status": {
             "type": "string",
@@ -13085,11 +13323,13 @@
             "enum": [
               "current",
               "trashed",
+              "deleted",
               "historical",
               "draft"
             ]
           },
           "ancestors": {
+            "nullable": true,
             "type": "array",
             "description": "The new parent for the content. Only one parent content 'id' can be specified.",
             "items": {
@@ -13097,9 +13337,17 @@
                 "id"
               ],
               "type": "object",
+              "additionalProperties": true,
               "properties": {
                 "id": {
-                  "type": "string",
+                  "oneOf": [
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ],
                   "description": "The `id` of the parent content."
                 }
               }
@@ -13120,7 +13368,13 @@
               "storage": {
                 "$ref": "#/components/schemas/ContentBodyCreateStorage"
               },
+              "editor": {
+                "$ref": "#/components/schemas/ContentBodyCreate"
+              },
               "editor2": {
+                "$ref": "#/components/schemas/ContentBodyCreate"
+              },
+              "wiki": {
                 "$ref": "#/components/schemas/ContentBodyCreate"
               },
               "anonymous_export_view": {
@@ -13310,14 +13564,19 @@
         }
       },
       "Embeddable": {
-        "type": "object"
+        "type": "object",
+        "additionalProperties": true
       },
       "EmbeddedContent": {
         "type": "object",
+        "additionalProperties": true,
         "properties": {
           "entityId": {
             "type": "integer",
             "format": "int64"
+          },
+          "entityType": {
+            "type": "string"
           },
           "entity": {
             "$ref": "#/components/schemas/Embeddable"
@@ -13331,7 +13590,15 @@
       "GenericLinks": {
         "type": "object",
         "additionalProperties": {
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": true
+            },
+            {
+              "type": "string"
+            }
+          ]
         }
       },
       "GenericUserName": {
@@ -13345,7 +13612,6 @@
       "Group": {
         "required": [
           "_links",
-          "id",
           "name",
           "type"
         ],
@@ -13734,12 +14000,15 @@
           "spaceReference": {
             "type": "object",
             "nullable": true
+          },
+          "_links": {
+            "$ref": "#/components/schemas/GenericLinks"
           }
         }
       },
       "LookAndFeelUpdated": {
         "description": "Look and feel settings returned after an update.",
-        "allOf": [
+        "anyOf": [
           {
             "$ref": "#/components/schemas/LookAndFeel"
           },
@@ -13748,6 +14017,7 @@
               "_links"
             ],
             "type": "object",
+            "additionalProperties": true,
             "properties": {
               "_links": {
                 "$ref": "#/components/schemas/GenericLinks"
@@ -14308,6 +14578,7 @@
             "enum": [
               "administer",
               "archive",
+              "clear_permissions",
               "copy",
               "create",
               "create_space",
@@ -14325,15 +14596,7 @@
           },
           "targetType": {
             "type": "string",
-            "description": "The space or content type that the operation applies to.",
-            "enum": [
-              "application",
-              "page",
-              "blogpost",
-              "comment",
-              "attachment",
-              "space"
-            ]
+            "description": "The space or content type that the operation applies to. Could be one of- - application - page - blogpost - comment - attachment - space"
           }
         },
         "description": "An operation and the target entity that it applies to, e.g. create page."
@@ -14680,6 +14943,7 @@
           "status",
           "type"
         ],
+        "nullable": true,
         "type": "object",
         "properties": {
           "id": {
@@ -15331,13 +15595,43 @@
             "type": "object",
             "properties": {
               "all": {
-                "type": "string"
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
               },
               "css": {
-                "type": "string"
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
               },
               "js": {
-                "type": "string"
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
               }
             }
           },
@@ -15360,6 +15654,10 @@
           },
           "metatags": {
             "type": "string"
+          },
+          "_expandable": {
+            "type": "object",
+            "additionalProperties": true
           }
         }
       },
@@ -15591,17 +15889,12 @@
       },
       "User": {
         "required": [
-          "_expandable",
-          "_links",
-          "accountId",
-          "accountType",
           "displayName",
-          "email",
           "profilePicture",
-          "publicName",
           "type"
         ],
         "type": "object",
+        "additionalProperties": true,
         "properties": {
           "type": {
             "type": "string",
@@ -15649,7 +15942,12 @@
             "type": "boolean",
             "description": "Whether the user is an external collaborator user"
           },
+          "externalCollaborator": {
+            "type": "boolean",
+            "description": "Whether the user is an external collaborator user"
+          },
           "operations": {
+            "nullable": true,
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/OperationCheckResult"
@@ -15814,10 +16112,11 @@
       },
       "UsersUserKeys": {
         "required": [
-          "userKeys",
-          "users"
+          "userKeys"
         ],
+        "nullable": true,
         "type": "object",
+        "additionalProperties": true,
         "properties": {
           "users": {
             "type": "array",
@@ -15849,16 +16148,13 @@
       },
       "Version": {
         "required": [
-          "_expandable",
-          "_links",
           "by",
-          "friendlyWhen",
-          "message",
           "minorEdit",
           "number",
           "when"
         ],
         "type": "object",
+        "additionalProperties": true,
         "properties": {
           "by": {
             "$ref": "#/components/schemas/User"
@@ -15888,7 +16184,6 @@
           },
           "_expandable": {
             "required": [
-              "collaborators",
               "content"
             ],
             "type": "object",
@@ -16085,6 +16380,23 @@
       "WebResourceDependencies": {
         "type": "object",
         "properties": {
+          "_expandable": {
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+              "uris": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": true
+                  }
+                ]
+              }
+            }
+          },
           "keys": {
             "type": "array",
             "items": {
@@ -16101,13 +16413,75 @@
             "type": "object",
             "properties": {
               "all": {
-                "type": "string"
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
               },
               "css": {
-                "type": "string"
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
               },
               "js": {
-                "type": "string"
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "_expandable": {
+                "type": "object",
+                "additionalProperties": true,
+                "properties": {
+                  "css": {
+                    "oneOf": [
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      {
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "js": {
+                    "oneOf": [
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      {
+                        "type": "string"
+                      }
+                    ]
+                  }
+                }
               }
             }
           },
@@ -16125,6 +16499,10 @@
               },
               "js": {
                 "type": "string"
+              },
+              "_expandable": {
+                "type": "object",
+                "additionalProperties": true
               }
             }
           },
@@ -16322,44 +16700,13 @@
       "contentExpand": {
         "name": "expand",
         "in": "query",
-        "description": "A multi-value parameter indicating which properties of the content to expand.\n\n- `childTypes.all` returns whether the content has attachments, comments, or child pages.\nUse this if you only need to check whether the content has children of a particular type.\n- `childTypes.attachment` returns whether the content has attachments.\n- `childTypes.comment` returns whether the content has comments.\n- `childTypes.page` returns whether the content has child pages.\n- `container` returns the space that the content is in. This is the same as the information\nreturned by [Get space](#api-space-spaceKey-get).\n- `metadata.currentuser` returns information about the current user in relation to the content,\nincluding when they last viewed it, modified it, contributed to it, or added it as a favorite.\n- `metadata.properties` returns content properties that have been set via the Confluence REST API.\n- `metadata.labels` returns the labels that have been added to the content.\n- `metadata.frontend` this property is only used by Atlassian.\n- `operations` returns the operations for the content, which are used when setting permissions.\n- `children.page` returns pages that are descendants at the level immediately below the content.\n- `children.attachment` returns all attachments for the content.\n- `children.comment` returns all comments on the content.\n- `restrictions.read.restrictions.user` returns the users that have permission to read the content.\n- `restrictions.read.restrictions.group` returns the groups that have permission to read the content. Note that\nthis may return deleted groups, because deleting a group doesn't remove associated restrictions.\n- `restrictions.update.restrictions.user` returns the users that have permission to update the content.\n- `restrictions.update.restrictions.group` returns the groups that have permission to update the content. Note that\nthis may return deleted groups because deleting a group doesn't remove associated restrictions.\n- `history` returns the history of the content, including the date it was created.\n- `history.lastUpdated` returns information about the most recent update of the content, including\nwho updated it and when it was updated.\n- `history.previousVersion` returns information about the update prior to the current content update.\n- `history.contributors` returns all of the users who have contributed to the content.\n- `history.nextVersion` returns information about the update after to the current content update.\n- `ancestors` returns the parent page, if the content is a page.\n- `body` returns the body of the content in different formats, including the editor format,\nview format, and export format.\n- `version` returns information about the most recent update of the content, including who updated it\nand when it was updated.\n- `descendants.page` returns pages that are descendants at any level below the content.\n- `descendants.attachment` returns all attachments for the content, same as `children.attachment`.\n- `descendants.comment` returns all comments on the content, same as `children.comment`.\n- `space` returns the space that the content is in. This is the same as the information returned by\n[Get space](#api-space-spaceKey-get).\n\nIn addition, the following comment-specific expansions can be used:\n- `extensions.inlineProperties` returns inline comment-specific properties.\n- `extensions.resolution` returns the resolution status of each comment.",
+        "description": "A multi-value parameter indicating which properties of the content to expand.\n\n- `childTypes.all` returns whether the content has attachments, comments, or child pages.\nUse this if you only need to check whether the content has children of a particular type.\n- `childTypes.attachment` returns whether the content has attachments.\n- `childTypes.comment` returns whether the content has comments.\n- `childTypes.page` returns whether the content has child pages.\n- `container` returns the space that the content is in. This is the same as the information\nreturned by [Get space](#api-space-spaceKey-get).\n- `metadata.currentuser` returns information about the current user in relation to the content,\nincluding when they last viewed it, modified it, contributed to it, or added it as a favorite.\n- `metadata.properties` returns content properties that have been set via the Confluence REST API.\n- `metadata.labels` returns the labels that have been added to the content.\n- `metadata.frontend` this property is only used by Atlassian.\n- `operations` returns the operations for the content, which are used when setting permissions.\n- `children.page` returns pages that are descendants at the level immediately below the content.\n- `children.attachment` returns all attachments for the content.\n- `children.comment` returns all comments on the content.\n- `restrictions.read.restrictions.user` returns the users that have permission to read the content.\n- `restrictions.read.restrictions.group` returns the groups that have permission to read the content. Note that\nthis may return deleted groups, because deleting a group doesn't remove associated restrictions.\n- `restrictions.update.restrictions.user` returns the users that have permission to update the content.\n- `restrictions.update.restrictions.group` returns the groups that have permission to update the content. Note that\nthis may return deleted groups because deleting a group doesn't remove associated restrictions.\n- `history` returns the history of the content, including the date it was created.\n- `history.lastUpdated` returns information about the most recent update of the content, including\nwho updated it and when it was updated.\n- `history.previousVersion` returns information about the update prior to the current content update.\n- `history.contributors` returns all of the users who have contributed to the content.\n- `history.nextVersion` returns information about the update after to the current content update.\n- `ancestors` returns the parent page, if the content is a page.\n- `body` returns the body of the content in different formats, including the editor format,\nview format, and export format.\n- `body.storage` returns the body of content in storage format.\n- `body.view` returns the body of content in view format.\n- `version` returns information about the most recent update of the content, including who updated it\nand when it was updated.\n- `descendants.page` returns pages that are descendants at any level below the content.\n- `descendants.attachment` returns all attachments for the content, same as `children.attachment`.\n- `descendants.comment` returns all comments on the content, same as `children.comment`.\n- `space` returns the space that the content is in. This is the same as the information returned by\n[Get space](#api-space-spaceKey-get).\n\nIn addition, the following comment-specific expansions can be used:\n- `extensions.inlineProperties` returns inline comment-specific properties.\n- `extensions.resolution` returns the resolution status of each comment.",
         "style": "form",
         "explode": false,
         "schema": {
           "type": "array",
           "items": {
-            "type": "string",
-            "enum": [
-              "childTypes.all",
-              "childTypes.attachment",
-              "childTypes.comment",
-              "childTypes.page",
-              "container",
-              "metadata.currentuser",
-              "metadata.properties",
-              "metadata.labels",
-              "metadata.frontend",
-              "operations",
-              "children.page",
-              "children.attachment",
-              "children.comment",
-              "restrictions.read.restrictions.user",
-              "restrictions.read.restrictions.group",
-              "restrictions.update.restrictions.user",
-              "restrictions.update.restrictions.group",
-              "history",
-              "history.lastUpdated",
-              "history.previousVersion",
-              "history.contributors",
-              "history.nextVersion",
-              "ancestors",
-              "body",
-              "version",
-              "descendants.page",
-              "descendants.attachment",
-              "descendants.comment",
-              "space"
-            ]
+            "type": "string"
           }
         }
       },
