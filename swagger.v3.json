@@ -3651,7 +3651,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ContentRestrictionUpdateArray"
+                "$ref": "#/components/schemas/ContentRestrictionAddOrUpdateArray"
               }
             }
           },
@@ -3727,7 +3727,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddContentRestrictionUpdateArray"
+                "$ref": "#/components/schemas/ContentRestrictionAddOrUpdateArray"
               }
             }
           },
@@ -3880,7 +3880,14 @@
                 "schema": {
                   "type": "object",
                   "additionalProperties": {
-                    "$ref": "#/components/schemas/ContentRestriction"
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/ContentRestriction"
+                      },
+                      {
+                        "$ref": "#/components/schemas/GenericLinks"
+                      }
+                    ]
                   }
                 }
               }
@@ -4495,6 +4502,10 @@
         "responses": {
           "200": {
             "description": "Returned if the user is added to the content restriction. The response\nbody will be empty.",
+            "content": {}
+          },
+          "400": {
+            "description": "Returned if;\n\n- Provided restrictions are invalid",
             "content": {}
           },
           "404": {
@@ -7372,7 +7383,8 @@
                 "$ref": "#/components/schemas/LookAndFeelSelection"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -7442,7 +7454,8 @@
                 "$ref": "#/components/schemas/LookAndFeel"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -7450,7 +7463,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LookAndFeelUpdated"
+                  "$ref": "#/components/schemas/LookAndFeel"
                 }
               }
             }
@@ -7560,7 +7573,8 @@
                 ]
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -9823,14 +9837,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/components/schemas/User"
-                    },
-                    {
-                      "$ref": "#/components/schemas/UserAnonymous"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/User"
                 }
               }
             }
@@ -12937,39 +12944,6 @@
           "restrictions": {
             "type": "object",
             "properties": {
-              "user": {
-                "type": "array",
-                "description": "The users that the restrictions will be applied to. This array must\nhave at least one item, otherwise it should be omitted.",
-                "items": {
-                  "required": [
-                    "accountId",
-                    "type"
-                  ],
-                  "type": "object",
-                  "properties": {
-                    "type": {
-                      "type": "string",
-                      "description": "Set to 'known'.",
-                      "enum": [
-                        "known",
-                        "unknown",
-                        "anonymous",
-                        "user"
-                      ]
-                    },
-                    "username": {
-                      "$ref": "#/components/schemas/GenericUserName"
-                    },
-                    "userKey": {
-                      "$ref": "#/components/schemas/GenericUserKey"
-                    },
-                    "accountId": {
-                      "$ref": "#/components/schemas/GenericAccountId"
-                    }
-                  },
-                  "description": "A user that the restriction will be applied to. Either the `username`\nor the `userKey` must be specified to identify the user."
-                }
-              },
               "group": {
                 "type": "array",
                 "description": "The groups that the restrictions will be applied to. This array must\nhave at least one item, otherwise it should be omitted.",
@@ -12994,17 +12968,75 @@
                   },
                   "description": "A group that the restriction will be applied to."
                 }
+              },
+              "user": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  },
+                  {
+                    "$ref": "#/components/schemas/UserArray"
+                  }
+                ]
               }
             },
             "description": "The users/groups that the restrictions will be applied to. At least one of\n`user` or `group` must be specified for this object."
+          },
+          "content": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Content"
+              }
+            ],
+            "nullable": true
           }
         }
       },
-      "ContentRestrictionUpdateArray": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/ContentRestrictionUpdate"
-        }
+      "ContentRestrictionAddOrUpdateArray": {
+        "oneOf": [
+          {
+            "type": "object",
+            "required": [
+              "results"
+            ],
+            "properties": {
+              "results": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ContentRestrictionUpdate"
+                }
+              },
+              "start": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "limit": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "size": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "restrictionsHash": {
+                "type": "string",
+                "description": "This property is used by the UI to figure out whether a set of restrictions\nhas changed."
+              },
+              "_links": {
+                "$ref": "#/components/schemas/GenericLinks"
+              }
+            }
+          },
+          {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContentRestrictionUpdate"
+            }
+          }
+        ]
       },
       "AddContentRestriction": {
         "required": [
@@ -13585,6 +13617,7 @@
       },
       "GenericAccountId": {
         "type": "string",
+        "nullable": true,
         "description": "The account ID of the user, which uniquely identifies the user across all Atlassian products.\nFor example, `384093:32b4d9w0-f6a5-3535-11a3-9c8c88d10192`."
       },
       "GenericLinks": {
@@ -13603,10 +13636,12 @@
       },
       "GenericUserName": {
         "type": "string",
+        "nullable": true,
         "description": "This property is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details."
       },
       "GenericUserKey": {
         "type": "string",
+        "nullable": true,
         "description": "This property is no longer available and will be removed from the documentation soon.\nUse `accountId` instead.\nSee the [deprecation notice](/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/) for details."
       },
       "Group": {
@@ -13768,6 +13803,7 @@
           "width"
         ],
         "type": "object",
+        "nullable": true,
         "properties": {
           "path": {
             "type": "string"
@@ -14005,26 +14041,6 @@
             "$ref": "#/components/schemas/GenericLinks"
           }
         }
-      },
-      "LookAndFeelUpdated": {
-        "description": "Look and feel settings returned after an update.",
-        "anyOf": [
-          {
-            "$ref": "#/components/schemas/LookAndFeel"
-          },
-          {
-            "required": [
-              "_links"
-            ],
-            "type": "object",
-            "additionalProperties": true,
-            "properties": {
-              "_links": {
-                "$ref": "#/components/schemas/GenericLinks"
-              }
-            }
-          }
-        ]
       },
       "LookAndFeelSelection": {
         "required": [
@@ -15889,8 +15905,6 @@
       },
       "User": {
         "required": [
-          "displayName",
-          "profilePicture",
           "type"
         ],
         "type": "object",
@@ -15924,6 +15938,7 @@
             ]
           },
           "email": {
+            "nullable": true,
             "type": "string",
             "description": "The email address of the user. Depending on the user's privacy setting, this may return an empty string."
           },
@@ -15935,6 +15950,7 @@
             "$ref": "#/components/schemas/Icon"
           },
           "displayName": {
+            "nullable": true,
             "type": "string",
             "description": "The display name of the user. Depending on the user's privacy setting, this may be the same as publicName."
           },
@@ -16021,10 +16037,7 @@
       },
       "UserArray": {
         "required": [
-          "limit",
-          "results",
-          "size",
-          "start"
+          "results"
         ],
         "type": "object",
         "properties": {
