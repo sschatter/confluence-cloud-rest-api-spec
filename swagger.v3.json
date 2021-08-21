@@ -1745,7 +1745,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AttachmentUpdate"
+                "$ref": "#/components/schemas/Content"
               }
             }
           },
@@ -11073,77 +11073,6 @@
           }
         }
       },
-      "AttachmentUpdate": {
-        "required": [
-          "id",
-          "type",
-          "version"
-        ],
-        "type": "object",
-        "properties": {
-          "version": {
-            "required": [
-              "number"
-            ],
-            "type": "object",
-            "properties": {
-              "number": {
-                "type": "integer",
-                "description": "The version number.",
-                "format": "int32"
-              }
-            },
-            "description": "The attachment version. Set this to the current version number of the\nattachment. Note, the version number only needs to be incremented when\nupdating the actual attachment, not its properties."
-          },
-          "id": {
-            "type": "string",
-            "description": "The ID of the attachment to be updated."
-          },
-          "type": {
-            "type": "string",
-            "description": "Set this to `attachment`.",
-            "enum": [
-              "attachment"
-            ]
-          },
-          "title": {
-            "maxLength": 255,
-            "type": "string",
-            "description": "The updated name of the attachment."
-          },
-          "metadata": {
-            "type": "object",
-            "properties": {
-              "mediaType": {
-                "type": "string",
-                "description": "The media type of the attachment, e.g. 'img/jpg'."
-              },
-              "comment": {
-                "type": "string",
-                "description": "The comment for this update."
-              }
-            }
-          },
-          "container": {
-            "required": [
-              "id",
-              "type"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string",
-                "description": "The `id` of the parent content."
-              },
-              "type": {
-                "type": "string",
-                "description": "The content type. You can only attach attachments to content\nof type: `page`, `blogpost`."
-              }
-            },
-            "description": "The new content to attach the attachment to."
-          }
-        }
-      },
       "AuditRecord": {
         "required": [
           "affectedObject",
@@ -11651,7 +11580,6 @@
       },
       "Content": {
         "required": [
-          "_expandable",
           "status",
           "type"
         ],
@@ -11663,7 +11591,8 @@
             "type": "string"
           },
           "type": {
-            "type": "string"
+            "type": "string",
+            "description": "Can be \"page\", \"blogpost\", \"attachment\" or \"content\""
           },
           "status": {
             "type": "string"
@@ -11874,10 +11803,8 @@
       "ContentArray": {
         "required": [
           "_links",
-          "limit",
           "results",
-          "size",
-          "start"
+          "size"
         ],
         "type": "object",
         "properties": {
@@ -12398,6 +12325,7 @@
           "latest"
         ],
         "type": "object",
+        "nullable": true,
         "properties": {
           "latest": {
             "type": "boolean"
@@ -12561,7 +12489,17 @@
             "additionalProperties": true
           },
           "labels": {
-            "$ref": "#/components/schemas/LabelArray"
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LabelArray"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Label"
+                }
+              }
+            ]
           }
         },
         "description": "Metadata object for page, blogpost, comment content"
@@ -13847,11 +13785,8 @@
       },
       "LabelArray": {
         "required": [
-          "_links",
-          "limit",
           "results",
-          "size",
-          "start"
+          "size"
         ],
         "type": "object",
         "properties": {
@@ -15909,6 +15844,7 @@
         ],
         "type": "object",
         "additionalProperties": true,
+        "nullable": true,
         "properties": {
           "type": {
             "type": "string",
@@ -16174,13 +16110,16 @@
           },
           "when": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "nullable": true
           },
           "friendlyWhen": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "message": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "number": {
             "type": "integer",
@@ -16218,14 +16157,17 @@
           },
           "confRev": {
             "type": "string",
+            "nullable": true,
             "description": "The revision id provided by confluence to be used as a revision in Synchrony"
           },
           "syncRev": {
             "type": "string",
+            "nullable": true,
             "description": "The revision id provided by Synchrony"
           },
           "syncRevSource": {
             "type": "string",
+            "nullable": true,
             "description": "Source of the synchrony revision"
           }
         }
