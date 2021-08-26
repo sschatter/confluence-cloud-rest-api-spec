@@ -4631,17 +4631,13 @@
           {
             "name": "expand",
             "in": "query",
-            "description": "A multi-value parameter indicating which properties of the content to expand.\n\n- `collaborators` returns the users that collaborated on the version.\n- `content` returns the content for the version.",
+            "description": "A multi-value parameter indicating which properties of the content to expand. By default, the `content`\nobject is expanded.\n\n- `collaborators` returns the users that collaborated on the version.\n- `content` returns the content for the version.",
             "style": "form",
             "explode": false,
             "schema": {
               "type": "array",
               "items": {
-                "type": "string",
-                "enum": [
-                  "collaborators",
-                  "content"
-                ]
+                "type": "string"
               }
             }
           }
@@ -4694,17 +4690,13 @@
           {
             "name": "expand",
             "in": "query",
-            "description": "A multi-value parameter indicating which properties of the returned\ncontent to expand.\n\n- `collaborators` returns the users that collaborated on the version.\n- `content` returns the content for the version.",
+            "description": "A multi-value parameter indicating which properties of the content to expand. By default, the `content`\nobject is expanded.\n\n- `collaborators` returns the users that collaborated on the version.\n- `content` returns the content for the version.",
             "style": "form",
             "explode": false,
             "schema": {
               "type": "array",
               "items": {
-                "type": "string",
-                "enum": [
-                  "collaborators",
-                  "content"
-                ]
+                "type": "string"
               }
             }
           }
@@ -4785,17 +4777,13 @@
           {
             "name": "expand",
             "in": "query",
-            "description": "A multi-value parameter indicating which properties of the content to\nexpand. By default, the `content` object is expanded.\n\n- `collaborators` returns the users that collaborated on the version.\n- `content` returns the content for the version.",
+            "description": "A multi-value parameter indicating which properties of the content to expand. By default, the `content`\nobject is expanded.\n\n- `collaborators` returns the users that collaborated on the version.\n- `content` returns the content for the version.",
             "style": "form",
             "explode": false,
             "schema": {
               "type": "array",
               "items": {
-                "type": "string",
-                "enum": [
-                  "collaborators",
-                  "content"
-                ]
+                "type": "string"
               }
             }
           }
@@ -9356,6 +9344,10 @@
               }
             }
           },
+          "400": {
+            "description": "Returned if template name is null or an empty string.",
+            "content": {}
+          },
           "403": {
             "description": "Returned if the calling user does not have permission to update the\ntemplate.",
             "content": {}
@@ -9402,6 +9394,10 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Returned if template name is null or an empty string.",
+            "content": {}
           },
           "403": {
             "description": "Returned if the calling user does not have permission to create the\ntemplate.",
@@ -9661,6 +9657,9 @@
           "204": {
             "description": "Returned if the template has been successfully been deleted.",
             "content": {}
+          },
+          "403": {
+            "description": "Returned if;\n\n- There is no template with the given ID.\n- The calling user does not have permission to delete the template."
           }
         },
         "security": [
@@ -11294,7 +11293,6 @@
       },
       "BlueprintTemplate": {
         "required": [
-          "_expandable",
           "_links",
           "description",
           "labels",
@@ -11333,6 +11331,10 @@
           "description": {
             "type": "string"
           },
+          "space": {
+            "type": "object",
+            "additionalProperties": true
+          },
           "labels": {
             "type": "array",
             "items": {
@@ -11342,8 +11344,11 @@
           "templateType": {
             "type": "string"
           },
+          "editorVersion": {
+            "type": "string"
+          },
           "body": {
-            "$ref": "#/components/schemas/ContentBody"
+            "$ref": "#/components/schemas/ContentTemplateBody"
           },
           "_expandable": {
             "type": "object",
@@ -11930,7 +11935,6 @@
       },
       "ContentBody": {
         "required": [
-          "_expandable",
           "representation",
           "value"
         ],
@@ -12316,7 +12320,7 @@
                 "$ref": "#/components/schemas/ContentBodyCreate"
               }
             },
-            "description": "The body of the new content. Does not apply to attachments.\nOnly one body format should be specified as the property for\nthis object, e.g. `storage`.\n\nNote, `editor2` format is used by Atlassian only. `anonymous_export_view` is\nthe same as 'export_view' format but only content viewable by an anonymous\nuser is included."
+            "description": "The body of the new content. Does not apply to attachments.\nOnly one body format should be specified as the property for\nthis object, e.g. `storage`.\n\nNote, `editor2` format is used by Atlassian only. `anonymous_export_view` is\nthe same as `export_view` format but only content viewable by an anonymous\nuser is included."
           }
         }
       },
@@ -13065,7 +13069,6 @@
       },
       "ContentTemplate": {
         "required": [
-          "_expandable",
           "_links",
           "description",
           "labels",
@@ -13078,11 +13081,29 @@
           "templateId": {
             "type": "string"
           },
+          "originalTemplate": {
+            "type": "object",
+            "properties": {
+              "pluginKey": {
+                "type": "string"
+              },
+              "moduleKey": {
+                "type": "string"
+              }
+            }
+          },
+          "referencingBlueprint": {
+            "type": "string"
+          },
           "name": {
             "type": "string"
           },
           "description": {
             "type": "string"
+          },
+          "space": {
+            "type": "object",
+            "additionalProperties": true
           },
           "labels": {
             "type": "array",
@@ -13093,8 +13114,11 @@
           "templateType": {
             "type": "string"
           },
+          "editorVersion": {
+            "type": "string"
+          },
           "body": {
-            "$ref": "#/components/schemas/ContentBody"
+            "$ref": "#/components/schemas/ContentTemplateBody"
           },
           "_expandable": {
             "type": "object",
@@ -13149,6 +13173,7 @@
           "templateType"
         ],
         "type": "object",
+        "additionalProperties": true,
         "properties": {
           "name": {
             "type": "string",
@@ -13178,6 +13203,8 @@
               "key"
             ],
             "type": "object",
+            "additionalProperties": true,
+            "nullable": true,
             "properties": {
               "key": {
                 "type": "string"
@@ -13188,14 +13215,71 @@
         },
         "description": "This object is used to create content templates."
       },
+      "ContentTemplateBody": {
+        "type": "object",
+        "properties": {
+          "view": {
+            "$ref": "#/components/schemas/ContentBody"
+          },
+          "export_view": {
+            "$ref": "#/components/schemas/ContentBody"
+          },
+          "styled_view": {
+            "$ref": "#/components/schemas/ContentBody"
+          },
+          "storage": {
+            "$ref": "#/components/schemas/ContentBody"
+          },
+          "editor": {
+            "$ref": "#/components/schemas/ContentBody"
+          },
+          "editor2": {
+            "$ref": "#/components/schemas/ContentBody"
+          },
+          "wiki": {
+            "$ref": "#/components/schemas/ContentBody"
+          },
+          "atlas_doc_format": {
+            "$ref": "#/components/schemas/ContentBody"
+          },
+          "anonymous_export_view": {
+            "$ref": "#/components/schemas/ContentBody"
+          }
+        },
+        "description": "The body of the new content. Does not apply to attachments.\nOnly one body format should be specified as the property for\nthis object, e.g. `storage`.\n\nNote, `editor2` format is used by Atlassian only. `anonymous_export_view` is\nthe same as `export_view` format but only content viewable by an anonymous\nuser is included."
+      },
       "ContentTemplateBodyCreate": {
         "type": "object",
         "properties": {
+          "view": {
+            "$ref": "#/components/schemas/ContentBodyCreate"
+          },
+          "export_view": {
+            "$ref": "#/components/schemas/ContentBodyCreate"
+          },
+          "styled_view": {
+            "$ref": "#/components/schemas/ContentBodyCreate"
+          },
           "storage": {
+            "$ref": "#/components/schemas/ContentBodyCreate"
+          },
+          "editor": {
+            "$ref": "#/components/schemas/ContentBodyCreate"
+          },
+          "editor2": {
+            "$ref": "#/components/schemas/ContentBodyCreate"
+          },
+          "wiki": {
+            "$ref": "#/components/schemas/ContentBodyCreate"
+          },
+          "atlas_doc_format": {
+            "$ref": "#/components/schemas/ContentBodyCreate"
+          },
+          "anonymous_export_view": {
             "$ref": "#/components/schemas/ContentBodyCreate"
           }
         },
-        "description": "This object is used when creating or updating content."
+        "description": "The body of the new content. Does not apply to attachments.\nOnly one body format should be specified as the property for\nthis object, e.g. `storage`.\n\nNote, `editor2` format is used by Atlassian only. `anonymous_export_view` is\nthe same as `export_view` format but only content viewable by an anonymous\nuser is included."
       },
       "ContentTemplateUpdate": {
         "required": [
@@ -13205,6 +13289,7 @@
           "templateType"
         ],
         "type": "object",
+        "additionalProperties": true,
         "properties": {
           "templateId": {
             "type": "string",
@@ -13222,7 +13307,7 @@
             ]
           },
           "body": {
-            "$ref": "#/components/schemas/ContentBodyCreate"
+            "$ref": "#/components/schemas/ContentTemplateBodyCreate"
           },
           "description": {
             "maxLength": 100,
@@ -13241,6 +13326,8 @@
               "key"
             ],
             "type": "object",
+            "additionalProperties": true,
+            "nullable": true,
             "properties": {
               "key": {
                 "type": "string"
@@ -16135,9 +16222,6 @@
             "$ref": "#/components/schemas/UsersUserKeys"
           },
           "_expandable": {
-            "required": [
-              "content"
-            ],
             "type": "object",
             "properties": {
               "content": {
@@ -16234,6 +16318,10 @@
               "message": {
                 "type": "string",
                 "description": "Description for the version."
+              },
+              "restoreTitle": {
+                "type": "boolean",
+                "description": "If true, the content title will be the same as the title from the version restored. Defaults to `false`."
               }
             }
           }
