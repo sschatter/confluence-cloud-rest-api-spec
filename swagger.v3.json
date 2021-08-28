@@ -1294,18 +1294,13 @@
           {
             "name": "expand",
             "in": "query",
-            "description": "A multi-value parameter indicating which properties of the children to expand, where:\n\n- `attachment` returns all attachments for the content.\n- `comments` returns all comments for the content.\n- `page` returns all child pages of the content.",
+            "description": "A multi-value parameter indicating which properties of the children to expand, where:\n\n- `attachment` returns all attachments for the content.\n- `comments` returns all comments for the content.\n- `page` returns all child pages of the content.\n- Custom content types that are provided by apps are also supported.",
             "style": "form",
             "explode": false,
             "schema": {
               "type": "array",
               "items": {
-                "type": "string",
-                "enum": [
-                  "attachment",
-                  "comment",
-                  "page"
-                ]
+                "type": "string"
               }
             }
           },
@@ -2134,8 +2129,12 @@
               }
             }
           },
+          "400": {
+            "description": "Returned if the parent type and desired child content type are not compatible.\nEg: Cannot find `page` children of a `blogpost`.",
+            "content": {}
+          },
           "404": {
-            "description": "Returned if;\n\n- There is no content with the given ID.\n- The calling user does not have permission to view the content.",
+            "description": "Returned if:\n\n- There is no content with the given ID.\n- The calling user does not have permission to view the content.",
             "content": {}
           }
         },
@@ -2905,11 +2904,15 @@
             "content": {}
           },
           "400": {
-            "description": "Returned if original page or destination page doesn't exist.",
+            "description": "Returned if the title prefix is invalid (e.g. is empty, creates a conflict)",
             "content": {}
           },
           "403": {
             "description": "Returned if the user does not have permission to create content at destination",
+            "content": {}
+          },
+          "404": {
+            "description": "Returned if original page or destination page does not exist.",
             "content": {}
           }
         },
@@ -5678,6 +5681,10 @@
           "403": {
             "description": "Returned if the calling user does not have permission to view\ngroups.",
             "content": {}
+          },
+          "404": {
+            "description": "Returned if the group does not exist.",
+            "content": {}
           }
         },
         "deprecated": true,
@@ -5731,7 +5738,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserArrayWithLinks"
+                  "$ref": "#/components/schemas/UserArray"
                 }
               }
             }
@@ -5801,7 +5808,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserArrayWithLinks"
+                  "$ref": "#/components/schemas/UserArray"
                 }
               }
             }
@@ -6063,7 +6070,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserArrayWithLinks"
+                  "$ref": "#/components/schemas/UserArray"
                 }
               }
             }
@@ -8697,6 +8704,14 @@
             "description": "Returned if the user does not have 'Admin' permission for the space.",
             "content": {}
           },
+          "404": {
+            "description": "Returned if any of the following is true:\n\n- There is no space with the given key.\n- The calling user does not have permission to view the space.",
+            "content": {}
+          },
+          "409": {
+            "description": "Returned if the key already exists within the space.",
+            "content": {}
+          },
           "413": {
             "description": "Returned if the value for the property is too long.",
             "content": {}
@@ -8977,6 +8992,10 @@
         "responses": {
           "204": {
             "description": "Returned if the space property is deleted.",
+            "content": {}
+          },
+          "403": {
+            "description": "Returned if the user does not have 'Admin' permission for the space.",
             "content": {}
           },
           "404": {
@@ -11879,6 +11898,7 @@
                 "format": "int32"
               }
             },
+            "additionalProperties": true,
             "description": "The version for the new content."
           },
           "title": {
@@ -11913,6 +11933,7 @@
                 "format": "int32"
               }
             },
+            "additionalProperties": true,
             "description": "The space for the content."
           },
           "ancestors": {
@@ -11929,9 +11950,11 @@
                   "description": "The content ID of the ancestor."
                 }
               }
-            }
+            },
+            "nullable": true
           }
-        }
+        },
+        "additionalProperties": true
       },
       "ContentBody": {
         "required": [
@@ -14325,8 +14348,7 @@
             "type": "string"
           },
           "parameters": {
-            "type": "object",
-            "properties": {}
+            "type": "object"
           },
           "_links": {
             "$ref": "#/components/schemas/GenericLinks"
@@ -14641,7 +14663,7 @@
       },
       "PropertyValue": {
         "type": "object",
-        "description": "The value of the property. This can be empty or a complex object.\nFor example,\n```\n\"value\": {\n  \"example1\": \"value\",\n  \"example2\": true,\n  \"example3\": 123\n}\n```"
+        "description": "The value of the property. This can be empty or a complex object. 64KB Size Limit\nFor example,\n```\n\"value\": {\n  \"example1\": \"value\",\n  \"example2\": true,\n  \"example3\": 123\n}\n```"
       },
       "Relation": {
         "required": [
@@ -15327,51 +15349,31 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "integer",
-            "format": "int64"
+            "type": "string"
           },
           "key": {
             "type": "string"
           },
           "value": {
-            "type": "object",
-            "properties": {}
+            "type": "object"
           },
           "version": {
-            "required": [
-              "message",
-              "minorEdit",
-              "number",
-              "when"
-            ],
-            "type": "object",
-            "properties": {
-              "when": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "message": {
-                "type": "string"
-              },
-              "number": {
-                "type": "integer"
-              },
-              "minorEdit": {
-                "type": "boolean"
-              }
-            }
+            "$ref": "#/components/schemas/Version"
           },
           "space": {
             "$ref": "#/components/schemas/Space"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/GenericLinks"
           },
           "_expandable": {
             "type": "object",
             "properties": {
               "version": {
-                "type": "object"
+                "type": "string"
               },
               "space": {
-                "type": "object"
+                "type": "string"
               }
             }
           }
@@ -15423,6 +15425,9 @@
           },
           "value": {
             "$ref": "#/components/schemas/PropertyValue"
+          },
+          "space": {
+            "type": "object"
           }
         }
       },
@@ -15444,29 +15449,17 @@
         ],
         "type": "object",
         "properties": {
+          "key": {
+            "type": "string"
+          },
           "value": {
-            "type": "object",
-            "properties": {},
-            "description": "The value of the property."
+            "type": "object"
           },
           "version": {
-            "required": [
-              "number"
-            ],
-            "type": "object",
-            "properties": {
-              "number": {
-                "type": "integer",
-                "description": "The new version for the updated space property. Set this to the\ncurrent version number incremented by one. To get the current\nversion number, use 'Get space property' and retrieve\n`version.number`.",
-                "format": "int32"
-              },
-              "minorEdit": {
-                "type": "boolean",
-                "description": "If `minorEdit` is set to 'true', no notification email or activity\nstream will be generated for the change.",
-                "default": true
-              }
-            },
-            "description": "The version number of the property."
+            "$ref": "#/components/schemas/Version"
+          },
+          "space": {
+            "type": "object"
           }
         }
       },
@@ -16081,27 +16074,11 @@
           "size": {
             "type": "integer",
             "format": "int32"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/GenericLinks"
           }
         }
-      },
-      "UserArrayWithLinks": {
-        "description": "Same as UserArray but with `_links` property.",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/UserArray"
-          },
-          {
-            "required": [
-              "_links"
-            ],
-            "type": "object",
-            "properties": {
-              "_links": {
-                "$ref": "#/components/schemas/GenericLinks"
-              }
-            }
-          }
-        ]
       },
       "UserDetails": {
         "type": "object",
@@ -16184,7 +16161,6 @@
       },
       "Version": {
         "required": [
-          "by",
           "minorEdit",
           "number",
           "when"
@@ -16210,9 +16186,11 @@
           },
           "number": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "description": "Set this to the current version number incremented by one"
           },
           "minorEdit": {
+            "description": "If `minorEdit` is set to 'true', no notification email or activity\nstream will be generated for the change.",
             "type": "boolean"
           },
           "content": {
@@ -16321,6 +16299,7 @@
               },
               "restoreTitle": {
                 "type": "boolean",
+                "default": false,
                 "description": "If true, the content title will be the same as the title from the version restored. Defaults to `false`."
               }
             }
