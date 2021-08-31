@@ -2529,6 +2529,10 @@
               }
             }
           },
+          "403": {
+            "description": "Returned if the calling user can view but not edit the content.",
+            "content": {}
+          },
           "404": {
             "description": "Returned if;\n\n- There is no content with the given ID.\n- The calling user does not have permission to view the content.",
             "content": {}
@@ -2565,6 +2569,7 @@
           },
           {
             "name": "use-400-error-response",
+            "deprecated": true,
             "in": "query",
             "description": "If true, return the new 400 error response on invalid requests. Otherwise return a server error response\non invalid requests.\n\nWhy does this parameter exist? Previously, our API was returning a 500 status code with\na difficult-to-consume response body. We've fixed the response to have a 400 status code and a more useful\nbody. This parameter enables a smooth transition without a breaking change; eventually, we'll\ncompletely remove the 500 response and this parameter won't be needed.",
             "schema": {
@@ -2577,7 +2582,14 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/LabelCreateArray"
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/LabelCreateArray"
+                  },
+                  {
+                    "$ref": "#/components/schemas/LabelCreate"
+                  }
+                ]
               }
             }
           },
@@ -2596,6 +2608,10 @@
           },
           "400": {
             "description": "Returned if;\n\n- The body contains labels with invalid characters or too many characters.\n- The body contains too many labels.\n- The target content would contain too many labels after the operation.\n- The calling user does not have permission to edit labels.",
+            "content": {}
+          },
+          "403": {
+            "description": "Returned if the calling user can view but not edit the content.",
             "content": {}
           },
           "404": {
@@ -14000,15 +14016,11 @@
           "prefix"
         ],
         "type": "object",
+        "additionalProperties": true,
         "properties": {
           "prefix": {
             "type": "string",
-            "description": "The prefix for the label.",
-            "enum": [
-              "global",
-              "my",
-              "team"
-            ]
+            "description": "The prefix for the label. `global`, `myTeamName`, etc."
           },
           "name": {
             "type": "string",
