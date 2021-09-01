@@ -670,12 +670,20 @@
               }
             }
           },
+          "400": {
+            "description": "Returned if the content type is invalid.",
+            "content": {}
+          },
           "401": {
             "description": "Returned if the authentication credentials are incorrect or missing\nfrom the request.",
             "content": {}
           },
           "403": {
             "description": "Returned if;\n\n- The space that the content is being created in does not exist.\n- If the requesting user does not have permission to create content in it.",
+            "content": {}
+          },
+          "413": {
+            "description": "Returned if request is too large.  Requests for this resource can be at most 5242880 bytes",
             "content": {}
           }
         },
@@ -2862,7 +2870,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/WatchArray"
+                  "$ref": "#/components/schemas/SpaceWatchArray"
                 }
               }
             }
@@ -4966,6 +4974,14 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Returned if the content body is invalid or if the value is improperly formed.",
+            "content": {}
+          },
+          "404": {
+            "description": "Returned if content cannot be found with the provided context.",
+            "content": {}
           }
         },
         "security": [
@@ -6776,6 +6792,10 @@
             "description": "Returned if the request is invalid.",
             "content": {}
           },
+          "401": {
+            "description": "Returned if the authentication credentials are incorrect or missing\nfrom the request.",
+            "content": {}
+          },
           "403": {
             "description": "Returned if the user does not have permission to use Confluence.",
             "content": {}
@@ -6902,6 +6922,10 @@
           },
           "400": {
             "description": "Returned if the request is invalid.",
+            "content": {}
+          },
+          "401": {
+            "description": "Returned if the authentication credentials are incorrect or missing\nfrom the request.",
             "content": {}
           },
           "403": {
@@ -8336,7 +8360,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/SpacePermissionV2"
+                "$ref": "#/components/schemas/SpacePermissionRequest"
               }
             }
           },
@@ -12005,6 +12029,32 @@
           "webresource": {
             "$ref": "#/components/schemas/WebResourceDependencies"
           },
+          "mediaToken": {
+            "type": "object",
+            "properties": {
+              "collectionIds": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "contentId": {
+                "type": "string"
+              },
+              "expiryDateTime": {
+                "type": "string"
+              },
+              "fileIds": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "token": {
+                "type": "string"
+              }
+            }
+          },
           "_expandable": {
             "type": "object",
             "additionalProperties": true,
@@ -12047,6 +12097,9 @@
                 "type": "string"
               }
             }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/GenericLinks"
           }
         }
       },
@@ -12074,7 +12127,8 @@
               "editor2",
               "anonymous_export_view",
               "wiki",
-              "atlas_doc_format"
+              "atlas_doc_format",
+              "plain"
             ]
           }
         },
@@ -12356,6 +12410,12 @@
                 "$ref": "#/components/schemas/ContentBodyCreate"
               },
               "anonymous_export_view": {
+                "$ref": "#/components/schemas/ContentBodyCreate"
+              },
+              "plain": {
+                "$ref": "#/components/schemas/ContentBodyCreate"
+              },
+              "atlas_doc_format": {
                 "$ref": "#/components/schemas/ContentBodyCreate"
               }
             },
@@ -15486,6 +15546,25 @@
             "type": "boolean",
             "description": "Defines whether an override for the space home should be used. This is\nused in conjunction with a space theme provided by an app. For\nexample, if this property is set to true, a theme can display a page\nother than the space homepage when users visit the root URL for a\nspace. This property allows apps to provide content-only theming\nwithout overriding the space home."
           },
+          "editor": {
+            "required": [
+              "page",
+              "blogpost",
+              "default"
+            ],
+            "type": "object",
+            "properties": {
+              "page": {
+                "type": "string"
+              },
+              "blogpost": {
+                "type": "string"
+              },
+              "default": {
+                "type": "string"
+              }
+            }
+          },
           "_links": {
             "$ref": "#/components/schemas/GenericLinks"
           }
@@ -15528,7 +15607,6 @@
       },
       "SpaceWatch": {
         "required": [
-          "spaceKey",
           "type",
           "watcher"
         ],
@@ -15538,12 +15616,15 @@
             "type": "string"
           },
           "watcher": {
-            "$ref": "#/components/schemas/SpaceWatchUser"
-          },
-          "contentId": {
-            "type": "string"
+            "$ref": "#/components/schemas/WatchUser"
           },
           "spaceKey": {
+            "type": "string"
+          },
+          "labelName": {
+            "type": "string"
+          },
+          "prefix": {
             "type": "string"
           }
         }
@@ -15579,57 +15660,6 @@
             "$ref": "#/components/schemas/GenericLinks"
           }
         }
-      },
-      "SpaceWatchUser": {
-        "required": [
-          "accountId",
-          "accountType",
-          "displayName",
-          "email",
-          "profilePicture",
-          "publicName",
-          "type"
-        ],
-        "type": "object",
-        "properties": {
-          "type": {
-            "type": "string"
-          },
-          "username": {
-            "$ref": "#/components/schemas/GenericUserName"
-          },
-          "userKey": {
-            "$ref": "#/components/schemas/GenericUserKey"
-          },
-          "accountId": {
-            "$ref": "#/components/schemas/GenericAccountId"
-          },
-          "profilePicture": {
-            "$ref": "#/components/schemas/Icon"
-          },
-          "displayName": {
-            "type": "string"
-          },
-          "operations": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/OperationCheckResult"
-            }
-          },
-          "details": {
-            "$ref": "#/components/schemas/UserDetails"
-          },
-          "accountType": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "publicName": {
-            "type": "string"
-          }
-        },
-        "description": "This essentially the same as the `User` object, but no `_links` property and\nno `_expandable` property (therefore, different required fields)."
       },
       "SuperBatchWebResources": {
         "type": "object",
@@ -16333,7 +16363,8 @@
             "$ref": "#/components/schemas/WatchUser"
           },
           "contentId": {
-            "type": "string"
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
@@ -16372,12 +16403,17 @@
       },
       "WatchUser": {
         "required": [
+          "type",
           "accountId",
-          "details",
+          "profilePicture",
           "displayName",
           "operations",
-          "profilePicture",
-          "type"
+          "isExternalCollaborator",
+          "accountType",
+          "email",
+          "publicName",
+          "personalSpace",
+          "externalCollaborator"
         ],
         "type": "object",
         "properties": {
@@ -16401,12 +16437,32 @@
           },
           "operations": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/OperationCheckResult"
             }
           },
+          "isExternalCollaborator": {
+            "type": "boolean"
+          },
           "details": {
             "$ref": "#/components/schemas/UserDetails"
+          },
+          "accountType": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "publicName": {
+            "type": "string"
+          },
+          "personalSpace": {
+            "type": "object",
+            "nullable": true
+          },
+          "externalCollaborator": {
+            "type": "boolean"
           }
         },
         "description": "This essentially the same as the `User` object, but no `_links` property and\nno `_expandable` property (therefore, different required fields)."
@@ -16589,8 +16645,9 @@
       },
       "SpacePermissionV2": {
         "required": [
-          "operation",
-          "subject"
+          "id",
+          "subject",
+          "operation"
         ],
         "type": "object",
         "properties": {
@@ -16645,6 +16702,62 @@
           }
         },
         "description": "This object represents a single space permission. Permissions consist of\nat least one operation object with an accompanying subjects object.\n\nThe following combinations of `operation.key` and `operation.target` values are\nvalid for the `operation` object:\n``` bash\n'create': 'page', 'blogpost', 'comment', 'attachment'\n'read': 'space'\n'delete': 'page', 'blogpost', 'comment', 'attachment', 'space'\n'export': 'space'\n'administer': 'space'\n'archive': 'page'\n'restrict_content': 'space'\n```\n\nFor example, to enable Delete Own permission, set the `operation` object to the following:\n```\n\"operation\": {\n    \"key\": \"delete\",\n    \"target\": \"space\"\n}\n```\nTo enable Add/Delete Restrictions permissions, set the `operation` object to the following:\n```\n\"operation\": {\n    \"key\": \"restrict_content\",\n    \"target\": \"space\"\n}\n```"
+      },
+      "SpacePermissionRequest": {
+        "required": [
+          "subject",
+          "operation"
+        ],
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "subject": {
+            "$ref": "#/components/schemas/PermissionSubject"
+          },
+          "operation": {
+            "required": [
+              "key",
+              "target"
+            ],
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "enum": [
+                  "administer",
+                  "archive",
+                  "copy",
+                  "create",
+                  "delete",
+                  "export",
+                  "move",
+                  "purge",
+                  "purge_version",
+                  "read",
+                  "restore",
+                  "restrict_content",
+                  "update",
+                  "use"
+                ]
+              },
+              "target": {
+                "type": "string",
+                "description": "The space or content type that the operation applies to.",
+                "enum": [
+                  "page",
+                  "blogpost",
+                  "comment",
+                  "attachment",
+                  "space"
+                ]
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/GenericLinks"
+          }
+        },
+        "description": "This object represents the request for the single space permission. Permissions consist of\nat least one operation object with an accompanying subjects object.\n\nThe following combinations of `operation.key` and `operation.target` values are\nvalid for the `operation` object:\n``` bash\n'create': 'page', 'blogpost', 'comment', 'attachment'\n'read': 'space'\n'delete': 'page', 'blogpost', 'comment', 'attachment', 'space'\n'export': 'space'\n'administer': 'space'\n'archive': 'page'\n'restrict_content': 'space'\n```\n\nFor example, to enable Delete Own permission, set the `operation` object to the following:\n```\n\"operation\": {\n    \"key\": \"delete\",\n    \"target\": \"space\"\n}\n```\nTo enable Add/Delete Restrictions permissions, set the `operation` object to the following:\n```\n\"operation\": {\n    \"key\": \"restrict_content\",\n    \"target\": \"space\"\n}\n```"
       },
       "SpacePermissionCustomContent": {
         "required": [
