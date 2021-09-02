@@ -6658,6 +6658,10 @@
             "description": "Returned if the request is invalid.",
             "content": {}
           },
+          "401": {
+            "description": "Returned if the authentication credentials are incorrect or missing\nfrom the request.",
+            "content": {}
+          },
           "403": {
             "description": "Returned if the user does not have permission to view the\nrelationship.",
             "content": {}
@@ -7955,6 +7959,10 @@
               }
             }
           },
+          "400": {
+            "description": "Returned if spaces could not be fetched due to an invalid status being provided.",
+            "content": {}
+          },
           "401": {
             "description": "Returned if the authentication credentials are incorrect or missing\nfrom the request.",
             "content": {}
@@ -8041,7 +8049,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/SpacePrivateCreate"
+                "$ref": "#/components/schemas/SpaceCreate"
               }
             }
           },
@@ -8309,7 +8317,15 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ContentArray"
+                  "type": "object",
+                  "properties": {
+                    "_links": {
+                      "$ref": "#/components/schemas/GenericLinks"
+                    }
+                  },
+                  "additionalProperties": {
+                    "$ref": "#/components/schemas/ContentArray"
+                  }
                 }
               }
             }
@@ -8528,14 +8544,10 @@
           {
             "name": "type",
             "in": "path",
-            "description": "The type of content to return.",
+            "description": "The type of content to return. `page`, `blogpost`, `<some_customContentType>`.",
             "required": true,
             "schema": {
-              "type": "string",
-              "enum": [
-                "page",
-                "blogpost"
-              ]
+              "type": "string"
             }
           },
           {
@@ -11128,6 +11140,77 @@
           },
           "objectType": {
             "type": "string"
+          }
+        }
+      },
+      "AttachmentUpdate": {
+        "required": [
+          "id",
+          "type",
+          "version"
+        ],
+        "type": "object",
+        "properties": {
+          "version": {
+            "required": [
+              "number"
+            ],
+            "type": "object",
+            "properties": {
+              "number": {
+                "type": "integer",
+                "description": "The version number.",
+                "format": "int32"
+              }
+            },
+            "description": "The attachment version. Set this to the current version number of the\nattachment. Note, the version number only needs to be incremented when\nupdating the actual attachment, not its properties."
+          },
+          "id": {
+            "type": "string",
+            "description": "The ID of the attachment to be updated."
+          },
+          "type": {
+            "type": "string",
+            "description": "Set this to `attachment`.",
+            "enum": [
+              "attachment"
+            ]
+          },
+          "title": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "The updated name of the attachment."
+          },
+          "metadata": {
+            "type": "object",
+            "properties": {
+              "mediaType": {
+                "type": "string",
+                "description": "The media type of the attachment, e.g. 'img/jpg'."
+              },
+              "comment": {
+                "type": "string",
+                "description": "The comment for this update."
+              }
+            }
+          },
+          "container": {
+            "required": [
+              "id",
+              "type"
+            ],
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "The `id` of the parent content."
+              },
+              "type": {
+                "type": "string",
+                "description": "The content type. You can only attach attachments to content\nof type: `page`, `blogpost`."
+              }
+            },
+            "description": "The new content to attach the attachment to."
           }
         }
       },
@@ -13794,6 +13877,26 @@
           }
         }
       },
+      "GroupCreate": {
+        "required": [
+          "name",
+          "type"
+        ],
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "type": {
+            "type": "string",
+            "default": "group",
+            "enum": [
+              "group"
+            ]
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
       "GroupArray": {
         "required": [
           "limit",
@@ -15099,6 +15202,17 @@
               },
               "view": {
                 "$ref": "#/components/schemas/SpaceDescription"
+              },
+              "_expandable": {
+                "type": "object",
+                "properties": {
+                  "view": {
+                    "type": "string"
+                  },
+                  "plain": {
+                    "type": "string"
+                  }
+                }
               }
             }
           },
@@ -15113,6 +15227,9 @@
             "properties": {
               "labels": {
                 "$ref": "#/components/schemas/LabelArray"
+              },
+              "_expandable": {
+                "type": "object"
               }
             }
           },
@@ -15149,6 +15266,9 @@
               "createdDate": {
                 "type": "string",
                 "format": "date-time"
+              },
+              "createdBy": {
+                "$ref": "#/components/schemas/User"
               }
             }
           },
@@ -15234,6 +15354,7 @@
           "name"
         ],
         "type": "object",
+        "additionalProperties": true,
         "properties": {
           "key": {
             "type": "string",
@@ -15249,13 +15370,44 @@
           },
           "permissions": {
             "type": "array",
+            "nullable": true,
             "description": "The permissions for the new space. If no permissions are provided, the\n[Confluence default space permissions](https://confluence.atlassian.com/x/UAgzKw#CreateaSpace-Spacepermissions)\nare applied. Note that if permissions are provided, the space is\ncreated with only the provided set of permissions, not\nincluding the default space permissions. Space permissions\ncan be modified after creation using the space permissions\nendpoints, and a private space can be created using the\ncreate private space endpoint.",
             "items": {
-              "$ref": "#/components/schemas/SpacePermission"
+              "$ref": "#/components/schemas/SpacePermissionCreate"
             }
           }
         },
         "description": "This is the request object used when creating a new space."
+      },
+      "SpaceUpdate": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "name": {
+            "nullable": true,
+            "maxLength": 200,
+            "type": "string",
+            "description": "The updated name of the space."
+          },
+          "description": {
+            "$ref": "#/components/schemas/SpaceDescriptionCreate"
+          },
+          "homepage": {
+            "nullable": true,
+            "description": "The updated homepage for this space",
+            "type": "object"
+          },
+          "type": {
+            "description": "The updated type for this space.",
+            "type": "string"
+          },
+          "status": {
+            "nullable": true,
+            "description": "The updated status for this space.",
+            "type": "string"
+          }
+        },
+        "description": "The properties of a space that can be updated."
       },
       "SpaceDescription": {
         "required": [
@@ -15289,9 +15441,11 @@
           "plain"
         ],
         "type": "object",
+        "nullable": true,
         "properties": {
           "plain": {
             "type": "object",
+            "additionalProperties": true,
             "properties": {
               "value": {
                 "type": "string",
@@ -15315,6 +15469,10 @@
         ],
         "type": "object",
         "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
           "subjects": {
             "required": [
               "_expandable"
@@ -15389,27 +15547,75 @@
         },
         "description": "This object represents a permission for given space. Permissions consist of\nat least one operation object with an accompanying subjects object.\n\nThe following combinations of `operation` and `targetType` values are\nvalid for the `operation` object:\n\n  - 'create': 'page', 'blogpost', 'comment', 'attachment'\n  - 'read': 'space'\n  - 'delete': 'page', 'blogpost', 'comment', 'attachment'\n  - 'export': 'space'\n  - 'administer': 'space'"
       },
-      "SpacePrivateCreate": {
+      "SpacePermissionCreate": {
         "required": [
-          "key",
-          "name"
+          "anonymousAccess",
+          "operation",
+          "subjects",
+          "unlicensedAccess"
         ],
         "type": "object",
+        "additionalProperties": true,
         "properties": {
-          "key": {
-            "type": "string",
-            "description": "The key for the new space. Format: See [Space\nkeys](https://confluence.atlassian.com/x/lqNMMQ)."
+          "subjects": {
+            "type": "object",
+            "properties": {
+              "user": {
+                "required": [
+                  "results",
+                  "size"
+                ],
+                "type": "object",
+                "properties": {
+                  "results": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  },
+                  "size": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              },
+              "group": {
+                "required": [
+                  "results",
+                  "size"
+                ],
+                "type": "object",
+                "properties": {
+                  "results": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/GroupCreate"
+                    }
+                  },
+                  "size": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              }
+            },
+            "description": "The users and/or groups that the permission applies to."
           },
-          "name": {
-            "maxLength": 200,
-            "type": "string",
-            "description": "The name of the new space."
+          "operation": {
+            "$ref": "#/components/schemas/OperationCheckResult"
           },
-          "description": {
-            "$ref": "#/components/schemas/SpaceDescriptionCreate"
+          "anonymousAccess": {
+            "type": "boolean",
+            "description": "Grant anonymous users permission to use the operation.",
+            "default": false
+          },
+          "unlicensedAccess": {
+            "type": "boolean",
+            "description": "Grants access to unlicensed users from JIRA Service Desk when used\nwith the 'read space' operation.",
+            "default": false
           }
         },
-        "description": "This is the request object used when creating a new private space."
+        "description": "This object represents a permission for given space. Permissions consist of\nat least one operation object with an accompanying subjects object.\n\nThe following combinations of `operation` and `targetType` values are\nvalid for the `operation` object:\n\n  - 'create': 'page', 'blogpost', 'comment', 'attachment'\n  - 'read': 'space'\n  - 'delete': 'page', 'blogpost', 'comment', 'attachment'\n  - 'export': 'space'\n  - 'administer': 'space'"
       },
       "SpaceProperty": {
         "required": [
@@ -15576,32 +15782,6 @@
           "routeOverrideEnabled": {
             "type": "boolean",
             "description": "Defines whether an override for the space home should be used. This is\nused in conjunction with a space theme provided by an app. For\nexample, if this property is set to true, a theme can display a page\nother than the space homepage when users visit the root URL for a\nspace. This property allows apps to provide content-only theming\nwithout overriding the space home."
-          }
-        }
-      },
-      "SpaceUpdate": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "maxLength": 200,
-            "type": "string",
-            "description": "The name of the space."
-          },
-          "description": {
-            "$ref": "#/components/schemas/SpaceDescriptionCreate"
-          },
-          "homepage": {
-            "required": [
-              "id"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string",
-                "description": "The ID of the page."
-              }
-            },
-            "description": "The page to set as the homepage of the space."
           }
         }
       },
@@ -15872,8 +16052,7 @@
       },
       "Theme": {
         "required": [
-          "themeKey",
-          "_links"
+          "themeKey"
         ],
         "type": "object",
         "properties": {
@@ -16860,7 +17039,7 @@
       "spaceExpand": {
         "name": "expand",
         "in": "query",
-        "description": "A multi-value parameter indicating which properties of the spaces to\nexpand, where:\n\n  - `settings` returns the settings for the space, similar to [Get space settings](#api-space-spaceKey-settings-get).\n  - `metadata.labels` returns the space labels, which are used to categorize the space.\n  - `operations` returns the operations for a space, which are used when setting permissions.\n  - `lookAndFeel` returns information about the look and feel of the space, including the color scheme.\n  - `permissions` returns the permissions for the space. Note that this may return permissions for deleted groups,\n  because deleting a group doesn't remove associated space permissions.\n  - `icon` returns information about space icon.\n  - `description.plain` returns the description of the space.\n  - `description.view` returns the description of the space.\n  - `theme` returns information about the space theme.\n  - `homepage` returns information about the space homepage.",
+        "description": "A multi-value parameter indicating which properties of the spaces to\nexpand, where:\n\n  - `settings` returns the settings for the space, similar to [Get space settings](#api-space-spaceKey-settings-get).\n  - `metadata` returns the space metadata.\n  - `metadata.labels` returns the space labels, which are used to categorize the space.\n  - `operations` returns the operations for a space, which are used when setting permissions.\n  - `lookAndFeel` returns information about the look and feel of the space, including the color scheme.\n  - `permissions` returns the permissions for the space. Note that this may return permissions for deleted groups,\n  because deleting a group doesn't remove associated space permissions.\n  - `icon` returns information about space icon.\n  - `description` returns the description of the space.\n  - `description.plain` returns the description of the space, the plain format.\n  - `description.view` returns the description of the space, the view format.\n  - `theme` returns information about the space theme.\n  - `homepage` returns information about the space homepage.\n  - `history` returns information about the history of the space.",
         "style": "form",
         "explode": false,
         "schema": {
@@ -16869,15 +17048,18 @@
             "type": "string",
             "enum": [
               "settings",
+              "metadata",
               "metadata.labels",
               "operations",
               "lookAndFeel",
               "permissions",
               "icon",
+              "description",
               "description.plain",
               "description.view",
               "theme",
-              "homepage"
+              "homepage",
+              "history"
             ]
           }
         }
