@@ -610,6 +610,10 @@
             "description": "Returned if the authentication credentials are incorrect or missing\nfrom the request.",
             "content": {}
           },
+          "403": {
+            "description": "Returned if the user does not have correct permission to read this content.",
+            "content": {}
+          },
           "404": {
             "description": "Returned if the calling user does not have permission to view the\nrequested content.",
             "content": {}
@@ -11846,6 +11850,9 @@
                   },
                   "dynamic": {
                     "type": "string"
+                  },
+                  "raw": {
+                    "type": "string"
                   }
                 }
               }
@@ -12211,7 +12218,8 @@
               "anonymous_export_view",
               "wiki",
               "atlas_doc_format",
-              "plain"
+              "plain",
+              "raw"
             ]
           }
         },
@@ -12499,6 +12507,9 @@
                 "$ref": "#/components/schemas/ContentBodyCreate"
               },
               "atlas_doc_format": {
+                "$ref": "#/components/schemas/ContentBodyCreate"
+              },
+              "raw": {
                 "$ref": "#/components/schemas/ContentBodyCreate"
               }
             },
