@@ -551,7 +551,7 @@
             }
           },
           {
-            "$ref": "#/components/parameters/contentExpand"
+            "$ref": "#/components/parameters/contentExpandWithSubExpandLimit"
           },
           {
             "name": "trigger",
@@ -606,6 +606,10 @@
               }
             }
           },
+          "400": {
+            "description": "Returned if sub-expansions limit exceeds.",
+            "content": {}
+          },
           "401": {
             "description": "Returned if the authentication credentials are incorrect or missing\nfrom the request.",
             "content": {}
@@ -649,7 +653,7 @@
             }
           },
           {
-            "$ref": "#/components/parameters/contentExpand"
+            "$ref": "#/components/parameters/contentExpandWithSubExpandLimit"
           }
         ],
         "requestBody": {
@@ -675,7 +679,7 @@
             }
           },
           "400": {
-            "description": "Returned if the content type is invalid.",
+            "description": "Returned if;\n- The content type is invalid.\n- The sub-expansions limit exceeds.",
             "content": {}
           },
           "401": {
@@ -1064,7 +1068,7 @@
             }
           },
           {
-            "$ref": "#/components/parameters/contentExpand"
+            "$ref": "#/components/parameters/contentExpandWithSubExpandLimit"
           },
           {
             "name": "trigger",
@@ -1090,7 +1094,7 @@
             }
           },
           "400": {
-            "description": "Returned if the content id is invalid.",
+            "description": "Returned if;\n- The content id is invalid.\n- The sub-expansions limit exceeds.",
             "content": {}
           },
           "401": {
@@ -2355,7 +2359,7 @@
           {
             "name": "expand",
             "in": "query",
-            "description": "A multi-value parameter indicating which properties of the content history to expand.\n\n- `lastUpdated` returns information about the most recent update of the content,\nincluding who updated it and when it was updated.\n- `previousVersion` returns information about the update prior to the current content\nupdate. For this method, it contains the same information as `lastUpdated`.\n- `contributors` returns all of the users who have contributed to the content.\n- `nextVersion` This parameter is not used for this method.",
+            "description": "A multi-value parameter indicating which properties of the content history to expand.\nMaximum sub-expansions allowed is `8`.\n\n- `lastUpdated` returns information about the most recent update of the content,\nincluding who updated it and when it was updated.\n- `previousVersion` returns information about the update prior to the current content\nupdate. For this method, it contains the same information as `lastUpdated`.\n- `contributors` returns all of the users who have contributed to the content.\n- `nextVersion` This parameter is not used for this method.",
             "style": "form",
             "explode": false,
             "schema": {
@@ -2382,6 +2386,10 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Returned if sub-expansions limit exceeds.",
+            "content": {}
           },
           "401": {
             "description": "Returned if the authentication credentials are incorrect or missing\nfrom the request.",
@@ -2976,7 +2984,7 @@
             }
           },
           {
-            "$ref": "#/components/parameters/contentExpand"
+            "$ref": "#/components/parameters/contentExpandWithSubExpandLimit"
           }
         ],
         "requestBody": {
@@ -3002,7 +3010,7 @@
             }
           },
           "400": {
-            "description": "Returned if;\n\n- destination or any of its fields are not specified.\n- destination.type is invalid.",
+            "description": "Returned if;\n\n- destination or any of its fields are not specified.\n- destination.type is invalid.\n- sub-expansions limit exceeds.",
             "content": {}
           },
           "401": {
@@ -17038,6 +17046,19 @@
         "name": "expand",
         "in": "query",
         "description": "A multi-value parameter indicating which properties of the content to expand.\n\n- `childTypes.all` returns whether the content has attachments, comments, or child pages.\nUse this if you only need to check whether the content has children of a particular type.\n- `childTypes.attachment` returns whether the content has attachments.\n- `childTypes.comment` returns whether the content has comments.\n- `childTypes.page` returns whether the content has child pages.\n- `container` returns the space that the content is in. This is the same as the information\nreturned by [Get space](#api-space-spaceKey-get).\n- `metadata.currentuser` returns information about the current user in relation to the content,\nincluding when they last viewed it, modified it, contributed to it, or added it as a favorite.\n- `metadata.properties` returns content properties that have been set via the Confluence REST API.\n- `metadata.labels` returns the labels that have been added to the content.\n- `metadata.frontend` this property is only used by Atlassian.\n- `operations` returns the operations for the content, which are used when setting permissions.\n- `children.page` returns pages that are descendants at the level immediately below the content.\n- `children.attachment` returns all attachments for the content.\n- `children.comment` returns all comments on the content.\n- `restrictions.read.restrictions.user` returns the users that have permission to read the content.\n- `restrictions.read.restrictions.group` returns the groups that have permission to read the content. Note that\nthis may return deleted groups, because deleting a group doesn't remove associated restrictions.\n- `restrictions.update.restrictions.user` returns the users that have permission to update the content.\n- `restrictions.update.restrictions.group` returns the groups that have permission to update the content. Note that\nthis may return deleted groups because deleting a group doesn't remove associated restrictions.\n- `history` returns the history of the content, including the date it was created.\n- `history.lastUpdated` returns information about the most recent update of the content, including\nwho updated it and when it was updated.\n- `history.previousVersion` returns information about the update prior to the current content update.\n- `history.contributors` returns all of the users who have contributed to the content.\n- `history.nextVersion` returns information about the update after to the current content update.\n- `ancestors` returns the parent page, if the content is a page.\n- `body` returns the body of the content in different formats, including the editor format,\nview format, and export format.\n- `body.storage` returns the body of content in storage format.\n- `body.view` returns the body of content in view format.\n- `version` returns information about the most recent update of the content, including who updated it\nand when it was updated.\n- `descendants.page` returns pages that are descendants at any level below the content.\n- `descendants.attachment` returns all attachments for the content, same as `children.attachment`.\n- `descendants.comment` returns all comments on the content, same as `children.comment`.\n- `space` returns the space that the content is in. This is the same as the information returned by\n[Get space](#api-space-spaceKey-get).\n\nIn addition, the following comment-specific expansions can be used:\n- `extensions.inlineProperties` returns inline comment-specific properties.\n- `extensions.resolution` returns the resolution status of each comment.",
+        "style": "form",
+        "explode": false,
+        "schema": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "contentExpandWithSubExpandLimit": {
+        "name": "expand",
+        "in": "query",
+        "description": "A multi-value parameter indicating which properties of the content to expand.\nMaximum sub-expansions allowed is `8`.\n\n- `childTypes.all` returns whether the content has attachments, comments, or child pages.\nUse this if you only need to check whether the content has children of a particular type.\n- `childTypes.attachment` returns whether the content has attachments.\n- `childTypes.comment` returns whether the content has comments.\n- `childTypes.page` returns whether the content has child pages.\n- `container` returns the space that the content is in. This is the same as the information\nreturned by [Get space](#api-space-spaceKey-get).\n- `metadata.currentuser` returns information about the current user in relation to the content,\nincluding when they last viewed it, modified it, contributed to it, or added it as a favorite.\n- `metadata.properties` returns content properties that have been set via the Confluence REST API.\n- `metadata.labels` returns the labels that have been added to the content.\n- `metadata.frontend` this property is only used by Atlassian.\n- `operations` returns the operations for the content, which are used when setting permissions.\n- `children.page` returns pages that are descendants at the level immediately below the content.\n- `children.attachment` returns all attachments for the content.\n- `children.comment` returns all comments on the content.\n- `restrictions.read.restrictions.user` returns the users that have permission to read the content.\n- `restrictions.read.restrictions.group` returns the groups that have permission to read the content. Note that\nthis may return deleted groups, because deleting a group doesn't remove associated restrictions.\n- `restrictions.update.restrictions.user` returns the users that have permission to update the content.\n- `restrictions.update.restrictions.group` returns the groups that have permission to update the content. Note that\nthis may return deleted groups because deleting a group doesn't remove associated restrictions.\n- `history` returns the history of the content, including the date it was created.\n- `history.lastUpdated` returns information about the most recent update of the content, including\nwho updated it and when it was updated.\n- `history.previousVersion` returns information about the update prior to the current content update.\n- `history.contributors` returns all of the users who have contributed to the content.\n- `history.nextVersion` returns information about the update after to the current content update.\n- `ancestors` returns the parent page, if the content is a page.\n- `body` returns the body of the content in different formats, including the editor format,\nview format, and export format.\n- `body.storage` returns the body of content in storage format.\n- `body.view` returns the body of content in view format.\n- `version` returns information about the most recent update of the content, including who updated it\nand when it was updated.\n- `descendants.page` returns pages that are descendants at any level below the content.\n- `descendants.attachment` returns all attachments for the content, same as `children.attachment`.\n- `descendants.comment` returns all comments on the content, same as `children.comment`.\n- `space` returns the space that the content is in. This is the same as the information returned by\n[Get space](#api-space-spaceKey-get).\n\nIn addition, the following comment-specific expansions can be used:\n- `extensions.inlineProperties` returns inline comment-specific properties.\n- `extensions.resolution` returns the resolution status of each comment.",
         "style": "form",
         "explode": false,
         "schema": {
