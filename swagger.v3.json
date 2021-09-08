@@ -14873,14 +14873,30 @@
             "$ref": "#/components/schemas/RelationData"
           },
           "source": {
-            "type": "object",
-            "properties": {},
-            "additionalProperties": true
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Content"
+              },
+              {
+                "$ref": "#/components/schemas/User"
+              },
+              {
+                "$ref": "#/components/schemas/Space"
+              }
+            ]
           },
           "target": {
-            "type": "object",
-            "properties": {},
-            "additionalProperties": true
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Content"
+              },
+              {
+                "$ref": "#/components/schemas/User"
+              },
+              {
+                "$ref": "#/components/schemas/Space"
+              }
+            ]
           },
           "_expandable": {
             "type": "object",
@@ -15724,7 +15740,14 @@
             "$ref": "#/components/schemas/PropertyValue"
           },
           "space": {
-            "type": "object"
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": "The key of the space"
+              }
+            }
           }
         }
       },
@@ -15756,7 +15779,14 @@
             "$ref": "#/components/schemas/Version"
           },
           "space": {
-            "type": "object"
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": "The key of the space"
+              }
+            }
           }
         }
       },
