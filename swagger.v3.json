@@ -12390,9 +12390,7 @@
       },
       "ContentCreate": {
         "required": [
-          "body",
           "space",
-          "title",
           "type"
         ],
         "type": "object",
