@@ -2586,15 +2586,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "use-400-error-response",
-            "deprecated": true,
-            "in": "query",
-            "description": "If true, return the new 400 error response on invalid requests. Otherwise return a server error response\non invalid requests.\n\nWhy does this parameter exist? Previously, our API was returning a 500 status code with\na difficult-to-consume response body. We've fixed the response to have a 400 status code and a more useful\nbody. This parameter enables a smooth transition without a breaking change; eventually, we'll\ncompletely remove the 500 response and this parameter won't be needed.",
-            "schema": {
-              "type": "boolean"
-            }
           }
         ],
         "requestBody": {
