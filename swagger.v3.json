@@ -12717,15 +12717,21 @@
           "value": {
             "oneOf": [
               {
-                "type": "boolean"
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               },
               {
-                "type": "string"
+                "type": "boolean"
               },
               {
                 "type": "object",
                 "additionalProperties": true,
                 "properties": {}
+              },
+              {
+                "type": "string"
               }
             ],
             "description": "The value of the content property. This can be empty or a complex object."
@@ -12825,15 +12831,21 @@
           "value": {
             "oneOf": [
               {
-                "type": "boolean"
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               },
               {
-                "type": "string"
+                "type": "boolean"
               },
               {
                 "type": "object",
                 "additionalProperties": true,
                 "properties": {}
+              },
+              {
+                "type": "string"
               }
             ],
             "description": "The value of the content property. This can be empty or a complex object."
@@ -12850,15 +12862,21 @@
           "value": {
             "oneOf": [
               {
-                "type": "boolean"
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               },
               {
-                "type": "string"
+                "type": "boolean"
               },
               {
                 "type": "object",
                 "additionalProperties": true,
                 "properties": {}
+              },
+              {
+                "type": "string"
               }
             ],
             "description": "The value of the content property. This can be empty or a complex object."
@@ -12876,15 +12894,21 @@
           "value": {
             "oneOf": [
               {
-                "type": "boolean"
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               },
               {
-                "type": "string"
+                "type": "boolean"
               },
               {
                 "type": "object",
                 "additionalProperties": true,
                 "properties": {}
+              },
+              {
+                "type": "string"
               }
             ],
             "description": "The value of the content property. This can be empty or a complex object."
