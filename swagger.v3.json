@@ -15085,8 +15085,26 @@
         "description": "An operation and the target entity that it applies to, e.g. create page."
       },
       "PropertyValue": {
-        "type": "object",
-        "description": "The value of the property. This can be empty or a complex object. 64KB Size Limit\nFor example,\n```\n\"value\": {\n  \"example1\": \"value\",\n  \"example2\": true,\n  \"example3\": 123\n}\n```"
+        "oneOf": [
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {}
+          },
+          {
+            "type": "string"
+          }
+        ],
+        "description": "The value of the property. This can be empty or a complex object. 64KB Size Limit\nFor example,\n```\n\"value\": {\n  \"example1\": \"value\",\n  \"example2\": true,\n  \"example3\": 123,\n  \"example4\": [\"value1\", \"value2\"],\n}\n```"
       },
       "Relation": {
         "required": [
@@ -15728,7 +15746,6 @@
         "required": [
           "anonymousAccess",
           "operation",
-          "subjects",
           "unlicensedAccess"
         ],
         "type": "object",
@@ -15815,7 +15832,6 @@
         "required": [
           "anonymousAccess",
           "operation",
-          "subjects",
           "unlicensedAccess"
         ],
         "type": "object",
@@ -15897,7 +15913,25 @@
             "type": "string"
           },
           "value": {
-            "type": "object"
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "object",
+                "additionalProperties": true,
+                "properties": {}
+              },
+              {
+                "type": "string"
+              }
+            ]
           },
           "version": {
             "$ref": "#/components/schemas/Version"
@@ -16002,7 +16036,25 @@
             "type": "string"
           },
           "value": {
-            "type": "object"
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "object",
+                "additionalProperties": true,
+                "properties": {}
+              },
+              {
+                "type": "string"
+              }
+            ]
           },
           "version": {
             "$ref": "#/components/schemas/Version"
