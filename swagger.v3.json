@@ -17347,6 +17347,9 @@
             "items": {
               "$ref": "#/components/schemas/Message"
             }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/GenericLinks"
           }
         },
         "description": "This object represents the response for the content permission check API. If the user or group does not have\npermissions, the following errors may be returned:\n\n- Group does not have permission to the space\n- Group does not have permission to the content\n- User is not allowed to use Confluence\n- User does not have permission to the space\n- User does not have permission to the content\n- Anonymous users are not allowed to use Confluence\n- Anonymous user does not have permission to the space\n- Anonymous user does not have permission to the content"
