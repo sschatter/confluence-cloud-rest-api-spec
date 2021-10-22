@@ -16497,10 +16497,10 @@
           },
           "accountType": {
             "type": "string",
-            "description": "The account type of the user, may return empty string if unavailable.",
+            "description": "The account type of the user, may return empty string if unavailable. App is if the user is a bot user created on behalf of an Atlassian app.",
             "enum": [
               "atlassian",
-              "app (if this user is a bot user created on behalf of an Atlassian app)",
+              "app",
               ""
             ]
           },
