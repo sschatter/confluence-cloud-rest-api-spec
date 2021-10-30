@@ -7505,7 +7505,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LookAndFeel"
+                  "$ref": "#/components/schemas/LookAndFeelWithLinks"
                 }
               }
             }
@@ -8322,12 +8322,15 @@
                 "schema": {
                   "type": "object",
                   "properties": {
+                    "page": {
+                      "$ref": "#/components/schemas/ContentArray"
+                    },
+                    "blogpost": {
+                      "$ref": "#/components/schemas/ContentArray"
+                    },
                     "_links": {
                       "$ref": "#/components/schemas/GenericLinks"
                     }
-                  },
-                  "additionalProperties": {
-                    "$ref": "#/components/schemas/ContentArray"
                   }
                 }
               }
@@ -12075,13 +12078,23 @@
           },
           "restrictions": {
             "type": "object",
-            "additionalProperties": true,
             "properties": {
               "read": {
                 "$ref": "#/components/schemas/ContentRestriction"
               },
               "update": {
                 "$ref": "#/components/schemas/ContentRestriction"
+              },
+              "_expandable": {
+                "type": "object",
+                "properties": {
+                  "read": {
+                    "type": "string"
+                  },
+                  "update": {
+                    "type": "string"
+                  }
+                }
               },
               "_links": {
                 "$ref": "#/components/schemas/GenericLinks"
@@ -12098,20 +12111,7 @@
             }
           },
           "extensions": {
-            "type": "object",
-            "additionalProperties": true,
-            "properties": {
-              "position": {
-                "oneOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "integer"
-                  }
-                ]
-              }
-            }
+            "type": "object"
           },
           "_expandable": {
             "type": "object",
@@ -12362,7 +12362,6 @@
           },
           "_expandable": {
             "type": "object",
-            "additionalProperties": true,
             "properties": {
               "content": {
                 "oneOf": [
@@ -12597,7 +12596,6 @@
       },
       "ContentCreate": {
         "required": [
-          "space",
           "type"
         ],
         "type": "object",
@@ -12840,7 +12838,6 @@
         "properties": {
           "currentuser": {
             "type": "object",
-            "additionalProperties": true,
             "properties": {
               "favourited": {
                 "type": "object",
@@ -12885,6 +12882,29 @@
                     "format": "date-time"
                   },
                   "friendlyLastSeen": {
+                    "type": "string"
+                  }
+                }
+              },
+              "scheduled": {
+                "type": "object"
+              },
+              "_expandable": {
+                "type": "object",
+                "properties": {
+                  "favourited": {
+                    "type": "string"
+                  },
+                  "lastmodified": {
+                    "type": "string"
+                  },
+                  "lastcontributed": {
+                    "type": "string"
+                  },
+                  "viewed": {
+                    "type": "string"
+                  },
+                  "scheduled": {
                     "type": "string"
                   }
                 }
@@ -14504,11 +14524,24 @@
           "spaceReference": {
             "type": "object",
             "nullable": true
-          },
-          "_links": {
-            "$ref": "#/components/schemas/GenericLinks"
           }
         }
+      },
+      "LookAndFeelWithLinks": {
+        "description": "Look and feel settings returned after an update.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LookAndFeel"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "_links": {
+                "$ref": "#/components/schemas/GenericLinks"
+              }
+            }
+          }
+        ]
       },
       "LookAndFeelSelection": {
         "required": [
