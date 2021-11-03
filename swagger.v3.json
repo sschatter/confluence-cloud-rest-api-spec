@@ -9613,7 +9613,7 @@
           "Template"
         ],
         "summary": "Update content template",
-        "description": "Updates a content template. Note, blueprint templates cannot be updated\nvia the REST API.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Admin' permission for the space to create a space template or 'Confluence Administrator'\nglobal permission to create a global template.",
+        "description": "Updates a content template. Note, blueprint templates cannot be updated\nvia the REST API.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Admin' permission for the space to update a space template or 'Confluence Administrator'\nglobal permission to update a global template.",
         "operationId": "updateContentTemplate",
         "requestBody": {
           "description": "The updated content template.",
@@ -9933,7 +9933,7 @@
           "Template"
         ],
         "summary": "Remove template",
-        "description": "Deletes a template. This results in different actions depending on the\ntype of template:\n\n- If the template is a content template, it is deleted.\n- If the template is a modified space-level blueprint template, it reverts\nto the template inherited from the global-level blueprint template.\n- If the template is a modified global-level blueprint template, it reverts\nto the default global-level blueprint template.\n\n Note, unmodified blueprint templates cannot be deleted.",
+        "description": "Deletes a template. This results in different actions depending on the\ntype of template:\n\n- If the template is a content template, it is deleted.\n- If the template is a modified space-level blueprint template, it reverts\nto the template inherited from the global-level blueprint template.\n- If the template is a modified global-level blueprint template, it reverts\nto the default global-level blueprint template.\n\n Note, unmodified blueprint templates cannot be deleted.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n        'Admin' permission for the space to delete a space template or 'Confluence Administrator'\n        global permission to delete a global template.",
         "operationId": "removeTemplate",
         "parameters": [
           {
