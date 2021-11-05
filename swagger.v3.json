@@ -9742,7 +9742,7 @@
           "Template"
         ],
         "summary": "Get blueprint templates",
-        "description": "Returns all templates provided by blueprints. Use this method to retrieve\nall global blueprint templates or all blueprint templates in a space.\n\nNote, all global blueprints are inherited by each space. Space blueprints\ncan be customised without affecting the global blueprints.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).",
+        "description": "Returns all templates provided by blueprints. Use this method to retrieve\nall global blueprint templates or all blueprint templates in a space.\n\nNote, all global blueprints are inherited by each space. Space blueprints\ncan be customised without affecting the global blueprints.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'View' permission for the space to view blueprints for the space and permission\nto access the Confluence site ('Can use' global permission) to view global blueprints.",
         "operationId": "getBlueprintTemplates",
         "parameters": [
           {
@@ -9827,7 +9827,7 @@
           "Template"
         ],
         "summary": "Get content templates",
-        "description": "Returns all content templates. Use this method to retrieve all global\ncontent templates or all content templates in a space.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Admin' permission for the space to view space templates and 'Confluence\nAdministrator' global permission to view global templates.",
+        "description": "Returns all content templates. Use this method to retrieve all global\ncontent templates or all content templates in a space.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'View' permission for the space to view space templates and permission to\naccess the Confluence site ('Can use' global permission) to view global templates.",
         "operationId": "getContentTemplates",
         "parameters": [
           {
@@ -9912,7 +9912,7 @@
           "Template"
         ],
         "summary": "Get content template",
-        "description": "Returns a content template. This includes information about template,\nlike the name, the space or blueprint that the template is in, the body\nof the template, and more.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'Admin' permission for the space to view space templates and 'Confluence\nAdministrator' global permission to view global templates.",
+        "description": "Returns a content template. This includes information about template,\nlike the name, the space or blueprint that the template is in, the body\nof the template, and more.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\n'View' permission for the space to view space templates and permission to\naccess the Confluence site ('Can use' global permission) to view global templates.",
         "operationId": "getContentTemplate",
         "parameters": [
           {
