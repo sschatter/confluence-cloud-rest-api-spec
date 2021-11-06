@@ -7360,6 +7360,19 @@
               "format": "int32",
               "default": 25
             }
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "A multi-value parameter indicating which properties of the user to expand.\n\n- `operations` returns the operations for the user, which are used\nwhen setting permissions.\n- `personalSpace` returns the personal space of the user.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -15453,7 +15466,6 @@
           "breadcrumbs",
           "entityType",
           "excerpt",
-          "friendlyLastModified",
           "iconCssClass",
           "lastModified",
           "title",
