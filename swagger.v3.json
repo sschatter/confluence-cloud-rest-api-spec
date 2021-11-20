@@ -16609,6 +16609,11 @@
             "type": "string",
             "description": "The display name of the user. Depending on the user's privacy setting, this may be the same as publicName."
           },
+          "timeZone": {
+            "nullable": true,
+            "type": "string",
+            "description": "This display user time zone. Depending on the user's privacy setting, this may be default to tenant time zone."
+          },
           "isExternalCollaborator": {
             "type": "boolean",
             "description": "Whether the user is an external collaborator user"
